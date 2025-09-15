@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
-import { cookies as nextCookies } from "next/headers";
 
 export async function GET(req: Request) {
-  const cookieStore = await nextCookies();
-  const supabase = createClient(cookieStore);
+  const supabase = await createClient();
   const { searchParams } = new URL(req.url);
 
   const id = searchParams.get("id");

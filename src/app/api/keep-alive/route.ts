@@ -10,13 +10,20 @@ export async function GET() {
 
     if (error) {
       console.error("Keep-alive failed:", error.message);
-      return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: 500 }
+      );
     }
 
     console.log("✅ Supabase keep-alive successful");
     return NextResponse.json({ success: true });
-  } catch (err: any) {
-    console.error("Keep-alive unexpected error:", err.message);
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.error("Keep-alive unexpected error:", message);
+    return NextResponse.json(
+      { success: false, error: message },
+      { status: 500 }
+    );
   }
 }

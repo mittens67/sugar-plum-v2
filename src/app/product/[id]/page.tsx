@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Star } from "lucide-react";
+import { Star, ShoppingBasket, Plus, Minus } from "lucide-react";
 import ProductSkeleton from "@/components/skeleton-loaders/ProductSkeleton";
 import ProductNotFound from "@/components/ProductNotFound";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,7 +61,6 @@ export default function Product() {
   const [selectedSize, setSelectedSize] = useState<number | null>(null);
   const [selectedFlavor, setSelectedFlavor] = useState<number | null>(null);
 
-  // Find if this product variation is already in the cart
   const cartItem = cart.find(
     (p: CartProduct) =>
       p.id === product?.id &&
@@ -71,13 +70,9 @@ export default function Product() {
 
   function handleAddToCart() {
     if (!product) return;
-
-    // Find selected flavor label
     const selectedFlavorLabel = product.product_flavour_options.find(
       ({ flavor_options }) => flavor_options.id === selectedFlavor
     )?.flavor_options.label;
-
-    // Find selected package size label
     const selectedSizeLabel = product.product_package_sizes.find(
       ({ package_sizes }) => package_sizes.id === selectedSize
     )?.package_sizes.label;
@@ -99,13 +94,11 @@ export default function Product() {
 
   useEffect(() => {
     if (!id) return;
-
     async function fetchProduct() {
       try {
         const res = await fetch(`/api/products?id=${id}`);
         const { data } = await res.json();
         setProduct(data);
-
         if (data?.product_package_sizes?.length > 0) {
           setSelectedSize(data.product_package_sizes[0].package_sizes.id);
         }
@@ -118,186 +111,132 @@ export default function Product() {
         setLoading(false);
       }
     }
-
     fetchProduct();
   }, [id]);
 
-  if (loading) {
-    return <ProductSkeleton />;
-  }
-
-  if (!product) {
-    return <ProductNotFound />;
-  }
+  if (loading) return <ProductSkeleton />;
+  if (!product) return <ProductNotFound />;
 
   return (
-    <Section className="bg-white px-4 sm:px-6 lg:px-8">
+    // Adjusting for sticky nav with pt-32 and background color
+    <Section className="bg-background min-h-screen pt-40 pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        {/* Title stays above grid */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-pink-600">
-          {product.item_name}
-        </h1>
-
-        {/* Grid: Image on left, Content + Reviews on right */}
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-          {/* Left column → Image */}
-          <div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          
+          {/* Left Column: Image with Whimsical Shadow */}
+          <div className="relative group">
+            <div className="absolute -inset-4 bg-primary/10 rounded-[2.5rem] blur-2xl group-hover:bg-primary/20 transition-all" />
             <Image
               src={product.image_large}
               alt={product.item_name}
               width={800}
               height={500}
-              className="rounded-xl object-cover w-full h-auto"
+              className="relative rounded-[2rem] object-cover w-full h-auto border border-white/40 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
               priority
             />
           </div>
 
-          {/* Right column → Details + Reviews */}
-          <div className="space-y-8">
-            {/* Details */}
-            <div className="space-y-6">
-              {/* Description */}
-              <div>
-                <h3 className="font-semibold text-lg sm:text-xl text-gray-800">
-                  Description
-                </h3>
-                <p className="text-gray-600 mt-1 text-sm sm:text-base leading-relaxed">
-                  {product.description}
-                </p>
-              </div>
-
-              {/* Info */}
-              <div>
-                <h3 className="font-semibold text-lg sm:text-xl text-gray-800">
-                  Info
-                </h3>
-                <p className="text-gray-600 mt-1 text-sm sm:text-base leading-relaxed">
-                  {product.info}
-                </p>
-              </div>
-
-              {/* Package Sizes */}
-              {product.product_package_sizes?.length > 0 && (
-                <div>
-                  <h3 className="font-semibold text-lg sm:text-xl text-gray-800">
-                    Package Size
-                  </h3>
-                  <div className="flex flex-wrap gap-2 sm:gap-3 mt-2">
-                    {product.product_package_sizes.map(({ package_sizes }) => (
-                      <Button
-                        key={package_sizes.id}
-                        variant={
-                          package_sizes.id === selectedSize
-                            ? "default"
-                            : "outline"
-                        }
-                        size="sm"
-                        onClick={() => setSelectedSize(package_sizes.id)}
-                      >
-                        {package_sizes.label}
-                      </Button>
-                    ))}
-                  </div>
+          {/* Right Column: Details Pane */}
+          <div className="space-y-10">
+            <div>
+                <span className="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">
+                    Artisanal Creation
+                </span>
+                <h1 className="text-4xl md:text-5xl font-serif italic text-text leading-tight">
+                    {product.item_name}
+                </h1>
+                <div className="flex items-center gap-2 mt-4">
+                    <div className="flex">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} className={`h-4 w-4 ${i < Math.round(product.avg_rating ?? 0) ? "fill-primary text-primary" : "text-text/20"}`} />
+                        ))}
+                    </div>
+                    <span className="text-text/40 text-sm font-medium">({product.ratings || 0} reviews)</span>
                 </div>
-              )}
+            </div>
 
-              {/* Flavors */}
-              {product.product_flavour_options?.length > 0 && (
-                <div>
-                  <h3 className="font-semibold text-lg sm:text-xl text-gray-800">
-                    Flavors
-                  </h3>
-                  <div className="flex flex-wrap gap-2 sm:gap-3 mt-2">
-                    {product.product_flavour_options.map(
-                      ({ flavor_options }) => (
+            {/* Price Tag */}
+            <div className="text-3xl font-black text-text border-l-4 border-primary pl-4">
+                ${product.base_price.toFixed(2)}
+            </div>
+
+            <div className="space-y-8 bg-white/30 backdrop-blur-md p-8 rounded-[2rem] border border-white/60 shadow-xl">
+              {/* Description & Info Tabs/Layout */}
+              <div className="space-y-4">
+                <h3 className="font-bold uppercase tracking-tighter text-text">The Story</h3>
+                <p className="text-text/70 leading-relaxed italic">{product.description}</p>
+                <div className="pt-4 border-t border-text/5">
+                    <p className="text-sm text-text/60 leading-relaxed font-medium">{product.info}</p>
+                </div>
+              </div>
+
+              {/* Selection Options */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                {product.product_package_sizes?.length > 0 && (
+                  <div className="space-y-3">
+                    <h3 className="font-bold uppercase tracking-tighter text-xs text-text/40">Size</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {product.product_package_sizes.map(({ package_sizes }) => (
+                        <Button
+                          key={package_sizes.id}
+                          variant={package_sizes.id === selectedSize ? "default" : "outline"}
+                          size="sm"
+                          className={`rounded-full px-4 font-bold ${package_sizes.id === selectedSize ? 'bg-primary text-text' : 'border-primary/20 text-text/60'}`}
+                          onClick={() => setSelectedSize(package_sizes.id)}
+                        >
+                          {package_sizes.label}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {product.product_flavour_options?.length > 0 && (
+                  <div className="space-y-3">
+                    <h3 className="font-bold uppercase tracking-tighter text-xs text-text/40">Flavor</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {product.product_flavour_options.map(({ flavor_options }) => (
                         <Button
                           key={flavor_options.id}
-                          variant={
-                            flavor_options.id === selectedFlavor
-                              ? "default"
-                              : "outline"
-                          }
+                          variant={flavor_options.id === selectedFlavor ? "default" : "outline"}
                           size="sm"
+                          className={`rounded-full px-4 font-bold ${flavor_options.id === selectedFlavor ? 'bg-primary text-text' : 'border-primary/20 text-text/60'}`}
                           onClick={() => setSelectedFlavor(flavor_options.id)}
                         >
                           {flavor_options.label}
                         </Button>
-                      )
-                    )}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
 
-              {/* Add to Cart / Quantity Controls */}
-              {cartItem ? (
-                <div className="flex items-center gap-4 mt-4">
+              {/* Cart Logic */}
+              <div className="pt-4">
+                {cartItem ? (
+                  <div className="flex items-center gap-6">
+                    <div className="flex items-center bg-background rounded-full p-1 border border-primary/20">
+                        <Button variant="ghost" size="md" className="rounded-full hover:bg-primary/10 text-text" onClick={() => dispatch(decrementInCart({ id: cartItem.id, flavor_id: cartItem.flavor_id, package_size_id: cartItem.package_size_id }))}>
+                            <Minus className="h-4 w-4" />
+                        </Button>
+                        <span className="w-12 text-center font-bold text-text">{cartItem.quantity}</span>
+                        <Button variant="ghost" size="md" className="rounded-full hover:bg-primary/10 text-text" onClick={() => dispatch(incrementInCart({ id: cartItem.id, flavor_id: cartItem.flavor_id, package_size_id: cartItem.package_size_id }))}>
+                            <Plus className="h-4 w-4" />
+                        </Button>
+                    </div>
+                    <span className="text-xs font-bold uppercase text-primary animate-pulse">In your basket</span>
+                  </div>
+                ) : (
                   <Button
-                    variant="outline"
                     size="lg"
-                    onClick={() =>
-                      dispatch(
-                        decrementInCart({
-                          id: cartItem.id,
-                          flavor_id: cartItem.flavor_id,
-                          package_size_id: cartItem.package_size_id,
-                        })
-                      )
-                    }
+                    className="w-full bg-primary hover:bg-primary/90 text-text font-bold rounded-full py-8 text-lg shadow-lg hover:shadow-primary/20"
+                    onClick={handleAddToCart}
                   >
-                    –
+                    <ShoppingBasket className="mr-2 h-5 w-5" />
+                    Add to Cart
                   </Button>
-                  <span className="text-lg font-semibold">
-                    {cartItem.quantity}
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() =>
-                      dispatch(
-                        incrementInCart({
-                          id: cartItem.id,
-                          flavor_id: cartItem.flavor_id,
-                          package_size_id: cartItem.package_size_id,
-                        })
-                      )
-                    }
-                  >
-                    +
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  size="lg"
-                  className="mt-4 w-full sm:w-auto"
-                  onClick={handleAddToCart}
-                >
-                  Add to Cart
-                </Button>
-              )}
-            </div>
-
-            {/* Reviews */}
-            <div>
-              <SectionTitle color="pink">Reviews</SectionTitle>
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mt-4">
-                <span className="text-2xl sm:text-3xl font-bold">
-                  {product.avg_rating ?? "0"}
-                </span>
-                <div className="flex">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`h-5 w-5 ${
-                        i < Math.round(product.avg_rating ?? 0)
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-gray-300"
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className="text-gray-500 text-sm sm:text-base">
-                  {product.ratings || 0} reviews
-                </span>
+                )}
               </div>
             </div>
           </div>

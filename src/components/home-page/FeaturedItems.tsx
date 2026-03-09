@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
@@ -9,6 +8,11 @@ import Section from "@/components/ui/Section";
 import SectionTitle from "@/components/ui/SectionTitle";
 import Card from "@/components/ui/Card";
 import FeaturedItemCardSkeleton from "../skeleton-loaders/FeaturedItemCardSkeleton";
+
+// Swiper styles are required for the slider to function
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 interface Product {
   id: number;
@@ -27,7 +31,7 @@ export default function FeaturedItems() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch("/api/products?limit=5&random=true");
+        const res = await fetch("/api/products?limit=8&random=true");
         const { data } = await res.json();
         setItems(data);
       } catch (err) {
@@ -36,78 +40,106 @@ export default function FeaturedItems() {
         setLoading(false);
       }
     }
-
     fetchProducts();
   }, []);
 
   if (loading) {
-    return (
-      <Section bg="bg-pink-50">
-        <SectionTitle color="pink">Featured Creations</SectionTitle>
-        <div className="flex space-x-4 overflow-x-auto py-10">
-          {[...Array(5)].map((_, idx) => (
+  return (
+    <Section className="bg-background py-20">
+      <SectionTitle className="text-text font-serif italic mb-12">
+        Featured Creations
+      </SectionTitle>
+      
+      {/* Matching the Swiper's padding-bottom (pb-16) and 
+         ensuring the grid height matches the Swiper's height 
+      */}
+      <div className="px-4 pb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, idx) => (
             <FeaturedItemCardSkeleton key={idx} />
           ))}
         </div>
-      </Section>
-    );
-  }
-
-  console.log(items);
+      </div>
+    </Section>
+  );
+}
 
   return (
-    <Section bg="bg-pink-50">
-      <SectionTitle color="pink">Featured Creations</SectionTitle>
+    <Section bg="bg-background" className="py-20">
+      {/* Title updated to Deep Plum */}
+      <SectionTitle className="text-text font-serif italic mb-12">
+        Featured Creations
+      </SectionTitle>
 
-      <div className="relative">
+      <div className="relative px-4">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={30}
+          spaceBetween={25}
           slidesPerView={1}
           navigation
           loop
           autoplay={{
-            delay: 3000, // 3 seconds between slides
-            disableOnInteraction: false, // keep autoplay after user interaction
+            delay: 4000,
+            disableOnInteraction: false,
           }}
-          pagination={{ clickable: true }}
+          pagination={{ clickable: true, dynamicBullets: true }}
           breakpoints={{
             375: { slidesPerView: 1 },
             640: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
             1280: { slidesPerView: 4 },
-            1536: { slidesPerView: 5 },
           }}
-          className="pb-10"
+          className="pb-16 !overflow-visible" // Allow card shadows to show
         >
           {items.map((item) => (
-            <SwiperSlide key={item.id} className="h-full">
+            <SwiperSlide key={item.id} className="h-auto">
               <Link href={`/product/${item.id}`} passHref>
-                <Card className="text-center flex flex-col justify-between h-full">
+                {/* Glassmorphism Card */}
+                <Card className="group relative bg-white/40 backdrop-blur-sm border border-white/60 p-6 text-center flex flex-col justify-between h-full transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 rounded-3xl">
                   <div className="flex-1">
-                    <Image
-                      src={item.image_medium}
-                      alt={item.item_name}
-                      width={200}
-                      height={200}
-                      className="mx-auto rounded-lg"
-                    />
-                    <h3
-                      className="mt-4 text-xl font-semibold text-gray-800 leading-snug"
-                      style={{ minHeight: "3.5rem" }} // adjust based on font-size & line-height
-                    >
+                    <div className="relative overflow-hidden rounded-2xl aspect-square mb-6">
+                      <Image
+                        src={item.image_medium}
+                        alt={item.item_name}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      {/* Price Badge */}
+                      <div className="absolute top-3 right-3 bg-primary text-text font-bold px-3 py-1 rounded-full text-sm shadow-md">
+                        ${item.base_price}
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-xl font-bold text-text leading-tight mb-2 group-hover:text-primary transition-colors">
                       {item.item_name}
                     </h3>
                   </div>
-                  <p className="mt-2 text-sm text-pink-600 truncate">
+                  
+                  <p className="text-sm text-text/60 line-clamp-2 italic">
                     {item.description}
                   </p>
+                  
+                  <div className="mt-4 pt-4 border-t border-text/5">
+                    <span className="text-xs uppercase tracking-widest font-bold text-primary">
+                      View Details
+                    </span>
+                  </div>
                 </Card>
               </Link>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
+
+      {/* Custom styles for Swiper navigation to match Antique Gold */}
+      <style jsx global>{`
+        .swiper-button-next, .swiper-button-prev {
+          color: #C5A059 !important; 
+        }
+        .swiper-pagination-bullet-active {
+          background: #4A1E4D !important;
+        }
+      `}</style>
     </Section>
   );
 }

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Section from "@/components/ui/Section";
 import Card from "@/components/ui/Card";
+import { Quote } from "lucide-react";
 
 const testimonials = [
   {
@@ -21,31 +22,49 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <Section className="py-24 relative">
-      {/* Background banner image */}
+    <Section className="py-32 relative overflow-hidden">
+      {/* Background with Plum Gradient Overlay */}
       <div className="absolute inset-0 -z-10">
         <Image
           src="/testimonials.jpg"
-          alt="Testimonials Background"
+          alt="Sugar Plum Bakery Interior"
           fill
-          className="object-cover opacity-80"
+          className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/70 to-white/90"></div>
+        {/* Deep Plum to Vanilla Gradient for a high-end feel */}
+        <div className="absolute inset-0 bg-gradient-to-b from-text/80 via-text/60 to-background"></div>
       </div>
 
-      <div className="text-center">
-        <h2 className="text-4xl font-bold text-pink-600 mb-16">
-          What Our Customers Say
-        </h2>
+      <div className="relative z-10 max-w-6xl mx-auto px-6">
+        <div className="text-center mb-20">
+          <span className="text-primary font-bold tracking-[0.4em] uppercase text-xs">
+            Kind Words
+          </span>
+          <h2 className="text-4xl md:text-6xl font-serif italic text-background mt-4 drop-shadow-md">
+            What Our Customers Say
+          </h2>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((t, i) => (
-            <Card key={i} className="bg-white/90 backdrop-blur">
-              <p className="text-gray-700 italic leading-relaxed text-lg">
+            <Card 
+              key={i} 
+              className="group relative bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-[2rem] shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:bg-white/15"
+            >
+              {/* Whimsical Quote Icon */}
+              <Quote className="text-primary/40 w-10 h-10 mb-6 group-hover:text-primary transition-colors duration-500" />
+              
+              <p className="text-background/90 italic leading-relaxed text-xl font-medium">
                 “{t.text}”
               </p>
-              <h4 className="mt-6 font-semibold text-gray-900">– {t.name}</h4>
+              
+              <div className="mt-8 flex items-center gap-4">
+                <div className="h-[1px] w-8 bg-primary"></div>
+                <h4 className="font-bold text-primary tracking-widest uppercase text-sm">
+                  {t.name}
+                </h4>
+              </div>
             </Card>
           ))}
         </div>

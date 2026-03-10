@@ -15,10 +15,10 @@ export default function Newsletter() {
         <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">
           Join the Magic
         </span>
-        <h2 className="text-4xl md:text-6xl font-serif italic text-text drop-shadow-sm">
+        <h2 className="text-4xl md:text-6xl font-serif italic text-plum drop-shadow-sm">
           Stay Sweet with Sugar Plum ✨
         </h2>
-        <p className="mt-6 text-lg text-text/70 max-w-xl mx-auto font-medium">
+        <p className="mt-6 text-lg text-plum/70 max-w-xl mx-auto font-medium">
           Sign up for special offers, new creations, and whimsical updates delivered straight to your inbox.
         </p>
 
@@ -28,18 +28,18 @@ export default function Newsletter() {
             <input
               type="email"
               placeholder="Your magical email address..."
-              className="flex-1 w-full px-6 py-4 rounded-full border border-primary/20 bg-background/60 placeholder-text/40 text-text focus:ring-2 focus:ring-primary/40 outline-none backdrop-blur-md transition-all font-medium"
+              className="flex-1 w-full px-6 py-4 rounded-full border border-primary/20 bg-background/60 placeholder-text/40 text-plum focus:ring-2 focus:ring-primary/40 outline-none backdrop-blur-md transition-all font-medium"
             />
             <Button 
               size="lg" 
-              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-text font-bold px-10 py-4 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95"
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-plum font-bold px-10 py-4 rounded-full shadow-lg transition-transform hover:scale-105 active:scale-95"
             >
               Subscribe
             </Button>
           </form>
         </Card>
         
-        <p className="mt-6 text-sm text-text/50 italic font-semibold tracking-tight">
+        <p className="mt-6 text-sm text-plum/50 italic font-semibold tracking-tight">
           No spam, only sugar & smiles 🍬
         </p>
       </div>

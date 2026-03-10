@@ -12,10 +12,10 @@ function ProductNotFound() {
       </div>
 
       {/* Message: Updated to Deep Plum Serif */}
-      <h2 className="text-3xl sm:text-4xl font-serif italic text-text">
+      <h2 className="text-3xl sm:text-4xl font-serif italic text-plum">
         A Missing Treat...
       </h2>
-      <p className="text-text/60 mt-4 max-w-md italic">
+      <p className="text-plum/60 mt-4 max-w-md italic">
         It seems this particular creation has vanished from our oven. 
         Perhaps it’s being reimagined?
       </p>

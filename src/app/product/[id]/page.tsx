@@ -143,31 +143,31 @@ export default function Product() {
                 <span className="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">
                     Artisanal Creation
                 </span>
-                <h1 className="text-4xl md:text-5xl font-serif italic text-text leading-tight">
+                <h1 className="text-4xl md:text-5xl font-serif italic text-plum leading-tight">
                     {product.item_name}
                 </h1>
                 <div className="flex items-center gap-2 mt-4">
                     <div className="flex">
                         {Array.from({ length: 5 }).map((_, i) => (
-                            <Star key={i} className={`h-4 w-4 ${i < Math.round(product.avg_rating ?? 0) ? "fill-primary text-primary" : "text-text/20"}`} />
+                            <Star key={i} className={`h-4 w-4 ${i < Math.round(product.avg_rating ?? 0) ? "fill-primary text-primary" : "text-plum/20"}`} />
                         ))}
                     </div>
-                    <span className="text-text/40 text-sm font-medium">({product.ratings || 0} reviews)</span>
+                    <span className="text-plum/40 text-sm font-medium">({product.ratings || 0} reviews)</span>
                 </div>
             </div>
 
             {/* Price Tag */}
-            <div className="text-3xl font-black text-text border-l-4 border-primary pl-4">
+            <div className="text-3xl font-black text-plum border-l-4 border-primary pl-4">
                 ${product.base_price.toFixed(2)}
             </div>
 
             <div className="space-y-8 bg-white/30 backdrop-blur-md p-8 rounded-[2rem] border border-white/60 shadow-xl">
               {/* Description & Info Tabs/Layout */}
               <div className="space-y-4">
-                <h3 className="font-bold uppercase tracking-tighter text-text">The Story</h3>
-                <p className="text-text/70 leading-relaxed italic">{product.description}</p>
+                <h3 className="font-bold uppercase tracking-tighter text-plum">The Story</h3>
+                <p className="text-plum/70 leading-relaxed italic">{product.description}</p>
                 <div className="pt-4 border-t border-text/5">
-                    <p className="text-sm text-text/60 leading-relaxed font-medium">{product.info}</p>
+                    <p className="text-sm text-plum/60 leading-relaxed font-medium">{product.info}</p>
                 </div>
               </div>
 
@@ -175,14 +175,14 @@ export default function Product() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 {product.product_package_sizes?.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="font-bold uppercase tracking-tighter text-xs text-text/40">Size</h3>
+                    <h3 className="font-bold uppercase tracking-tighter text-xs text-plum/40">Size</h3>
                     <div className="flex flex-wrap gap-2">
                       {product.product_package_sizes.map(({ package_sizes }) => (
                         <Button
                           key={package_sizes.id}
                           variant={package_sizes.id === selectedSize ? "default" : "outline"}
                           size="sm"
-                          className={`rounded-full px-4 font-bold ${package_sizes.id === selectedSize ? 'bg-primary text-text' : 'border-primary/20 text-text/60'}`}
+                          className={`rounded-full px-4 font-bold ${package_sizes.id === selectedSize ? 'bg-primary text-plum' : 'border-primary/20 text-plum/60'}`}
                           onClick={() => setSelectedSize(package_sizes.id)}
                         >
                           {package_sizes.label}
@@ -194,14 +194,14 @@ export default function Product() {
 
                 {product.product_flavour_options?.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="font-bold uppercase tracking-tighter text-xs text-text/40">Flavor</h3>
+                    <h3 className="font-bold uppercase tracking-tighter text-xs text-plum/40">Flavor</h3>
                     <div className="flex flex-wrap gap-2">
                       {product.product_flavour_options.map(({ flavor_options }) => (
                         <Button
                           key={flavor_options.id}
                           variant={flavor_options.id === selectedFlavor ? "default" : "outline"}
                           size="sm"
-                          className={`rounded-full px-4 font-bold ${flavor_options.id === selectedFlavor ? 'bg-primary text-text' : 'border-primary/20 text-text/60'}`}
+                          className={`rounded-full px-4 font-bold ${flavor_options.id === selectedFlavor ? 'bg-primary text-plum' : 'border-primary/20 text-plum/60'}`}
                           onClick={() => setSelectedFlavor(flavor_options.id)}
                         >
                           {flavor_options.label}
@@ -217,11 +217,11 @@ export default function Product() {
                 {cartItem ? (
                   <div className="flex items-center gap-6">
                     <div className="flex items-center bg-background rounded-full p-1 border border-primary/20">
-                        <Button variant="ghost" size="md" className="rounded-full hover:bg-primary/10 text-text" onClick={() => dispatch(decrementInCart({ id: cartItem.id, flavor_id: cartItem.flavor_id, package_size_id: cartItem.package_size_id }))}>
+                        <Button variant="ghost" size="md" className="rounded-full hover:bg-primary/10 text-plum" onClick={() => dispatch(decrementInCart({ id: cartItem.id, flavor_id: cartItem.flavor_id, package_size_id: cartItem.package_size_id }))}>
                             <Minus className="h-4 w-4" />
                         </Button>
-                        <span className="w-12 text-center font-bold text-text">{cartItem.quantity}</span>
-                        <Button variant="ghost" size="md" className="rounded-full hover:bg-primary/10 text-text" onClick={() => dispatch(incrementInCart({ id: cartItem.id, flavor_id: cartItem.flavor_id, package_size_id: cartItem.package_size_id }))}>
+                        <span className="w-12 text-center font-bold text-plum">{cartItem.quantity}</span>
+                        <Button variant="ghost" size="md" className="rounded-full hover:bg-primary/10 text-plum" onClick={() => dispatch(incrementInCart({ id: cartItem.id, flavor_id: cartItem.flavor_id, package_size_id: cartItem.package_size_id }))}>
                             <Plus className="h-4 w-4" />
                         </Button>
                     </div>
@@ -230,7 +230,7 @@ export default function Product() {
                 ) : (
                   <Button
                     size="lg"
-                    className="w-full bg-primary hover:bg-primary/90 text-text font-bold rounded-full py-8 text-lg shadow-lg hover:shadow-primary/20"
+                    className="w-full bg-primary hover:bg-primary/90 text-plum font-bold rounded-full py-8 text-lg shadow-lg hover:shadow-primary/20"
                     onClick={handleAddToCart}
                   >
                     <ShoppingBasket className="mr-2 h-5 w-5" />

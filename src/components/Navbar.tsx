@@ -43,7 +43,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-text uppercase tracking-widest">
+        <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-plum uppercase tracking-widest">
           <Link href="/" className="hover:text-primary transition-colors">Home</Link>
           <Link href="/menu" className="hover:text-primary transition-colors">Menu</Link>
           <Link href="/about" className="hover:text-primary transition-colors">About Us</Link>
@@ -66,7 +66,7 @@ export default function Navbar() {
         {/* Mobile Hamburger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-text focus:outline-none p-2"
+          className="md:hidden text-plum focus:outline-none p-2"
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
@@ -75,7 +75,7 @@ export default function Navbar() {
       {/* Mobile Menu - Glassmorphism dropdown */}
       {isOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-background/95 backdrop-blur-xl border-b border-primary/10 shadow-xl z-50">
-          <div className="flex flex-col items-center gap-6 py-10 text-text text-lg font-bold uppercase tracking-widest">
+          <div className="flex flex-col items-center gap-6 py-10 text-plum text-lg font-bold uppercase tracking-widest">
             <Link href="/" onClick={() => setIsOpen(false)} className="hover:text-primary">Home</Link>
             <Link href="/menu" onClick={() => setIsOpen(false)} className="hover:text-primary">Menu</Link>
             <Link href="/about" onClick={() => setIsOpen(false)} className="hover:text-primary">About Us</Link>

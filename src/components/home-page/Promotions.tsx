@@ -29,26 +29,26 @@ export default function Promotions() {
 
           {/* Text Content */}
           <div className="text-center md:text-left">
-            <span className="inline-block px-4 py-1 rounded-full bg-primary/20 text-text font-bold text-xs uppercase tracking-widest mb-4">
+            <span className="inline-block px-4 py-1 rounded-full bg-primary/20 text-plum font-bold text-xs uppercase tracking-widest mb-4">
               Limited Time Magic
             </span>
             
-            <h2 className="text-4xl md:text-6xl font-serif italic text-text leading-tight">
+            <h2 className="text-4xl md:text-6xl font-serif italic text-plum leading-tight">
               A Sweet Welcome ✨
             </h2>
             
-            <p className="mt-6 text-xl text-text/80 font-medium leading-relaxed">
+            <p className="mt-6 text-xl text-plum/80 font-medium leading-relaxed">
               Experience the whimsy of Sugar Plum. Enjoy{" "}
               <span className="text-primary font-bold text-2xl">10% off</span>{" "}
               your first artisanal treat.
             </p>
             
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <Button className="bg-primary hover:bg-primary/90 text-text font-bold px-10 py-7 rounded-full text-lg shadow-lg transition-all hover:shadow-primary/20 hover:-translate-y-1">
+              <Button className="bg-primary hover:bg-primary/90 text-plum font-bold px-10 py-7 rounded-full text-lg shadow-lg transition-all hover:shadow-primary/20 hover:-translate-y-1">
                 Claim My Discount
               </Button>
               
-              <p className="flex items-center justify-center text-sm text-text/50 font-semibold tracking-tighter uppercase">
+              <p className="flex items-center justify-center text-sm text-plum/50 font-semibold tracking-tighter uppercase">
                 *Valid on all pastries
               </p>
             </div>

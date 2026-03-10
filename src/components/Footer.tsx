@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="w-full flex flex-col items-center space-y-8 sm:flex-row sm:justify-between sm:space-y-0">
             
             {/* Policies: Left aligned on desktop */}
-            <div className="flex flex-row space-x-8 items-center text-sm font-medium text-text/80 tracking-wide">
+            <div className="flex flex-row space-x-8 items-center text-sm font-medium text-plum/80 tracking-wide">
               <Link href="/privacy" className="hover:text-primary transition-colors underline-offset-4 hover:underline">
                 Privacy Policy
               </Link>
@@ -39,7 +39,7 @@ export default function Footer() {
             </div>
 
             {/* Social Links: Right aligned on desktop */}
-            <div className="flex space-x-6 text-text/70">
+            <div className="flex space-x-6 text-plum/70">
               <Link href="https://instagram.com" target="_blank" className="hover:text-primary transition-all hover:-translate-y-1">
                 <Instagram className="w-5 h-5" />
               </Link>
@@ -54,7 +54,7 @@ export default function Footer() {
 
           {/* Bottom Copyright */}
           <div className="pt-8 border-t border-text/5 w-full text-center">
-            <p className="text-xs text-text/50 font-medium">
+            <p className="text-xs text-plum/50 font-medium">
               © {new Date().getFullYear()} Sugar Plum Bakery. All rights reserved.
             </p>
           </div>

@@ -18,8 +18,8 @@ export default function StoryContact() {
           <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
             The Journey
           </span>
-          <h2 className="text-3xl font-serif italic text-text">Our Story</h2>
-          <p className="mt-6 text-text/70 leading-relaxed font-medium">
+          <h2 className="text-3xl font-serif italic text-plum">Our Story</h2>
+          <p className="mt-6 text-plum/70 leading-relaxed font-medium">
             Sugar Plum is a family-owned sanctuary dedicated to the art of 
             whimsical baking. Our passion for creativity and fine ingredients 
             shines through in every handcrafted treat we share.
@@ -39,8 +39,8 @@ export default function StoryContact() {
           <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
             Reach Out
           </span>
-          <h2 className="text-3xl font-serif italic text-text">Contact Us</h2>
-          <p className="mt-6 text-text/70 leading-relaxed font-medium">
+          <h2 className="text-3xl font-serif italic text-plum">Contact Us</h2>
+          <p className="mt-6 text-plum/70 leading-relaxed font-medium">
             Have a dream cake in mind or need to place a bespoke order? 
             Our magic-makers are here to bring your sugar-filled visions to life.
           </p>

@@ -17,7 +17,7 @@ export default function SectionTitle({
   
   const colorClass =
     color === "plum"
-      ? "text-text" // Deep Plum (#4A1E4D)
+      ? "text-plum" // Deep Plum (#4A1E4D)
       : color === "gold"
       ? "text-primary" // Antique Gold (#C5A059)
       : "text-white";

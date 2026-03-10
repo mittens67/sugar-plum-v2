@@ -7,7 +7,7 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 export default function Contact() {
   return (
     // Added pt-20 to clear the sticky navbar and used Creamy Vanilla background
-    <div className="bg-background text-text pt-20">
+    <div className="bg-background text-plum pt-20">
       
       {/* Hero Section with Parallax-style Banner */}
       <Section className="relative p-6">
@@ -46,8 +46,8 @@ export default function Contact() {
               <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4">
                 <item.icon className="text-primary w-6 h-6" />
               </div>
-              <h3 className="text-xl font-serif italic font-bold text-text mb-2">{item.title}</h3>
-              <p className="text-text/70 font-medium leading-relaxed">{item.detail}</p>
+              <h3 className="text-xl font-serif italic font-bold text-plum mb-2">{item.title}</h3>
+              <p className="text-plum/70 font-medium leading-relaxed">{item.detail}</p>
             </div>
           ))}
         </div>
@@ -58,12 +58,12 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-8 gap-4">
             <div>
-               <h2 className="text-3xl font-serif italic text-text">Visit Our Sanctuary</h2>
-               <p className="text-text/50 font-medium mt-2">Follow the scent of fresh vanilla and magic.</p>
+               <h2 className="text-3xl font-serif italic text-plum">Visit Our Sanctuary</h2>
+               <p className="text-plum/50 font-medium mt-2">Follow the scent of fresh vanilla and magic.</p>
             </div>
             <div className="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full border border-primary/20">
                 <Clock className="w-4 h-4 text-primary" />
-                <span className="text-xs font-bold uppercase text-text/70">Open Daily: 9am - 8pm</span>
+                <span className="text-xs font-bold uppercase text-plum/70">Open Daily: 9am - 8pm</span>
             </div>
           </div>
           
@@ -86,7 +86,7 @@ export default function Contact() {
 
       {/* Final Whimsical Note */}
       <div className="text-center pb-20">
-         <p className="font-serif italic text-text/30 text-lg">{"We can't wait to share a treat with you!"}</p>
+         <p className="font-serif italic text-plum/30 text-lg">{"We can't wait to share a treat with you!"}</p>
       </div>
     </div>
   );

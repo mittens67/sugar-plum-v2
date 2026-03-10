@@ -46,7 +46,7 @@ export default function FeaturedItems() {
   if (loading) {
   return (
     <Section className="bg-background py-20">
-      <SectionTitle className="text-text font-serif italic mb-12">
+      <SectionTitle className="text-plum font-serif italic mb-12">
         Featured Creations
       </SectionTitle>
       
@@ -67,7 +67,7 @@ export default function FeaturedItems() {
   return (
     <Section bg="bg-background" className="py-20">
       {/* Title updated to Deep Plum */}
-      <SectionTitle className="text-text font-serif italic mb-12">
+      <SectionTitle className="text-plum font-serif italic mb-12">
         Featured Creations
       </SectionTitle>
 
@@ -105,17 +105,17 @@ export default function FeaturedItems() {
                         className="object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                       {/* Price Badge */}
-                      <div className="absolute top-3 right-3 bg-primary text-text font-bold px-3 py-1 rounded-full text-sm shadow-md">
+                      <div className="absolute top-3 right-3 bg-primary text-plum font-bold px-3 py-1 rounded-full text-sm shadow-md">
                         ${item.base_price}
                       </div>
                     </div>
                     
-                    <h3 className="text-xl font-bold text-text leading-tight mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="text-xl font-bold text-plum leading-tight mb-2 group-hover:text-primary transition-colors">
                       {item.item_name}
                     </h3>
                   </div>
                   
-                  <p className="text-sm text-text/60 line-clamp-2 italic">
+                  <p className="text-sm text-plum/60 line-clamp-2 italic">
                     {item.description}
                   </p>
                   

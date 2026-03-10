@@ -15,13 +15,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     let variantClasses = "";
     if (variant === "default") {
       // Antique Gold (#C5A059) base with Deep Plum (#4A1E4D) text
-      variantClasses = "bg-primary text-text shadow-md hover:bg-primary/90 hover:shadow-lg focus:ring-primary/40";
+      variantClasses = "bg-primary text-plum shadow-md hover:bg-primary/90 hover:shadow-lg focus:ring-primary/40";
     } else if (variant === "outline") {
       // Sophisticated outline using the primary gold color
-      variantClasses = "border-2 border-primary/30 text-text hover:border-primary hover:bg-primary/5 focus:ring-primary/20";
+      variantClasses = "border-2 border-primary/30 text-plum hover:border-primary hover:bg-primary/5 focus:ring-primary/20";
     } else if (variant === "ghost") {
       // Clean look for secondary actions like "Add/Minus" in the cart
-      variantClasses = "text-text/70 hover:text-text hover:bg-primary/10";
+      variantClasses = "text-plum/70 hover:text-plum hover:bg-primary/10";
     }
 
     let sizeClasses = "";

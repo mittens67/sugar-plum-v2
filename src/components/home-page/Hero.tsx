@@ -56,7 +56,7 @@ export default function Hero() {
         <div className="mt-10 flex gap-4">
           <Button 
             size="lg" 
-            className="bg-primary hover:bg-primary/90 text-text font-bold px-10 py-7 rounded-full text-lg transition-transform hover:scale-105 shadow-xl"
+            className="bg-primary hover:bg-primary/90 text-plum font-bold px-10 py-7 rounded-full text-lg transition-transform hover:scale-105 shadow-xl"
           >
             Explore Menu
           </Button>

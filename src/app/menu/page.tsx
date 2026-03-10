@@ -62,7 +62,7 @@ export default function Menu() {
         <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] block mb-2">
           The Bakery
         </span>
-        <SectionTitle className="text-text font-serif italic text-4xl md:text-6xl">
+        <SectionTitle className="text-plum font-serif italic text-4xl md:text-6xl">
           Our Sweet Treats
         </SectionTitle>
       </div>
@@ -74,7 +74,7 @@ export default function Menu() {
             size="sm"
             onClick={() => setActiveType(null)}
             className={`rounded-full px-6 py-5 font-bold uppercase tracking-tighter transition-all shadow-sm
-              ${activeType === null ? 'bg-primary text-text' : 'border-primary/30 text-text/60 hover:border-primary'}`}
+              ${activeType === null ? 'bg-primary text-plum' : 'border-primary/30 text-plum/60 hover:border-primary'}`}
           >
             All
         </Button>
@@ -86,8 +86,8 @@ export default function Menu() {
             onClick={() => setActiveType(type === activeType ? null : type)}
             className={`rounded-full px-6 py-5 font-bold uppercase tracking-tighter transition-all shadow-sm
               ${activeType === type 
-                ? 'bg-primary text-text' 
-                : 'border-primary/30 text-text/60 hover:border-primary hover:bg-white/40'}`}
+                ? 'bg-primary text-plum' 
+                : 'border-primary/30 text-plum/60 hover:border-primary hover:bg-white/40'}`}
           >
             {type}
           </Button>
@@ -105,7 +105,7 @@ export default function Menu() {
       ) : products.length === 0 ? (
         <div className="flex flex-col justify-center items-center py-32 space-y-4">
           <div className="text-6xl">🍪</div>
-          <p className="text-text/50 font-serif italic text-xl text-center">
+          <p className="text-plum/50 font-serif italic text-xl text-center">
             The oven is empty... 
             <br />
             Try another magical category!
@@ -128,7 +128,7 @@ export default function Menu() {
                 />
               </div>
               
-              <h3 className="mt-2 font-bold text-text text-lg text-center leading-tight group-hover:text-primary transition-colors">
+              <h3 className="mt-2 font-bold text-plum text-lg text-center leading-tight group-hover:text-primary transition-colors">
                 {product.item_name}
               </h3>
               
@@ -137,7 +137,7 @@ export default function Menu() {
               </p>
 
               <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                 <span className="text-[10px] font-bold uppercase tracking-widest text-text/40">
+                 <span className="text-[10px] font-bold uppercase tracking-widest text-plum/40">
                    View Creation
                  </span>
               </div>

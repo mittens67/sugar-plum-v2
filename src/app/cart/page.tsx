@@ -33,12 +33,12 @@ export default function CartPage() {
           <div className="bg-primary/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
             <ShoppingBag className="text-primary w-10 h-10" />
           </div>
-          <h2 className="text-3xl font-serif italic text-text">Your cart is empty</h2>
-          <p className="mt-4 text-text/60 font-medium">
+          <h2 className="text-3xl font-serif italic text-plum">Your cart is empty</h2>
+          <p className="mt-4 text-plum/60 font-medium">
             {"It looks like you haven't added any magical treats yet."}
           </p>
           <Link href="/menu" className="mt-8 block">
-            <Button className="w-full bg-primary hover:bg-primary/90 text-text font-bold rounded-full py-6 shadow-lg transition-transform hover:scale-105">
+            <Button className="w-full bg-primary hover:bg-primary/90 text-plum font-bold rounded-full py-6 shadow-lg transition-transform hover:scale-105">
               Browse Our Creations
             </Button>
           </Link>
@@ -54,7 +54,7 @@ export default function CartPage() {
           <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] block mb-2">
             Checkout
           </span>
-          <SectionTitle className="text-left text-text font-serif italic text-4xl md:text-5xl">
+          <SectionTitle className="text-left text-plum font-serif italic text-4xl md:text-5xl">
             Your Selection
           </SectionTitle>
         </div>
@@ -77,22 +77,22 @@ export default function CartPage() {
                 </div>
 
                 <div className="flex-1 text-center md:text-left">
-                  <h3 className="font-bold text-text text-xl">
+                  <h3 className="font-bold text-plum text-xl">
                     {item.item_name}
                   </h3>
                   <div className="mt-1 flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1">
                     {item.flavor_name && (
-                      <p className="text-xs font-bold text-text/40 uppercase tracking-tighter">
+                      <p className="text-xs font-bold text-plum/40 uppercase tracking-tighter">
                         Flavor: <span className="text-primary">{item.flavor_name}</span>
                       </p>
                     )}
                     {item.package_size_label && (
-                      <p className="text-xs font-bold text-text/40 uppercase tracking-tighter">
+                      <p className="text-xs font-bold text-plum/40 uppercase tracking-tighter">
                         Size: <span className="text-primary">{item.package_size_label}</span>
                       </p>
                     )}
                   </div>
-                  <p className="mt-3 text-lg font-black text-text/80">
+                  <p className="mt-3 text-lg font-black text-plum/80">
                     ${item.base_price.toFixed(2)}
                   </p>
                 </div>
@@ -102,14 +102,14 @@ export default function CartPage() {
                   <div className="flex items-center gap-4">
                     <button
                       onClick={() => dispatch(decrementInCart({ id: item.id, flavor_id: item.flavor_id, package_size_id: item.package_size_id }))}
-                      className="text-text/60 hover:text-primary transition-colors"
+                      className="text-plum/60 hover:text-primary transition-colors"
                     >
                       <Minus className="w-4 h-4" />
                     </button>
-                    <span className="font-bold text-text w-4 text-center">{item.quantity}</span>
+                    <span className="font-bold text-plum w-4 text-center">{item.quantity}</span>
                     <button
                       onClick={() => dispatch(incrementInCart({ id: item.id, flavor_id: item.flavor_id, package_size_id: item.package_size_id }))}
-                      className="text-text/60 hover:text-primary transition-colors"
+                      className="text-plum/60 hover:text-primary transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                     </button>
@@ -117,7 +117,7 @@ export default function CartPage() {
                   <div className="w-[1px] h-4 bg-text/10" />
                   <button
                     onClick={() => dispatch(removeFromCart({ id: item.id, flavor_id: item.flavor_id, package_size_id: item.package_size_id }))}
-                    className="text-text/30 hover:text-red-400 transition-colors"
+                    className="text-plum/30 hover:text-red-400 transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -154,7 +154,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            <Button className="w-full mt-10 bg-primary hover:bg-primary/90 text-text font-bold py-8 rounded-full text-lg shadow-xl shadow-black/20 transition-all hover:-translate-y-1">
+            <Button className="w-full mt-10 bg-primary hover:bg-primary/90 text-plum font-bold py-8 rounded-full text-lg shadow-xl shadow-black/20 transition-all hover:-translate-y-1">
               Proceed to Checkout
             </Button>
             

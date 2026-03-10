@@ -27,7 +27,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="bg-background text-text pt-20">
+    <div className="bg-background text-plum pt-20">
       {/* Hero Banner / Our Story */}
       <Section className="relative p-6">
         <div
@@ -72,26 +72,26 @@ export default function About() {
             <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
               The Heart of Sugar Plum
             </span>
-            <SectionTitle className="text-text font-serif italic text-4xl md:text-5xl mb-8">
+            <SectionTitle className="text-plum font-serif italic text-4xl md:text-5xl mb-8">
               Our Mission
             </SectionTitle>
-            <p className="text-text/70 text-lg md:text-xl leading-relaxed font-medium italic">
+            <p className="text-plum/70 text-lg md:text-xl leading-relaxed font-medium italic">
              { `"Our mission is to spread happiness, one handcrafted sweet at a time. 
               We are committed to the alchemy of high-quality, locally sourced 
               ingredients and the magic of inclusive hospitality."`}
             </p>
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-10 border-t border-text/5">
               <div>
-                <h4 className="font-bold text-text uppercase text-xs tracking-widest mb-1">Pure</h4>
-                <p className="text-text/50 text-sm">Finest Ingredients</p>
+                <h4 className="font-bold text-plum uppercase text-xs tracking-widest mb-1">Pure</h4>
+                <p className="text-plum/50 text-sm">Finest Ingredients</p>
               </div>
               <div>
-                <h4 className="font-bold text-text uppercase text-xs tracking-widest mb-1">Local</h4>
-                <p className="text-text/50 text-sm">Community Sourced</p>
+                <h4 className="font-bold text-plum uppercase text-xs tracking-widest mb-1">Local</h4>
+                <p className="text-plum/50 text-sm">Community Sourced</p>
               </div>
               <div>
-                <h4 className="font-bold text-text uppercase text-xs tracking-widest mb-1">Magic</h4>
-                <p className="text-text/50 text-sm">Handmade with Love</p>
+                <h4 className="font-bold text-plum uppercase text-xs tracking-widest mb-1">Magic</h4>
+                <p className="text-plum/50 text-sm">Handmade with Love</p>
               </div>
             </div>
           </div>

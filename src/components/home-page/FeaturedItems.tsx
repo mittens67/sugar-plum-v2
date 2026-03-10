@@ -9,10 +9,6 @@ import SectionTitle from "@/components/ui/SectionTitle";
 import Card from "@/components/ui/Card";
 import FeaturedItemCardSkeleton from "../skeleton-loaders/FeaturedItemCardSkeleton";
 
-// Swiper styles are required for the slider to function
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 interface Product {
   id: number;
@@ -71,7 +67,7 @@ export default function FeaturedItems() {
         Featured Creations
       </SectionTitle>
 
-      <div className="relative px-4">
+      <div className="relative px-4 overflow-hidden py-4">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={25}

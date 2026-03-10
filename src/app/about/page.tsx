@@ -27,74 +27,93 @@ export default function About() {
   }, []);
 
   return (
-    <div className="bg-pink-50 text-gray-900">
+    <div className="bg-background text-plum pt-20">
       {/* Hero Banner / Our Story */}
-      <Section className="relative text-center p-0">
+      <Section className="relative p-6">
         <div
-          className="relative w-full h-[80vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] flex items-center justify-center bg-cover bg-center bg-no-repeat rounded-2xl overflow-hidden"
-          style={{ backgroundImage: "url('/about-banner.jpg')" }}
+          className="relative w-full h-[70vh] md:h-[85vh] flex items-center justify-center rounded-[3rem] overflow-hidden shadow-2xl border border-white/20"
+          style={{ 
+            backgroundImage: "url('/about-banner.jpg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
         >
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center px-4 sm:px-6 text-center">
+          {/* Branded Plum Overlay with Glass Effect */}
+          <div className="absolute inset-0 bg-plum/50 backdrop-blur-[1px] flex flex-col items-center justify-center px-6 text-center">
+            <span className="text-primary font-bold tracking-[0.4em] uppercase text-xs mb-4 animate-heroFade">
+              Est. 2024
+            </span>
             <SectionTitle
-              color="pink"
-              className="text-center text-4xl sm:text-5xl md:text-6xl font-bold text-pink-600 transform scale-95 animate-heroFade"
+              className="text-center text-5xl sm:text-7xl font-serif italic text-white drop-shadow-2xl animate-heroFade"
             >
               Our Story
             </SectionTitle>
-            <p className="text-white max-w-xl sm:max-w-2xl text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed mt-4 opacity-0 transform translate-y-4 animate-heroFade delay-200">
-              At Sugar Plum, we believe in creating moments of joy through our
-              delicious, handcrafted baked goods. Our journey began with a
-              passion for baking and a desire to share our love for sweets with
-              the world. Each treat is made with the finest ingredients and a
-              touch of magic, ensuring every bite is a delightful experience.
+            <div className="w-16 h-1 bg-primary my-8 rounded-full animate-heroFade delay-100" />
+            <p className="text-white/90 max-w-2xl text-lg md:text-xl lg:text-2xl font-medium leading-relaxed italic animate-heroFade delay-200">
+              At Sugar Plum, we believe in creating moments of pure joy through 
+              handcrafted magic. Our journey began with a simple desire: to 
+              blend artisanal tradition with whimsical creativity.
             </p>
           </div>
         </div>
       </Section>
 
-      {/* Our Mission */}
-      <Section>
+      {/* Our Mission - Whimsical Card Layout */}
+      <Section className="py-24">
         <div
           ref={missionRef}
-          className={`transition-all duration-1000 ease-out transform ${
+          className={`max-w-4xl mx-auto transition-all duration-1000 ease-out transform ${
             missionVisible
               ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-8"
+              : "opacity-0 translate-y-12"
           }`}
         >
-          <SectionTitle color="pink" className="text-center">
-            Our Mission
-          </SectionTitle>
-          <p className="max-w-3xl mx-auto text-center text-gray-700 text-base sm:text-lg md:text-xl leading-relaxed px-4 sm:px-0 mt-4">
-            Our mission is to spread happiness, one sweet at a time. We are
-            committed to using high-quality, locally sourced ingredients
-            whenever possible, and to creating a welcoming and inclusive
-            environment for our customers and team. We strive to innovate and
-            create unique, memorable treats that bring smiles to faces of all
-            ages.
-          </p>
+          <div className="bg-white/40 backdrop-blur-md p-10 md:p-16 rounded-[3rem] border border-white/60 shadow-xl text-center">
+            <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
+              The Heart of Sugar Plum
+            </span>
+            <SectionTitle className="text-plum font-serif italic text-4xl md:text-5xl mb-8">
+              Our Mission
+            </SectionTitle>
+            <p className="text-plum/70 text-lg md:text-xl leading-relaxed font-medium italic">
+             { `"Our mission is to spread happiness, one handcrafted sweet at a time. 
+              We are committed to the alchemy of high-quality, locally sourced 
+              ingredients and the magic of inclusive hospitality."`}
+            </p>
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-10 border-t border-plum/20">
+              <div>
+                <h4 className="font-bold text-plum uppercase text-xs tracking-widest mb-1">Pure</h4>
+                <p className="text-plum/50 text-sm">Finest Ingredients</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-plum uppercase text-xs tracking-widest mb-1">Local</h4>
+                <p className="text-plum/50 text-sm">Community Sourced</p>
+              </div>
+              <div>
+                <h4 className="font-bold text-plum uppercase text-xs tracking-widest mb-1">Magic</h4>
+                <p className="text-plum/50 text-sm">Handmade with Love</p>
+              </div>
+            </div>
+          </div>
         </div>
       </Section>
 
-      {/* Tailwind Animations */}
       <style jsx>{`
         @keyframes heroFade {
           0% {
             opacity: 0;
-            transform: scale(0.95);
+            transform: translateY(20px);
           }
           100% {
             opacity: 1;
-            transform: scale(1);
+            transform: translateY(0);
           }
         }
         .animate-heroFade {
-          animation: heroFade 1s ease-out forwards;
+          animation: heroFade 1.2s ease-out forwards;
         }
-        .animate-heroFade.delay-200 {
-          animation-delay: 0.2s;
-        }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
       `}</style>
     </div>
   );

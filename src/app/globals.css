@@ -1,25 +1,24 @@
 @import "tailwindcss";
+
+@theme {
+  /* Sugar Plum Palette */
+  --color-primary: #C5A059;
+  --color-primary-light: #E2CFAB;
+  --color-secondary: #906B9A;
+  --color-plum: #4A1E4D;
+  --color-accent: #906B9A;
+  --color-background: #FFF9F0;
+}
+
 @import "swiper/css";
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 
-.font-poppins {
-  font-family: var(--font-poppins), sans-serif;
-}
-
-/* Swiper carousel custom styles */
-/* Make swiper dots bigger */
-/* Swiper dots styled in pastel blue */
-.swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
-  background-color: #93c5fd; /* Tailwind blue-300 = pastel blue */
-  opacity: 0.5;
-  transition: all 0.3s ease;
-}
+/* ... keep your font-poppins and swiper styles below ... */
 
 .swiper-pagination-bullet-active {
-  background-color: #3b82f6; /* Tailwind blue-500 = deeper pastel blue */
+  /* You can now use your new variable even in custom CSS! */
+  background-color: var(--color-plum); 
   opacity: 1;
   transform: scale(1.3);
 }

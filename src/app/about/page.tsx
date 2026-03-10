@@ -39,7 +39,7 @@ export default function About() {
           }}
         >
           {/* Branded Plum Overlay with Glass Effect */}
-          <div className="absolute inset-0 bg-text/50 backdrop-blur-[1px] flex flex-col items-center justify-center px-6 text-center">
+          <div className="absolute inset-0 bg-plum/50 backdrop-blur-[1px] flex flex-col items-center justify-center px-6 text-center">
             <span className="text-primary font-bold tracking-[0.4em] uppercase text-xs mb-4 animate-heroFade">
               Est. 2024
             </span>
@@ -80,7 +80,7 @@ export default function About() {
               We are committed to the alchemy of high-quality, locally sourced 
               ingredients and the magic of inclusive hospitality."`}
             </p>
-            <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-10 border-t border-text/5">
+            <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-10 border-t border-plum/20">
               <div>
                 <h4 className="font-bold text-plum uppercase text-xs tracking-widest mb-1">Pure</h4>
                 <p className="text-plum/50 text-sm">Finest Ingredients</p>

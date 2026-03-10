@@ -7,7 +7,7 @@ import { Instagram, Facebook, Twitter } from "lucide-react";
 export default function Footer() {
   return (
     // Glassmorphism: Using a transparent Deep Plum (#4A1E4D) background
-    <footer className="w-full bg-text/10 backdrop-blur-lg border-t border-white/20 py-12">
+    <footer className="w-full bg-plum/10 backdrop-blur-lg border-t border-white/20 py-12">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col items-center space-y-8">
           
@@ -53,7 +53,7 @@ export default function Footer() {
           </div>
 
           {/* Bottom Copyright */}
-          <div className="pt-8 border-t border-text/5 w-full text-center">
+          <div className="pt-8 border-t border-plum/20 w-full text-center">
             <p className="text-xs text-plum/50 font-medium">
               © {new Date().getFullYear()} Sugar Plum Bakery. All rights reserved.
             </p>

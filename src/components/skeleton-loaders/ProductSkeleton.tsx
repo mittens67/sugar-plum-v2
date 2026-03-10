@@ -13,7 +13,7 @@ export default function ProductSkeleton() {
           <div className="relative">
             {/* The "Whimsical Shadow" placeholder */}
             <div className="absolute -inset-4 bg-primary/5 rounded-[2.5rem] blur-2xl" />
-            <div className="relative aspect-[4/3] w-full bg-text/5 rounded-[2rem] border border-white/40 animate-pulse" />
+            <div className="relative aspect-4/3 w-full bg-plum/5 rounded-[2rem] border border-white/40 animate-pulse" />
           </div>
 
           {/* Right Column: Details Skeleton */}
@@ -22,36 +22,36 @@ export default function ProductSkeleton() {
               {/* Artisanal Creation Tag */}
               <div className="h-3 w-32 bg-primary/10 rounded-full animate-pulse" />
               {/* Title */}
-              <div className="h-12 w-3/4 bg-text/10 rounded-xl animate-pulse" />
+              <div className="h-12 w-3/4 bg-plum/10 rounded-xl animate-pulse" />
               {/* Stars */}
-              <div className="h-4 w-40 bg-text/5 rounded-full animate-pulse" />
+              <div className="h-4 w-40 bg-plum/5 rounded-full animate-pulse" />
             </div>
 
             {/* Price Tag */}
-            <div className="h-10 w-24 bg-text/10 border-l-4 border-primary/20 pl-4 animate-pulse" />
+            <div className="h-10 w-24 bg-plum/10 border-l-4 border-primary/20 pl-4 animate-pulse" />
 
             {/* Glassmorphism Pane Skeleton */}
             <div className="space-y-8 bg-white/20 backdrop-blur-md p-8 rounded-[2rem] border border-white/40 shadow-xl">
               <div className="space-y-4">
-                <div className="h-4 w-20 bg-text/10 rounded-full animate-pulse" />
+                <div className="h-4 w-20 bg-plum/10 rounded-full animate-pulse" />
                 <div className="space-y-2">
-                  <div className="h-3 w-full bg-text/5 rounded-full animate-pulse" />
-                  <div className="h-3 w-full bg-text/5 rounded-full animate-pulse" />
-                  <div className="h-3 w-2/3 bg-text/5 rounded-full animate-pulse" />
+                  <div className="h-3 w-full bg-plum/5 rounded-full animate-pulse" />
+                  <div className="h-3 w-full bg-plum/5 rounded-full animate-pulse" />
+                  <div className="h-3 w-2/3 bg-plum/5 rounded-full animate-pulse" />
                 </div>
               </div>
 
               {/* Options (Size/Flavor) */}
               <div className="grid grid-cols-2 gap-8">
                 <div className="space-y-3">
-                  <div className="h-2 w-10 bg-text/5 rounded-full animate-pulse" />
+                  <div className="h-2 w-10 bg-plum/5 rounded-full animate-pulse" />
                   <div className="flex gap-2">
                     <div className="h-8 w-16 bg-primary/5 rounded-full animate-pulse" />
                     <div className="h-8 w-16 bg-primary/5 rounded-full animate-pulse" />
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <div className="h-2 w-10 bg-text/5 rounded-full animate-pulse" />
+                  <div className="h-2 w-10 bg-plum/5 rounded-full animate-pulse" />
                   <div className="flex gap-2">
                     <div className="h-8 w-16 bg-primary/5 rounded-full animate-pulse" />
                     <div className="h-8 w-16 bg-primary/5 rounded-full animate-pulse" />

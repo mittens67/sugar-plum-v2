@@ -19,7 +19,7 @@ export default function Hero() {
       />
 
       {/* Elegant Plum Overlay (Replaces generic black) */}
-      <div className="absolute inset-0 bg-gradient-to-b from-text/60 via-text/40 to-text/70"></div>
+      <div className="absolute inset-0 bg-linear-to-b from-plum/60 via-plum/40 to-plum/70"></div>
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-5xl flex flex-col items-center">

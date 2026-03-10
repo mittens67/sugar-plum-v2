@@ -19,7 +19,7 @@ export default function Card({
   if (skeleton) {
     return (
       <div 
-        className={`${baseLayout} bg-text/5 animate-pulse border border-transparent ${className}`} 
+        className={`${baseLayout} bg-plum/5 animate-pulse border border-transparent ${className}`} 
         aria-hidden="true"
       />
     );

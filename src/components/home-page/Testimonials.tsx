@@ -33,7 +33,7 @@ export default function Testimonials() {
           priority
         />
         {/* Deep Plum to Vanilla Gradient for a high-end feel */}
-        <div className="absolute inset-0 bg-gradient-to-b from-text/80 via-text/60 to-background"></div>
+        <div className="absolute inset-0 bg-linear-to-b from-plum/80 via-plum/60 to-background"></div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6">
@@ -50,7 +50,7 @@ export default function Testimonials() {
           {testimonials.map((t, i) => (
             <Card 
               key={i} 
-              className="group relative bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-[2rem] shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:bg-white/15"
+              className="group relative bg-white/10 backdrop-blur-xl border border-white/20 p-10 rounded-4xl shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:bg-white/15"
             >
               {/* Whimsical Quote Icon */}
               <Quote className="text-primary/40 w-10 h-10 mb-6 group-hover:text-primary transition-colors duration-500" />
@@ -60,8 +60,8 @@ export default function Testimonials() {
               </p>
               
               <div className="mt-8 flex items-center gap-4">
-                <div className="h-[1px] w-8 bg-primary"></div>
-                <h4 className="font-bold text-primary tracking-widest uppercase text-sm">
+                <div className="h-px w-8 bg-plum"></div>
+                <h4 className="font-bold text-plum tracking-widest uppercase text-sm">
                   {t.name}
                 </h4>
               </div>

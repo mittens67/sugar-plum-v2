@@ -119,7 +119,7 @@ export default function FeaturedItems() {
                     {item.description}
                   </p>
                   
-                  <div className="mt-4 pt-4 border-t border-text/5">
+                  <div className="mt-4 pt-4 border-t border-plum/20">
                     <span className="text-xs uppercase tracking-widest font-bold text-primary">
                       View Details
                     </span>

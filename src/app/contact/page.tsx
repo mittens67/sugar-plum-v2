@@ -20,7 +20,7 @@ export default function Contact() {
           }}
         >
           {/* Using your Deep Plum (#4A1E4D) for the overlay instead of pure black */}
-          <div className="absolute inset-0 bg-text/60 backdrop-blur-[2px] flex flex-col items-center justify-center px-6 text-center">
+          <div className="absolute inset-0 bg-plum/60 backdrop-blur-[2px] flex flex-col items-center justify-center px-6 text-center">
             <span className="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-4 animate-fade-in">
               Get in Touch
             </span>

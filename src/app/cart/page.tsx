@@ -67,7 +67,7 @@ export default function CartPage() {
                 key={`${item.id}-${item.flavor_id ?? "x"}-${item.package_size_id ?? "x"}`}
                 className="group relative flex flex-col md:flex-row items-center gap-6 bg-white/40 backdrop-blur-md rounded-[2rem] p-6 border border-white/60 shadow-md transition-all hover:shadow-xl hover:bg-white/50"
               >
-                <div className="relative w-24 h-24 flex-shrink-0 bg-background rounded-2xl overflow-hidden border border-primary/10">
+                <div className="relative w-24 h-24 shrink-0 bg-background rounded-2xl overflow-hidden border border-primary/10">
                   <Image
                     src={item.image_small}
                     alt={item.item_name}
@@ -114,7 +114,7 @@ export default function CartPage() {
                       <Plus className="w-4 h-4" />
                     </button>
                   </div>
-                  <div className="w-[1px] h-4 bg-text/10" />
+                  <div className="w-px h-4 bg-plum/10" />
                   <button
                     onClick={() => dispatch(removeFromCart({ id: item.id, flavor_id: item.flavor_id, package_size_id: item.package_size_id }))}
                     className="text-plum/30 hover:text-red-400 transition-colors"
@@ -127,7 +127,7 @@ export default function CartPage() {
           </div>
 
           {/* Sticky Order Summary */}
-          <div className="lg:sticky lg:top-32 bg-text text-background rounded-[2.5rem] p-8 shadow-2xl">
+          <div className="lg:sticky lg:top-32 bg-plum text-background rounded-[2.5rem] p-8 shadow-2xl">
             <h3 className="text-2xl font-serif italic mb-8 border-b border-background/10 pb-4">
               Order Summary
             </h3>

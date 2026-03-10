@@ -161,12 +161,12 @@ export default function Product() {
                 ${product.base_price.toFixed(2)}
             </div>
 
-            <div className="space-y-8 bg-white/30 backdrop-blur-md p-8 rounded-[2rem] border border-white/60 shadow-xl">
+            <div className="space-y-8 bg-white/30 backdrop-blur-md p-8 rounded-4xl border border-white/60 shadow-xl">
               {/* Description & Info Tabs/Layout */}
               <div className="space-y-4">
                 <h3 className="font-bold uppercase tracking-tighter text-plum">The Story</h3>
                 <p className="text-plum/70 leading-relaxed italic">{product.description}</p>
-                <div className="pt-4 border-t border-text/5">
+                <div className="pt-4 border-t border-plum/20">
                     <p className="text-sm text-plum/60 leading-relaxed font-medium">{product.info}</p>
                 </div>
               </div>

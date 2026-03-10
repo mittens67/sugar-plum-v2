@@ -9,7 +9,7 @@ export default function StoryContact() {
     // Replaced bg-black with a soft Plum/Vanilla transition
     <Section className="bg-background relative overflow-hidden py-24">
       {/* Subtle decorative background element */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-text/[0.03] -skew-x-12 transform origin-top" />
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-plum/[0.03] -skew-x-12 transform origin-top" />
 
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 px-6 max-w-6xl mx-auto">
         

@@ -28,7 +28,7 @@ export default function Newsletter() {
             <input
               type="email"
               placeholder="Your magical email address..."
-              className="flex-1 w-full px-6 py-4 rounded-full border border-primary/20 bg-background/60 placeholder-text/40 text-plum focus:ring-2 focus:ring-primary/40 outline-none backdrop-blur-md transition-all font-medium"
+              className="flex-1 w-full px-6 py-4 rounded-full border border-primary/20 bg-background/60 placeholder-plum/40 text-plum focus:ring-2 focus:ring-primary/40 outline-none backdrop-blur-md transition-all font-medium"
             />
             <Button 
               size="lg" 

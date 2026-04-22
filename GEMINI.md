@@ -60,6 +60,7 @@ npm run lint
 ### API & Data Fetching
 - Use the Supabase server client (`src/utils/supabase/server.ts`) for server-side data fetching in pages and API routes.
 - Centralize complex data fetching logic in `src/app/api` to keep components clean.
+- **BigInt Safety:** API routes (like `src/app/api/products/route.ts`) automatically convert `BigInt` fields (price, ratings) to `Number` for safe JSON transmission and frontend compatibility.
 
 ### State Management
 - Use Redux for global UI state like the shopping cart.
@@ -72,6 +73,7 @@ npm run lint
 - **Marketing:** Manage active promotions and marketing banners.
 - **Database:** Type-safe database access using Prisma.
 - **Authentication:** Protected `/admin` routes via Supabase Auth and a custom `profiles` table.
+- **Storage:** Integrated Supabase Storage for product images. Uploads are handled in `src/app/admin/actions.ts` and stored in the `products` bucket.
 
 ### Setup Admin Role
 To access the dashboard, a user must have `is_admin: true` in the `profiles` table.
@@ -90,5 +92,7 @@ To access the dashboard, a user must have `is_admin: true` in the `profiles` tab
 
 ## Architecture Updates
 - **Prisma Singleton:** `src/lib/prisma.ts` for database access.
-- **Middleware:** `src/middleware.ts` handles session refresh and admin authorization.
-- **Server Actions:** `src/app/admin/actions.ts` for secure mutations.
+- **Middleware:** `src/middleware.ts` handles session refresh and admin authorization via Supabase.
+- **Server Actions:** `src/app/admin/actions.ts` (marked with `"use server"`) handles secure mutations like adding/editing products and `signOut`.
+- **Admin Layout:** `src/app/admin/layout.tsx` is a Client Component that utilizes `usePathname` to conditionally render the management sidebar/header based on the route (e.g., hiding them on the login page).
+- **Navigation:** The public `Navbar` and `Footer` are conditionally hidden on `/admin` routes to ensure a dedicated management workspace.

@@ -17,36 +17,27 @@ import {
   CartProduct,
 } from "@/lib/slices/cartSlice";
 import type { RootState } from "@/lib/store";
+import { Database } from "@/types/supabase";
 
-interface FlavorOption {
-  flavor_options: {
-    id: number;
-    label: string;
-  };
+type DbProduct = Database["public"]["Tables"]["products"]["Row"];
+type DbFlavor = Database["public"]["Tables"]["flavor_options"]["Row"];
+type DbPackage = Database["public"]["Tables"]["package_sizes"]["Row"];
+
+interface FlavorOptionJoin {
+  flavor_options: Pick<DbFlavor, "id" | "label">;
 }
 
-interface PackageSize {
-  package_sizes: {
-    id: number;
-    label: string;
-    value: number;
-    unit: string;
-  };
+interface PackageSizeJoin {
+  package_sizes: Pick<DbPackage, "id" | "label" | "value" | "unit">;
 }
 
-interface Product {
+// Full product type matching the API response structure
+interface Product extends Omit<DbProduct, "id" | "base_price" | "ratings" | "created_at" | "deleted_at"> {
   id: number;
-  item_name: string;
-  description: string;
-  info: string;
-  image_small: string;
-  image_medium: string;
-  image_large: string;
   base_price: number;
-  avg_rating: number | null;
   ratings: number | null;
-  product_flavour_options: FlavorOption[];
-  product_package_sizes: PackageSize[];
+  product_flavour_options: FlavorOptionJoin[];
+  product_package_sizes: PackageSizeJoin[];
 }
 
 export default function Product() {
@@ -80,9 +71,9 @@ export default function Product() {
     dispatch(
       addToCart({
         id: product.id,
-        item_name: product.item_name,
+        item_name: product.item_name || "Unknown Product",
         base_price: product.base_price,
-        image_small: product.image_small,
+        image_small: product.image_small || "/placeholder.png",
         flavor_id: selectedFlavor,
         package_size_id: selectedSize,
         flavor_name: selectedFlavorLabel ?? null,
@@ -128,8 +119,8 @@ export default function Product() {
           <div className="relative group">
             <div className="absolute -inset-4 bg-primary/10 rounded-[2.5rem] blur-2xl group-hover:bg-primary/20 transition-all" />
             <Image
-              src={product.image_large}
-              alt={product.item_name}
+              src={product.image_large || "/placeholder.png"}
+              alt={product.item_name || "Product Image"}
               width={800}
               height={500}
               className="relative rounded-[2rem] object-cover w-full h-auto border border-white/40 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"

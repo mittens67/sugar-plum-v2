@@ -7,19 +7,21 @@ interface CardProps {
   skeleton?: boolean;
 }
 
-export default function Card({
+export function Card({
   children,
   className = "",
   glass = false,
   skeleton = false,
 }: CardProps) {
   // Base classes that apply to both states for layout consistency
-  const baseLayout = "rounded-[2.5rem] p-6 transition-all duration-500";
+  // Note: We removed default padding (p-6) to support sub-components like CardHeader/CardContent.
+  // Feature cards in this project (Testimonials, FeaturedItems) provide padding in className.
+  const baseLayout = "rounded-[2.5rem] transition-all duration-500 overflow-hidden";
 
   if (skeleton) {
     return (
       <div 
-        className={`${baseLayout} bg-plum/5 animate-pulse border border-transparent ${className}`} 
+        className={`${baseLayout} p-6 bg-plum/5 animate-pulse border border-transparent ${className}`} 
         aria-hidden="true"
       />
     );
@@ -37,3 +39,17 @@ export default function Card({
     </div>
   );
 }
+
+export function CardHeader({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <div className={`p-6 pb-3 ${className}`}>{children}</div>;
+}
+
+export function CardTitle({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <h3 className={`text-xl font-semibold leading-none tracking-tight text-plum ${className}`}>{children}</h3>;
+}
+
+export function CardContent({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return <div className={`p-6 pt-0 ${className}`}>{children}</div>;
+}
+
+export default Card;

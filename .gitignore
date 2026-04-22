@@ -43,3 +43,5 @@ next-env.d.ts
 
 #custom
 note.txt
+
+/src/generated/prisma

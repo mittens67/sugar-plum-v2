@@ -2,9 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Instagram, Facebook, Twitter } from "lucide-react";
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  // Hide Footer on admin pages
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
     // Glassmorphism: Using a transparent Deep Plum (#4A1E4D) background
     <footer className="w-full bg-plum/10 backdrop-blur-lg border-t border-white/20 py-12">

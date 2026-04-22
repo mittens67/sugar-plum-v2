@@ -1,38 +1,72 @@
-
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-export const createClient = (request: NextRequest) => {
+export const updateSession = async (request: NextRequest) => {
   // Create an unmodified response
-  let supabaseResponse = NextResponse.next({
+  let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
 
   const supabase = createServerClient(
-    supabaseUrl!,
-    supabaseKey!,
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
-          return request.cookies.getAll()
+          return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
+            request.cookies.set(name, value)
+          );
+          response = NextResponse.next({
+            request,
+          });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options)
+          );
         },
       },
-    },
+    }
   );
 
-  return supabaseResponse
+  // This will refresh session if expired - required for Server Components
+  // https://supabase.com/docs/guides/auth/server-side/nextjs
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Admin route protection
+  if (request.nextUrl.pathname.startsWith("/admin")) {
+    // Allow access to login page
+    if (request.nextUrl.pathname === "/admin/login") {
+      if (user) {
+        // If already logged in, we'll check if admin in the layout/page
+        // or just let them go to /admin if they are logged in
+        // For now, redirect to /admin if user exists
+        return NextResponse.redirect(new URL("/admin", request.url));
+      }
+      return response;
+    }
+
+    // Protect all other /admin routes
+    if (!user) {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+
+    // Deep check for is_admin flag in profiles table
+    // We use the supabase client here to avoid Prisma Edge issues in middleware
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("user_id", user.id)
+      .single();
+
+    if (!profile || !profile.is_admin) {
+      // Not an admin, redirect to home
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  return response;
 };

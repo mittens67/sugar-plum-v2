@@ -43,7 +43,8 @@ export async function GET(req: Request) {
       )
     )
     `
-  );
+  )
+  .is("deleted_at", null);
 
 
   // 🎯 If querying a single product by id

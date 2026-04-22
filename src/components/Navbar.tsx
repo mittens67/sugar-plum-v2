@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, ShoppingCart } from "lucide-react"; 
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store"; 
@@ -11,10 +11,16 @@ import { useState } from "react";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const cartCount = useSelector(
     (state: RootState) => state.cart.productsNumber
   );
+
+  // Hide Navbar on admin pages
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const handleCartClick = () => {
     setIsOpen(false);

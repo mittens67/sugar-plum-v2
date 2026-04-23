@@ -9,9 +9,18 @@ export default async function EditProductPage({
   params: Promise<{ id: string }> 
 }) {
   const { id } = await params;
-  const product = await prisma.products.findUnique({
-    where: { id: BigInt(id) },
-  });
+  
+  const [product, allPackageSizes, allFlavorOptions] = await Promise.all([
+    prisma.products.findUnique({
+      where: { id: BigInt(id) },
+      include: {
+        product_package_sizes: true,
+        product_flavour_options: true,
+      }
+    }),
+    prisma.package_sizes.findMany(),
+    prisma.flavor_options.findMany(),
+  ]);
 
   if (!product) {
     notFound();
@@ -23,6 +32,8 @@ export default async function EditProductPage({
       <ProductForm 
         initialData={product} 
         action={updateProduct.bind(null, product.id)} 
+        allPackageSizes={allPackageSizes}
+        allFlavorOptions={allFlavorOptions}
       />
     </div>
   );

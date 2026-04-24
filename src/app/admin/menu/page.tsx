@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Plus, Edit2, Trash2, RefreshCw, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
+import HardDeleteButton from "./HardDeleteButton";
 
 export default async function AdminMenu() {
   const products = await prisma.products.findMany({
@@ -127,11 +128,14 @@ export default async function AdminMenu() {
                                 <Edit2 className="w-4 h-4" />
                             </Link>
                             {product.deleted_at ? (
-                                <form action={restoreProduct.bind(null, product.id)} className="inline">
-                                    <button type="submit" className="p-2 text-plum/40 hover:text-blue-500 transition-colors bg-white/50 rounded-xl border border-plum/5 shadow-sm hover:shadow-md">
-                                        <RefreshCw className="w-4 h-4" />
-                                    </button>
-                                </form>
+                                <div className="flex gap-2">
+                                    <form action={restoreProduct.bind(null, product.id)} className="inline">
+                                        <button type="submit" className="p-2 text-plum/40 hover:text-blue-500 transition-colors bg-white/50 rounded-xl border border-plum/5 shadow-sm hover:shadow-md" title="Restore Product">
+                                            <RefreshCw className="w-4 h-4" />
+                                        </button>
+                                    </form>
+                                    <HardDeleteButton productId={product.id.toString()} itemName={product.item_name || "this item"} />
+                                </div>
                             ) : (
                                 <form action={deleteProduct.bind(null, product.id)} className="inline">
                                     <button type="submit" className="p-2 text-plum/40 hover:text-red-500 transition-colors bg-white/50 rounded-xl border border-plum/5 shadow-sm hover:shadow-md">

@@ -1,33 +1,43 @@
 import prisma from "@/lib/prisma";
+import { softDeletePromotion, restorePromotion, togglePromotionStatus } from "../actions";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { revalidatePath } from "next/cache";
-import { Plus, Edit2, Trash2, Power, PowerOff } from "lucide-react";
+import { Plus, Edit2, Trash2, RefreshCw, Power, PowerOff, ChevronLeft, ChevronRight, Calendar, ExternalLink } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
+import PromotionSearchBar from "./PromotionSearchBar";
+import PromotionHardDeleteButton from "./PromotionHardDeleteButton";
+import { Prisma } from "@prisma/client";
 
-async function togglePromotion(id: bigint, currentStatus: boolean) {
-  "use server";
-  await prisma.promotions.update({
-    where: { id },
-    data: { is_active: !currentStatus },
-  });
-  revalidatePath("/admin/promotions");
-  revalidatePath("/");
-}
+export default async function AdminPromotions({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; q?: string }>;
+}) {
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
+  const searchQuery = params.q || "";
+  
+  const pageSize = 6; // Grids look better with 6
+  const skip = (page - 1) * pageSize;
 
-async function deletePromotion(id: bigint) {
-  "use server";
-  await prisma.promotions.delete({
-    where: { id },
-  });
-  revalidatePath("/admin/promotions");
-  revalidatePath("/");
-}
+  const where: Prisma.promotionsWhereInput = searchQuery ? {
+    title: {
+        contains: searchQuery,
+        mode: 'insensitive'
+    }
+  } : {};
 
-export default async function AdminPromotions() {
-  const promotions = await prisma.promotions.findMany({
-    orderBy: { created_at: "desc" },
-  });
+  const [promotions, totalCount] = await Promise.all([
+    prisma.promotions.findMany({
+        where,
+        skip,
+        take: pageSize,
+        orderBy: [{ priority: "desc" }, { created_at: "desc" }],
+    }),
+    prisma.promotions.count({ where }),
+  ]);
+
+  const totalPages = Math.ceil(totalCount / pageSize);
 
   return (
     <div className="space-y-12">
@@ -37,57 +47,157 @@ export default async function AdminPromotions() {
                 Marketing
             </span>
             <h1 className="text-4xl font-serif italic text-plum">Promotions</h1>
+            <p className="text-xs text-plum/40 mt-1 uppercase tracking-widest font-bold">
+                {searchQuery ? `Searching "${searchQuery}": ` : "Active Campaigns: "} {totalCount} found
+            </p>
         </div>
         <Link href="/admin/promotions/new">
-          <Button className="flex items-center gap-2 bg-secondary hover:bg-secondary/90">
+          <Button className="flex items-center gap-2 bg-secondary hover:bg-secondary/90 shadow-lg shadow-secondary/20">
             <Plus className="w-4 h-4" />
             Create New Promotion
           </Button>
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {promotions.map((promo) => (
-          <Card key={promo.id.toString()} glass className={`overflow-hidden transition-all ${!promo.is_active ? "opacity-60 grayscale" : ""}`}>
+      {/* Filter & Search Bar */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <PromotionSearchBar initialValue={searchQuery} />
+        
+        <div className="flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm self-start md:self-auto">
+            <span className="w-2 h-2 rounded-full bg-secondary"></span>
+            <span className="text-[10px] font-black uppercase tracking-widest text-plum/60">{totalCount} Campaigns</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {promotions.map((promo, index) => (
+          <Card key={promo.id.toString()} glass className={`overflow-hidden flex flex-col transition-all relative group ${!promo.is_active || promo.deleted_at ? "opacity-60 grayscale" : ""}`}>
+            
+            {/* Serial Number Badge */}
+            <div className="absolute top-4 left-4 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center border border-plum/10 shadow-sm">
+                <span className="text-[10px] font-black text-plum/40">{skip + index + 1}</span>
+            </div>
+
             {promo.image_url && (
-              <div className="relative h-48 w-full overflow-hidden">
-                <img src={promo.image_url} alt={promo.title} className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" />
-                <div className="absolute top-4 right-4">
-                     <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg ${promo.is_active ? "bg-green-500 text-white" : "bg-gray-500 text-white"}`}>
-                        {promo.is_active ? "Active" : "Inactive"}
+              <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+                <img src={promo.image_url} alt={promo.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 items-end">
+                     <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-xl backdrop-blur-md border ${promo.deleted_at ? "bg-red-500 text-white border-red-400" : promo.is_active ? "bg-green-500 text-white border-green-400" : "bg-gray-500 text-white border-gray-400"}`}>
+                        {promo.deleted_at ? "Deleted" : promo.is_active ? "Active" : "Inactive"}
                     </span>
+                    {promo.priority > 0 && (
+                        <span className="px-2 py-0.5 rounded-md bg-primary text-plum text-[8px] font-black uppercase tracking-tighter shadow-lg border border-primary-light/50">
+                            Priority: {promo.priority}
+                        </span>
+                    )}
                 </div>
+                {promo.display_type === 'IMAGE_ONLY' && (
+                    <div className="absolute inset-0 bg-secondary/10 pointer-events-none ring-4 ring-secondary/20 ring-inset" />
+                )}
               </div>
             )}
-            <CardHeader className="p-8 pb-4">
-              <CardTitle className="text-2xl font-serif italic text-plum">{promo.title}</CardTitle>
-              <p className="text-sm text-plum/60 mt-2 line-clamp-2">{promo.description}</p>
+            
+            <CardHeader className="p-6 pb-2">
+              <div className="flex justify-between items-start gap-2">
+                <CardTitle className="text-xl font-serif italic text-plum line-clamp-1">{promo.title}</CardTitle>
+                {promo.link && (
+                    <a href={promo.link} target="_blank" rel="noopener noreferrer" className="text-plum/20 hover:text-secondary transition-colors">
+                        <ExternalLink className="w-4 h-4" />
+                    </a>
+                )}
+              </div>
+              <p className="text-xs text-plum/60 mt-2 line-clamp-2 min-h-[2rem]">{promo.description || "No description provided."}</p>
             </CardHeader>
             
-            <CardContent className="p-8 pt-0 flex justify-end gap-3">
-              <form action={togglePromotion.bind(null, promo.id, promo.is_active)}>
-                <button type="submit" className={`p-3 rounded-2xl border transition-all shadow-sm hover:shadow-md ${promo.is_active ? "text-amber-500 border-amber-100 bg-amber-50 hover:bg-amber-100" : "text-green-500 border-green-100 bg-green-50 hover:bg-green-100"}`} title={promo.is_active ? "Deactivate" : "Activate"}>
-                  {promo.is_active ? <PowerOff className="w-5 h-5" /> : <Power className="w-5 h-5" />}
-                </button>
-              </form>
-              <Link href={`/admin/promotions/edit/${promo.id}`} className="p-3 text-plum/40 hover:text-primary transition-all bg-white/50 rounded-2xl border border-plum/5 shadow-sm hover:shadow-md" title="Edit">
-                <Edit2 className="w-5 h-5" />
-              </Link>
-              <form action={deletePromotion.bind(null, promo.id)}>
-                <button type="submit" className="p-3 text-plum/40 hover:text-red-500 transition-all bg-white/50 rounded-2xl border border-plum/5 shadow-sm hover:shadow-md" title="Delete">
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </form>
+            <CardContent className="p-6 pt-4 mt-auto space-y-4">
+              {/* Scheduling info */}
+              {(promo.start_date || promo.end_date) && (
+                <div className="flex items-center gap-2 text-[9px] font-bold text-plum/40 uppercase tracking-tighter bg-plum/5 p-2 rounded-lg border border-plum/10">
+                    <Calendar className="w-3 h-3" />
+                    <span>
+                        {promo.start_date ? new Date(promo.start_date).toLocaleDateString() : "Now"} 
+                        {" → "} 
+                        {promo.end_date ? new Date(promo.end_date).toLocaleDateString() : "Always"}
+                    </span>
+                </div>
+              )}
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-plum/5">
+                <form action={togglePromotionStatus.bind(null, promo.id, promo.is_active)}>
+                    <button type="submit" className={`p-2 rounded-xl border transition-all shadow-sm hover:shadow-md ${promo.is_active ? "text-amber-500 border-amber-100 bg-amber-50 hover:bg-amber-100" : "text-green-500 border-green-100 bg-green-50 hover:bg-green-100"}`} title={promo.is_active ? "Deactivate" : "Activate"}>
+                    {promo.is_active ? <PowerOff className="w-4 h-4" /> : <Power className="w-4 h-4" />}
+                    </button>
+                </form>
+                
+                <Link href={`/admin/promotions/edit/${promo.id}`} className="p-2 text-plum/40 hover:text-primary transition-all bg-white/50 rounded-xl border border-plum/5 shadow-sm hover:shadow-md" title="Edit">
+                    <Edit2 className="w-4 h-4" />
+                </Link>
+
+                {promo.deleted_at ? (
+                    <div className="flex gap-2">
+                        <form action={restorePromotion.bind(null, promo.id)}>
+                            <button type="submit" className="p-2 text-blue-500 hover:text-blue-600 transition-all bg-white/50 rounded-xl border border-plum/5 shadow-sm hover:shadow-md" title="Restore">
+                                <RefreshCw className="w-4 h-4" />
+                            </button>
+                        </form>
+                        <PromotionHardDeleteButton promoId={promo.id.toString()} title={promo.title} />
+                    </div>
+                ) : (
+                    <form action={softDeletePromotion.bind(null, promo.id)}>
+                        <button type="submit" className="p-2 text-plum/40 hover:text-red-500 transition-all bg-white/50 rounded-xl border border-plum/5 shadow-sm hover:shadow-md" title="Delete">
+                            <Trash2 className="w-4 h-4" />
+                        </button>
+                    </form>
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
 
         {promotions.length === 0 && (
-          <div className="col-span-full py-20 text-center bg-white/30 backdrop-blur-md rounded-[2.5rem] border border-dashed border-plum/20">
-            <p className="text-plum/40 italic font-medium">No marketing magic has been created yet.</p>
+          <div className="col-span-full py-24 text-center bg-white/30 backdrop-blur-md rounded-[2.5rem] border border-dashed border-plum/20">
+            <p className="text-plum/40 italic font-medium">
+                {searchQuery ? "No matching magic found." : "No marketing magic has been created yet."}
+            </p>
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between px-8 py-6 bg-white/30 backdrop-blur-md rounded-[2rem] border border-white/60 shadow-xl">
+            <div className="flex items-center gap-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-plum/40">
+                    Page {page} of {totalPages}
+                </span>
+            </div>
+            <div className="flex gap-2">
+                <Link 
+                    href={`/admin/promotions?page=${page - 1}${searchQuery ? `&q=${searchQuery}` : ""}`}
+                    className={`p-2 rounded-xl border transition-all ${page <= 1 ? "pointer-events-none opacity-20 bg-transparent border-plum/10 text-plum/40" : "bg-white hover:bg-secondary/10 border-plum/10 text-plum shadow-sm hover:shadow-md"}`}
+                >
+                    <ChevronLeft className="w-4 h-4" />
+                </Link>
+                <div className="flex items-center gap-1 mx-2">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+                        <Link
+                            key={p}
+                            href={`/admin/promotions?page=${p}${searchQuery ? `&q=${searchQuery}` : ""}`}
+                            className={`w-8 h-8 flex items-center justify-center rounded-lg text-[10px] font-black transition-all ${p === page ? "bg-secondary text-white shadow-lg scale-110" : "bg-white/50 text-plum/40 hover:bg-white hover:text-plum border border-plum/5"}`}
+                        >
+                            {p}
+                        </Link>
+                    ))}
+                </div>
+                <Link 
+                    href={`/admin/promotions?page=${page + 1}${searchQuery ? `&q=${searchQuery}` : ""}`}
+                    className={`p-2 rounded-xl border transition-all ${page >= totalPages ? "pointer-events-none opacity-20 bg-transparent border-plum/10 text-plum/40" : "bg-white hover:bg-secondary/10 border-plum/10 text-plum shadow-sm hover:shadow-md"}`}
+                >
+                    <ChevronRight className="w-4 h-4" />
+                </Link>
+            </div>
+        </div>
+      )}
     </div>
   );
 }

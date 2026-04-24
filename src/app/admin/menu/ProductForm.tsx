@@ -2,9 +2,10 @@
 
 import { Button } from "@/components/ui/Button";
 import { useState, useRef, useEffect } from "react";
-import { ImagePlus, X, UploadCloud, Info, Check } from "lucide-react";
+import { ImagePlus, X, UploadCloud, Info, Check, AlertCircle } from "lucide-react";
 import Image from "next/image";
 import { package_sizes, flavor_options, category } from "@prisma/client";
+import { optimizeImage, isFileSizeValid } from "@/utils/image-optimization";
 
 export default function ProductForm({ 
   initialData, 
@@ -18,6 +19,7 @@ export default function ProductForm({
   allFlavorOptions?: flavor_options[]
 }) {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image_large || null);
   const [productType, setProductType] = useState<category>(initialData?.product_type || "cake");
   const [selectedSizes, setSelectedSizes] = useState<string[]>(
@@ -49,6 +51,7 @@ export default function ProductForm({
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
+      setError(null);
     }
   };
 
@@ -72,22 +75,61 @@ export default function ProductForm({
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
     if (selectedSizes.length === 0) {
-        e.preventDefault();
         alert("Please select at least one package size.");
         return;
     }
+
     setLoading(true);
+
+    try {
+        const formData = new FormData(e.currentTarget);
+        const imageFile = formData.get("image") as File;
+
+        if (imageFile && imageFile.size > 0) {
+            // 1. Optimize image (convert to webp and resize)
+            const optimizedFile = await optimizeImage(imageFile, {
+                maxWidth: 1200,
+                quality: 0.8
+            });
+
+            // 2. Check if it's still too large (Next.js body limit is 1MB by default)
+            if (!isFileSizeValid(optimizedFile, 0.9)) { // Use 0.9 to be safe
+                setError("Even after optimization, the image is too large. Please use a smaller image.");
+                setLoading(false);
+                return;
+            }
+
+            // 3. Replace the original file in FormData
+            formData.set("image", optimizedFile);
+        }
+
+        // Call the server action
+        await action(formData);
+    } catch (err: any) {
+        console.error("Form submission error:", err);
+        setError(err.message || "An unexpected error occurred. Please try again.");
+        setLoading(false);
+    }
   };
 
   return (
     <form 
-        action={action} 
         onSubmit={handleSubmit}
         className="space-y-10 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20"
     >
       <div className="bg-white/40 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/60 shadow-2xl space-y-8">
         
+        {error && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                <p className="font-medium text-sm">{error}</p>
+            </div>
+        )}
+
         {/* Image Upload Section */}
         <div className="space-y-4">
             <label className="text-xs font-bold uppercase tracking-[0.2em] text-plum/50 flex items-center gap-2">

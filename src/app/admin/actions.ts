@@ -5,7 +5,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js"; //
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { category } from "@prisma/client";
+import { category, promo_display_type } from "@prisma/client";
 import sharp from "sharp";
 
 // Admin client that bypasses RLS
@@ -77,6 +77,39 @@ async function uploadAndResizeImage(file: File, itemName: string) {
     image_medium: results.find(r => r.size === "medium")?.url,
     image_large: results.find(r => r.size === "large")?.url,
   };
+}
+
+async function uploadPromotionImage(file: File, title: string) {
+  const supabase = createAdminClient();
+  const buffer = Buffer.from(await file.arrayBuffer());
+  
+  const fileExt = "webp"; 
+  const sanitizedTitle = sanitizeName(title);
+  const fileName = `promo-${sanitizedTitle}-${Math.random().toString(36).substring(2, 7)}-${Date.now()}.${fileExt}`;
+  const filePath = `promotions/${fileName}`;
+
+  // Optimized for 16:9 as discussed (1200x675)
+  const resizedBuffer = await sharp(buffer)
+    .resize(1200, 675, { fit: "cover", withoutEnlargement: true })
+    .webp({ quality: 85 })
+    .toBuffer();
+    
+  const { error } = await supabase.storage
+    .from("sugar_plum_assets")
+    .upload(filePath, resizedBuffer, {
+      contentType: `image/${fileExt}`,
+      upsert: true
+    });
+
+  if (error) {
+    throw new Error(`Failed to upload promotion image: ${error.message}`);
+  }
+
+  const { data: { publicUrl } } = supabase.storage
+    .from("sugar_plum_assets")
+    .getPublicUrl(filePath);
+
+  return publicUrl;
 }
 
 async function deleteOldImages(urls: (string | null)[]) {
@@ -271,4 +304,135 @@ export async function permanentlyDeleteProduct(id: bigint) {
 
     revalidatePath("/admin/menu");
     revalidatePath("/menu");
+}
+
+export async function addPromotion(formData: FormData) {
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const link = formData.get("link") as string;
+  const priority = parseInt(formData.get("priority") as string) || 0;
+  const display_type = formData.get("display_type") as promo_display_type;
+  
+  const startDateStr = formData.get("start_date") as string;
+  const endDateStr = formData.get("end_date") as string;
+  const start_date = startDateStr ? new Date(startDateStr) : null;
+  const end_date = endDateStr ? new Date(endDateStr) : null;
+
+  const imageFile = formData.get("image") as File;
+  let image_url = null;
+
+  if (imageFile && imageFile.size > 0) {
+    image_url = await uploadPromotionImage(imageFile, title);
+  }
+
+  await prisma.promotions.create({
+    data: {
+      title,
+      description,
+      link,
+      priority,
+      display_type,
+      start_date,
+      end_date,
+      image_url,
+      is_active: true,
+    },
+  });
+
+  revalidatePath("/admin/promotions");
+  revalidatePath("/");
+  redirect("/admin/promotions");
+}
+
+export async function updatePromotion(id: bigint, formData: FormData) {
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const link = formData.get("link") as string;
+  const priority = parseInt(formData.get("priority") as string) || 0;
+  const display_type = formData.get("display_type") as promo_display_type;
+  
+  const startDateStr = formData.get("start_date") as string;
+  const endDateStr = formData.get("end_date") as string;
+  const start_date = startDateStr ? new Date(startDateStr) : null;
+  const end_date = endDateStr ? new Date(endDateStr) : null;
+  
+  const imageFile = formData.get("image") as File;
+  const existingImage = formData.get("existing_image") as string | null;
+  let image_url = existingImage;
+
+  if (imageFile && imageFile.size > 0) {
+    image_url = await uploadPromotionImage(imageFile, title);
+    if (existingImage) {
+        await deleteOldImages([existingImage]);
+    }
+  }
+
+  await prisma.promotions.update({
+    where: { id },
+    data: {
+      title,
+      description,
+      link,
+      priority,
+      display_type,
+      start_date,
+      end_date,
+      image_url,
+    },
+  });
+
+  revalidatePath("/admin/promotions");
+  revalidatePath("/");
+  redirect("/admin/promotions");
+}
+
+export async function softDeletePromotion(id: bigint) {
+  await prisma.promotions.update({
+    where: { id },
+    data: {
+      deleted_at: new Date(),
+    },
+  });
+
+  revalidatePath("/admin/promotions");
+  revalidatePath("/");
+}
+
+export async function restorePromotion(id: bigint) {
+  await prisma.promotions.update({
+    where: { id },
+    data: {
+      deleted_at: null,
+    },
+  });
+
+  revalidatePath("/admin/promotions");
+  revalidatePath("/");
+}
+
+export async function permanentlyDeletePromotion(id: bigint) {
+  const promo = await prisma.promotions.findUnique({
+    where: { id },
+    select: { image_url: true }
+  });
+
+  if (promo?.image_url) {
+    await deleteOldImages([promo.image_url]);
+  }
+
+  await prisma.promotions.delete({
+    where: { id },
+  });
+
+  revalidatePath("/admin/promotions");
+  revalidatePath("/");
+}
+
+export async function togglePromotionStatus(id: bigint, currentStatus: boolean) {
+  await prisma.promotions.update({
+    where: { id },
+    data: { is_active: !currentStatus },
+  });
+  revalidatePath("/admin/promotions");
+  revalidatePath("/");
 }

@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { category } from "@prisma/client";
+import { $Enums } from "@prisma/client";
+
+type category = $Enums.category;
 import { Filter, ChevronDown } from "lucide-react";
 
 export default function TypeFilter({ 

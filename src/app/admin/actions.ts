@@ -5,8 +5,11 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js"; //
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { category, promo_display_type } from "@prisma/client";
+import { $Enums } from "@prisma/client";
 import sharp from "sharp";
+
+type category = $Enums.category;
+type promo_display_type = $Enums.promo_display_type;
 
 // Admin client that bypasses RLS
 const createAdminClient = () => {

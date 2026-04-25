@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/Button";
 import { useState, useRef } from "react";
 import { ImagePlus, X, UploadCloud, Info, Calendar, Layout, Link as LinkIcon, Type, AlertCircle } from "lucide-react";
 import Image from "next/image";
-import { promo_display_type } from "@prisma/client";
+import { $Enums } from "@prisma/client";
+
+type promo_display_type = $Enums.promo_display_type;
 import { optimizeImage, isFileSizeValid } from "@/utils/image-optimization";
 
 const formatDateForInput = (dateValue: Date | string | null | undefined) => {

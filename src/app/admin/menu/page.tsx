@@ -7,7 +7,9 @@ import Image from "next/image";
 import HardDeleteButton from "./HardDeleteButton";
 import TypeFilter from "./TypeFilter";
 import SearchBar from "./SearchBar";
-import { category, Prisma } from "@prisma/client";
+import { $Enums, Prisma } from "@prisma/client";
+
+type category = $Enums.category;
 
 export default async function AdminMenu({
   searchParams,
@@ -57,7 +59,7 @@ export default async function AdminMenu({
   ]);
 
   const totalPages = Math.ceil(totalCount / pageSize);
-  const categories = Object.values(category);
+  const categories = Object.values($Enums.category);
 
   return (
     <div className="space-y-12">

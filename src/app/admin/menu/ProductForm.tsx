@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/Button";
 import { useState, useRef, useEffect } from "react";
 import { ImagePlus, X, UploadCloud, Info, Check, AlertCircle } from "lucide-react";
 import Image from "next/image";
-import { package_sizes, flavor_options, category } from "@prisma/client";
+import { $Enums } from "@prisma/client";
+import type { package_sizes, flavor_options } from "@prisma/client";
+
+type category = $Enums.category;
 import { optimizeImage, isFileSizeValid } from "@/utils/image-optimization";
 
 export default function ProductForm({ 

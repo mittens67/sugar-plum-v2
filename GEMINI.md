@@ -55,40 +55,20 @@ npm run lint
   - Standalone: `<Card glass className="p-6">...</Card>`
   - Modular: Uses `<CardHeader>`, `<CardTitle>`, and `<CardContent>`.
   - *Note:* The base `Card` does not include default padding to remain compatible with modular sub-components.
+- **Promotions Carousel:** Uses Swiper for an infinite, auto-playing showcase of active offers.
+  - **Dimensions:** Fixed height of `h-[500px]` (mobile) and `h-[600px]` (desktop) to ensure layout stability.
+  - **Display Types:** 
+    - `SPLIT`: Displays text, a CTA button, and an image side-by-side.
+    - `IMAGE_ONLY`: Displays a clean, full-width banner. In this mode, text overlays are hidden, and the entire banner is clickable.
+  - **Animations:** Uses standard slide transitions to avoid ghosting issues with transparent/glassmorphic elements.
 - **Aesthetics:** Use `rounded-4xl` or `rounded-[2.5rem]` for main containers to maintain the project's whimsical, soft aesthetic. Glassmorphism is preferred for overlay elements using `bg-white/30 backdrop-blur-md border border-white/60`.
 
-### API & Data Fetching
-- Use the Supabase server client (`src/utils/supabase/server.ts`) for server-side data fetching in pages and API routes.
-- Centralize complex data fetching logic in `src/app/api` to keep components clean.
-- **BigInt Safety:** API routes (like `src/app/api/products/route.ts`) automatically convert `BigInt` fields (price, ratings) to `Number` for safe JSON transmission and frontend compatibility.
-
-### State Management
-- Use Redux for global UI state like the shopping cart.
-- Prefer local state (`useState`, `useReducer`) for component-specific logic.
-
-## Admin Dashboard & Management
-
-### Features
-- **Menu Management:** Add, edit, and soft-delete products.
-- **Marketing:** Manage active promotions and marketing banners.
-- **Database:** Type-safe database access using Prisma.
-- **Authentication:** Protected `/admin` routes via Supabase Auth and a custom `profiles` table.
-- **Storage:** Integrated Supabase Storage for product images. Uploads are handled in `src/app/admin/actions.ts` and stored in the `products` bucket.
-
-### Setup Admin Role
-To access the dashboard, a user must have `is_admin: true` in the `profiles` table.
-1. Sign up/Login via the public site or `/admin/login`.
-2. In the Supabase SQL Editor, run:
-   ```sql
-   INSERT INTO profiles (id, user_id, is_admin)
-   VALUES (gen_random_uuid(), 'YOUR_USER_ID', true)
-   ON CONFLICT (user_id) DO UPDATE SET is_admin = true;
-   ```
-
-### Prisma Commands
-- **Sync DB:** `npx prisma db push` (updates DB to match schema).
-- **Introspect:** `npx prisma db pull` (updates schema to match DB).
-- **Client:** `npx prisma generate` (updates TypeScript types).
+### Prisma & Type Safety
+- **Enum Usage:** When using Prisma enums (like `category` or `promo_display_type`) in TypeScript files, **always import them from `$Enums`** (e.g., `import { $Enums } from "@prisma/client"`). Direct imports of enum values can lead to "Module has no exported member" errors during production builds on platforms like Vercel.
+- **Prisma Commands:**
+  - Sync DB: `npx prisma db push`
+  - Introspect: `npx prisma db pull`
+  - Client: `npx prisma generate` (updates TypeScript types).
 
 ## Architecture Updates
 - **Prisma Singleton:** `src/lib/prisma.ts` for database access.

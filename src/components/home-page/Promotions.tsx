@@ -5,14 +5,13 @@ import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import Section from "@/components/ui/Section";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import Link from "next/link";
 
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import "swiper/css/effect-fade";
 
 interface Promotion {
   id: string;
@@ -46,7 +45,9 @@ export default function Promotions() {
 
   if (loading) return (
     <Section className="py-24 bg-background animate-pulse">
-        <div className="max-w-6xl mx-auto h-[500px] bg-plum/5 rounded-[3rem] border border-plum/10" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="h-[500px] md:h-[600px] bg-plum/5 rounded-[3rem] border border-plum/10" />
+        </div>
     </Section>
   );
   
@@ -60,10 +61,11 @@ export default function Promotions() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <Swiper
-          modules={[Autoplay, Pagination, Navigation, EffectFade]}
-          effect="fade"
-          spaceBetween={30}
+          modules={[Autoplay, Pagination, Navigation]}
+          spaceBetween={0}
+          slidesPerView={1}
           centeredSlides={true}
+          loop={promotions.length > 1}
           autoplay={{
             delay: 5000,
             disableOnInteraction: false,
@@ -79,7 +81,7 @@ export default function Promotions() {
             <SwiperSlide key={promo.id}>
               {promo.display_type === "SPLIT" ? (
                 /* Split View Layout */
-                <div className="relative z-10 bg-white/30 backdrop-blur-md border border-white/40 p-8 md:p-16 min-h-[500px] flex items-center">
+                <div className="relative z-10 bg-white/30 backdrop-blur-md border border-white/40 p-8 md:p-16 h-[500px] md:h-[600px] flex items-center overflow-hidden">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center w-full">
                     
                     {/* Image Side */}
@@ -103,12 +105,12 @@ export default function Promotions() {
                         Exclusive Offer
                       </span>
                       
-                      <h2 className="text-4xl md:text-6xl font-serif italic text-plum leading-tight">
+                      <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif italic text-plum leading-tight">
                         {promo.title}
                       </h2>
                       
                       {promo.description && (
-                        <p className="mt-6 text-lg md:text-xl text-plum/80 font-medium leading-relaxed">
+                        <p className="mt-6 text-lg md:text-xl text-plum/80 font-medium leading-relaxed line-clamp-3">
                           {promo.description}
                         </p>
                       )}
@@ -127,39 +129,27 @@ export default function Promotions() {
                 </div>
               ) : (
                 /* Image Only View (Full Banner) */
-                <div className="relative h-[500px] md:h-[600px] group cursor-pointer">
-                    {promo.image_url && (
-                        <>
+                <div className="relative h-[500px] md:h-[600px] group overflow-hidden">
+                    {promo.link ? (
+                        <Link href={promo.link} className="block relative w-full h-full cursor-pointer">
+                            {promo.image_url && (
+                                <Image 
+                                    src={promo.image_url} 
+                                    alt={promo.title} 
+                                    fill 
+                                    className="object-cover transition-transform duration-[10000ms] group-hover:scale-110"
+                                />
+                            )}
+                        </Link>
+                    ) : (
+                        promo.image_url && (
                             <Image 
                                 src={promo.image_url} 
                                 alt={promo.title} 
                                 fill 
                                 className="object-cover transition-transform duration-[10000ms] group-hover:scale-110"
                             />
-                            {/* Gradient Overlay for legibility */}
-                            <div className="absolute inset-0 bg-linear-to-t from-plum/60 via-transparent to-plum/30 opacity-60" />
-                            
-                            {/* Overlay Content */}
-                            <div className="absolute inset-0 flex flex-col items-center justify-end p-12 pb-24 text-center">
-                                <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                                    <h2 className="text-4xl md:text-7xl font-serif italic text-white drop-shadow-2xl mb-4">
-                                        {promo.title}
-                                    </h2>
-                                    {promo.description && (
-                                        <p className="text-white/90 text-lg md:text-2xl font-medium tracking-wide italic mb-8 drop-shadow-md">
-                                            "{promo.description}"
-                                        </p>
-                                    )}
-                                    {promo.link && (
-                                        <Link href={promo.link}>
-                                            <Button className="bg-primary text-plum hover:bg-white hover:text-plum font-black px-12 py-8 rounded-full text-xl shadow-2xl transition-all hover:scale-105 active:scale-95">
-                                                Claim Offer ✨
-                                            </Button>
-                                        </Link>
-                                    )}
-                                </div>
-                            </div>
-                        </>
+                        )
                     )}
                 </div>
               )}

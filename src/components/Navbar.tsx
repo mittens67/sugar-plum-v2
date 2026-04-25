@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, ShoppingCart } from "lucide-react"; 
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store"; 
@@ -11,10 +11,16 @@ import { useState } from "react";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   const cartCount = useSelector(
     (state: RootState) => state.cart.productsNumber
   );
+
+  // Hide Navbar on admin pages
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const handleCartClick = () => {
     setIsOpen(false);
@@ -38,7 +44,7 @@ export default function Navbar() {
             width={160}
             height={60}
             priority
-            className="object-contain"
+            className="w-32 md:w-40 h-auto object-contain"
           />
         </Link>
 
@@ -66,24 +72,29 @@ export default function Navbar() {
         {/* Mobile Hamburger */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-plum focus:outline-none p-2"
+          className="md:hidden text-plum focus:outline-none p-2 z-50"
+          aria-label="Toggle menu"
         >
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* Mobile Menu - Glassmorphism dropdown */}
-      {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-background/95 backdrop-blur-xl border-b border-primary/10 shadow-xl z-50">
-          <div className="flex flex-col items-center gap-6 py-10 text-plum text-lg font-bold uppercase tracking-widest">
-            <Link href="/" onClick={() => setIsOpen(false)} className="hover:text-primary">Home</Link>
-            <Link href="/menu" onClick={() => setIsOpen(false)} className="hover:text-primary">Menu</Link>
-            <Link href="/about" onClick={() => setIsOpen(false)} className="hover:text-primary">About Us</Link>
-            <Link href="/contact" onClick={() => setIsOpen(false)} className="hover:text-primary">Contact</Link>
+      {/* Mobile Menu - Full screen overlay for better UX */}
+      <div 
+        className={`fixed inset-0 bg-plum/20 backdrop-blur-sm transition-opacity duration-300 md:hidden ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        onClick={() => setIsOpen(false)}
+      />
+      
+      <div className={`md:hidden absolute top-0 left-0 w-full bg-background/95 backdrop-blur-2xl border-b border-primary/10 shadow-2xl z-40 transition-transform duration-500 ease-out transform ${isOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+          <div className="flex flex-col items-center gap-6 pt-24 pb-12 text-plum text-lg font-bold uppercase tracking-widest">
+            <Link href="/" onClick={() => setIsOpen(false)} className="hover:text-primary transition-colors">Home</Link>
+            <Link href="/menu" onClick={() => setIsOpen(false)} className="hover:text-primary transition-colors">Menu</Link>
+            <Link href="/about" onClick={() => setIsOpen(false)} className="hover:text-primary transition-colors">About Us</Link>
+            <Link href="/contact" onClick={() => setIsOpen(false)} className="hover:text-primary transition-colors">Contact</Link>
             
             <button
               onClick={handleCartClick}
-              className={`flex items-center gap-2 px-8 py-3 rounded-full font-bold transition-colors w-[80%] justify-center
+              className={`flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all w-[80%] justify-center shadow-lg active:scale-95
                 ${
                   cartCount === 0
                     ? "bg-primary text-background"
@@ -94,8 +105,7 @@ export default function Navbar() {
               {cartCount === 0 ? "Order Now" : `Cart (${cartCount})`}
             </button>
           </div>
-        </div>
-      )}
+      </div>
     </nav>
   );
 }

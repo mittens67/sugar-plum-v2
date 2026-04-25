@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
+import { Database } from "@/types/supabase";
+
+type category = Database["public"]["Enums"]["category"];
 
 export async function GET(req: Request) {
   const supabase = await createClient();
@@ -10,64 +13,67 @@ export async function GET(req: Request) {
   const random = searchParams.get("random");
   const search = searchParams.get("search");
   const productType = searchParams.get("product_type");
-  const sortBy = searchParams.get("sortBy"); // "price" or "rating"
-  const sortOrder = searchParams.get("sortOrder"); // "asc" or "desc"
+  const sortBy = searchParams.get("sortBy"); 
+  const sortOrder = searchParams.get("sortOrder"); 
 
   let query = supabase
-  .from("products")
-  .select(
-    `
-    id,
-    item_name,
-    description,
-    base_price,
-    info,
-    avg_rating,
-    ratings,
-    image_large,
-    image_small,
-    image_medium,
-    product_type,
-    product_flavour_options (
-      flavor_options (
-        id,
-        label
+    .from("products")
+    .select(
+      `
+      id,
+      item_name,
+      description,
+      base_price,
+      info,
+      avg_rating,
+      ratings,
+      image_large,
+      image_small,
+      image_medium,
+      product_type,
+      product_flavour_options (
+        flavor_options (
+          id,
+          label
+        )
+      ),
+      product_package_sizes (
+        package_sizes (
+          id,
+          label,
+          value,
+          unit
+        )
       )
-    ),
-    product_package_sizes (
-      package_sizes (
-        id,
-        label,
-        value,
-        unit
-      )
+      `
     )
-    `
-  );
+    .is("deleted_at", null);
 
-
-  // 🎯 If querying a single product by id
   if (id) {
-    const { data, error } = await query.eq("id", id).single();
+    const { data, error } = await query.eq("id", parseInt(id, 10)).single();
     if (error) {
       return NextResponse.json({ error: error.message, data: null }, { status: 500 });
     }
-    return NextResponse.json({data});
+    if (!data) {
+      return NextResponse.json({ error: "Product not found", data: null }, { status: 404 });
+    }
+    // BigInt handling: Convert BigInt-like values to Numbers for JSON safety
+    const formattedData = {
+        ...data,
+        base_price: Number(data.base_price),
+        ratings: data.ratings ? Number(data.ratings) : 0
+    };
+    return NextResponse.json({ data: formattedData });
   }
 
-  // 🔍 Search in item_name + description
   if (search) {
-    query = query.or(
-      `item_name.ilike.%${search}%,description.ilike.%${search}%`
-    );
+    query = query.or(`item_name.ilike.%${search}%,description.ilike.%${search}%`);
   }
 
-  // 🎯 Filter by product_type
   if (productType) {
-    query = query.eq("product_type", productType);
+    query = query.eq("product_type", productType as category);
   }
 
-  // 📊 Sorting (only if not random)
   if (!random && sortBy) {
     if (sortBy === "price") {
       query = query.order("base_price", { ascending: sortOrder === "asc" });
@@ -76,24 +82,25 @@ export async function GET(req: Request) {
     }
   }
 
-  // ⏳ Fetch data
   const { data, error } = await query;
 
   if (error) {
     return NextResponse.json({ error: error.message, data: [] }, { status: 500 });
   }
 
-  let finalData = data || [];
+  let finalData = (data || []).map((item: any) => ({
+    ...item,
+    base_price: Number(item.base_price),
+    ratings: item.ratings ? Number(item.ratings) : 0
+  }));
 
-  // 🎲 Randomize in JS if requested
   if (random) {
     finalData = finalData.sort(() => Math.random() - 0.5);
   }
 
-  // ⏱ Limit results
   if (limit) {
     finalData = finalData.slice(0, parseInt(limit, 10));
   }
 
-  return NextResponse.json({data: finalData});
+  return NextResponse.json({ data: finalData });
 }

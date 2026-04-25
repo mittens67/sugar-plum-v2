@@ -67,31 +67,33 @@ export default function Menu() {
         </SectionTitle>
       </div>
 
-      {/* Product Type Filter - Glassmorphism style */}
-      <div className="flex flex-wrap justify-center gap-3 mb-16 max-w-4xl mx-auto">
-        <Button
-            variant={activeType === null ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveType(null)}
-            className={`rounded-full px-6 py-5 font-bold uppercase tracking-tighter transition-all shadow-sm
-              ${activeType === null ? 'bg-primary text-plum' : 'border-primary/30 text-plum/60 hover:border-primary'}`}
-          >
-            All
-        </Button>
-        {productTypes.map((type) => (
-          <Button
-            key={type}
-            variant={activeType === type ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveType(type === activeType ? null : type)}
-            className={`rounded-full px-6 py-5 font-bold uppercase tracking-tighter transition-all shadow-sm
-              ${activeType === type 
-                ? 'bg-primary text-plum' 
-                : 'border-primary/30 text-plum/60 hover:border-primary hover:bg-white/40'}`}
-          >
-            {type}
-          </Button>
-        ))}
+      {/* Product Type Filter - Glassmorphism style with horizontal scroll on mobile */}
+      <div className="mb-16 -mx-6 px-6 overflow-x-auto no-scrollbar scroll-smooth">
+        <div className="flex justify-start md:justify-center gap-3 w-max md:w-full mx-auto pb-4">
+            <Button
+                variant={activeType === null ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveType(null)}
+                className={`rounded-full px-6 py-5 font-bold uppercase tracking-tighter transition-all shadow-sm whitespace-nowrap
+                ${activeType === null ? 'bg-primary text-plum' : 'border-primary/30 text-plum/60 hover:border-primary'}`}
+            >
+                All
+            </Button>
+            {productTypes.map((type) => (
+            <Button
+                key={type}
+                variant={activeType === type ? "default" : "outline"}
+                size="sm"
+                onClick={() => setActiveType(type === activeType ? null : type)}
+                className={`rounded-full px-6 py-5 font-bold uppercase tracking-tighter transition-all shadow-sm whitespace-nowrap
+                ${activeType === type 
+                    ? 'bg-primary text-plum' 
+                    : 'border-primary/30 text-plum/60 hover:border-primary hover:bg-white/40'}`}
+            >
+                {type}
+            </Button>
+            ))}
+        </div>
       </div>
 
       {/* Product Grid */}

@@ -50,24 +50,24 @@ export default function CartPage() {
   return (
     <Section className="bg-background min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-12">
+        <div className="mb-8 md:mb-12 text-center md:text-left">
           <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] block mb-2">
             Checkout
           </span>
-          <SectionTitle className="text-left text-plum font-serif italic text-4xl md:text-5xl">
+          <SectionTitle className="text-plum font-serif italic text-4xl md:text-5xl">
             Your Selection
           </SectionTitle>
         </div>
 
-        <div className="grid gap-12 lg:grid-cols-[1.8fr_1fr] items-start">
+        <div className="grid gap-10 lg:grid-cols-[1.8fr_1fr] items-start">
           {/* Cart Items List */}
-          <div className="space-y-6">
+          <div className="space-y-6 order-2 lg:order-1">
             {cart.map((item) => (
               <div
                 key={`${item.id}-${item.flavor_id ?? "x"}-${item.package_size_id ?? "x"}`}
-                className="group relative flex flex-col md:flex-row items-center gap-6 bg-white/40 backdrop-blur-md rounded-[2rem] p-6 border border-white/60 shadow-md transition-all hover:shadow-xl hover:bg-white/50"
+                className="group relative flex flex-col md:flex-row items-center gap-6 bg-white/40 backdrop-blur-md rounded-[2rem] p-6 md:p-8 border border-white/60 shadow-md transition-all hover:shadow-xl hover:bg-white/50"
               >
-                <div className="relative w-24 h-24 shrink-0 bg-background rounded-2xl overflow-hidden border border-primary/10">
+                <div className="relative w-32 h-32 md:w-24 md:h-24 shrink-0 bg-background rounded-2xl overflow-hidden border border-primary/10">
                   <Image
                     src={item.image_small}
                     alt={item.item_name}
@@ -77,10 +77,10 @@ export default function CartPage() {
                 </div>
 
                 <div className="flex-1 text-center md:text-left">
-                  <h3 className="font-bold text-plum text-xl">
+                  <h3 className="font-bold text-plum text-xl md:text-2xl">
                     {item.item_name}
                   </h3>
-                  <div className="mt-1 flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1">
+                  <div className="mt-2 flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1">
                     {item.flavor_name && (
                       <p className="text-xs font-bold text-plum/40 uppercase tracking-tighter">
                         Flavor: <span className="text-primary">{item.flavor_name}</span>
@@ -92,34 +92,34 @@ export default function CartPage() {
                       </p>
                     )}
                   </div>
-                  <p className="mt-3 text-lg font-black text-plum/80">
+                  <p className="mt-4 text-xl font-black text-plum/80">
                     ${item.base_price.toFixed(2)}
                   </p>
                 </div>
 
                 {/* Counter & Delete */}
-                <div className="flex items-center gap-6 bg-background/50 rounded-full px-4 py-2 border border-primary/10">
-                  <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6 bg-background/50 rounded-full px-5 py-3 border border-primary/10 w-full md:w-auto justify-center md:justify-start">
+                  <div className="flex items-center gap-6 md:gap-4">
                     <button
                       onClick={() => dispatch(decrementInCart({ id: item.id, flavor_id: item.flavor_id, package_size_id: item.package_size_id }))}
-                      className="text-plum/60 hover:text-primary transition-colors"
+                      className="p-1 text-plum/60 hover:text-primary transition-colors"
                     >
-                      <Minus className="w-4 h-4" />
+                      <Minus className="w-5 h-5 md:w-4 md:h-4" />
                     </button>
-                    <span className="font-bold text-plum w-4 text-center">{item.quantity}</span>
+                    <span className="font-black text-plum w-6 text-center text-lg md:text-base">{item.quantity}</span>
                     <button
                       onClick={() => dispatch(incrementInCart({ id: item.id, flavor_id: item.flavor_id, package_size_id: item.package_size_id }))}
-                      className="text-plum/60 hover:text-primary transition-colors"
+                      className="p-1 text-plum/60 hover:text-primary transition-colors"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-5 h-5 md:w-4 md:h-4" />
                     </button>
                   </div>
-                  <div className="w-px h-4 bg-plum/10" />
+                  <div className="w-px h-6 md:h-4 bg-plum/10" />
                   <button
                     onClick={() => dispatch(removeFromCart({ id: item.id, flavor_id: item.flavor_id, package_size_id: item.package_size_id }))}
-                    className="text-plum/30 hover:text-red-400 transition-colors"
+                    className="p-1 text-plum/30 hover:text-red-400 transition-colors"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-5 h-5 md:w-4 md:h-4" />
                   </button>
                 </div>
               </div>
@@ -127,7 +127,7 @@ export default function CartPage() {
           </div>
 
           {/* Sticky Order Summary */}
-          <div className="lg:sticky lg:top-32 bg-plum text-background rounded-[2.5rem] p-8 shadow-2xl">
+          <div className="order-1 lg:order-2 lg:sticky lg:top-32 bg-plum text-background rounded-[2.5rem] p-8 md:p-10 shadow-2xl">
             <h3 className="text-2xl font-serif italic mb-8 border-b border-background/10 pb-4">
               Order Summary
             </h3>

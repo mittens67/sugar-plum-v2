@@ -3,6 +3,8 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
 import Link from "next/link";
 import { PlusCircle, Megaphone, UtensilsCrossed } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboard() {
   const productsCount = await prisma.products.count({
     where: { deleted_at: null }

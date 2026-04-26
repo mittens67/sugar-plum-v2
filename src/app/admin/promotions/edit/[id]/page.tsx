@@ -4,6 +4,8 @@ import PromotionForm from "../../PromotionForm";
 import { Edit3 } from "lucide-react";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditPromotionPage({
   params,
 }: {

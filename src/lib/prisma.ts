@@ -9,11 +9,20 @@ const prismaClientSingleton = () => {
     throw new Error("DATABASE_URL is not defined in environment variables")
   }
 
-  // Supabase pooler often requires SSL and uses certificates that might not be 
-  // in the local trust store. rejectUnauthorized: false allows the connection.
-  // We strip the sslmode from the URL to avoid warnings, as we configure 
-  // SSL explicitly in the pool options below.
-  const connectionString = url.split('?')[0] + '?' + url.split('?')[1]?.replace(/sslmode=[^&]+/, '')
+  // Use URL constructor for safer parsing and manipulation
+  let connectionString = url
+  try {
+    const dbUrl = new URL(url)
+    // Supabase pooler often requires SSL. rejectUnauthorized: false allows the connection
+    // to work with Supabase's self-signed certificates in serverless environments.
+    // We remove sslmode from the URL if present to avoid conflicts with explicit SSL config.
+    dbUrl.searchParams.delete('sslmode')
+    connectionString = dbUrl.toString()
+  } catch (e) {
+    // If it's not a valid URL (e.g. some complex connection strings), 
+    // we fallback to the raw URL but it's risky.
+    console.warn("Invalid DATABASE_URL format, using raw string")
+  }
 
   const pool = new pg.Pool({ 
     connectionString,

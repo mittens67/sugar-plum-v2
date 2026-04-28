@@ -16,7 +16,10 @@ const prismaClientSingleton = () => {
     }
   })
 
-  const adapter = new PrismaPg(pool)
+  const adapter = new PrismaPg(pool, {
+    schema: undefined
+  })
+  
   return new PrismaClient({ adapter })
 }
 

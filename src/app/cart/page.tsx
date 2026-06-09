@@ -51,7 +51,7 @@ export default function CartPage() {
     <Section className="bg-background min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8 md:mb-12 text-center md:text-left">
-          <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] block mb-2">
+          <span className="text-primary font-bold tracking-[0.3em] uppercase text-xs block mb-2">
             Checkout
           </span>
           <SectionTitle className="text-plum font-serif italic text-4xl md:text-5xl">
@@ -65,7 +65,7 @@ export default function CartPage() {
             {cart.map((item) => (
               <div
                 key={`${item.id}-${item.flavor_id ?? "x"}-${item.package_size_id ?? "x"}`}
-                className="group relative flex flex-col md:flex-row items-center gap-6 bg-white/40 backdrop-blur-md rounded-[2rem] p-6 md:p-8 border border-white/60 shadow-md transition-all hover:shadow-xl hover:bg-white/50"
+                className="group relative flex flex-col md:flex-row items-center gap-6 bg-white/40 backdrop-blur-md rounded-4xl p-6 md:p-8 border border-white/60 shadow-md transition-all hover:shadow-xl hover:bg-white/50"
               >
                 <div className="relative w-32 h-32 md:w-24 md:h-24 shrink-0 bg-background rounded-2xl overflow-hidden border border-primary/10">
                   <Image
@@ -158,7 +158,7 @@ export default function CartPage() {
               Proceed to Checkout
             </Button>
             
-            <p className="text-center mt-6 text-[10px] uppercase tracking-[0.2em] font-bold opacity-30">
+            <p className="text-center mt-6 text-xs uppercase tracking-[0.2em] font-bold opacity-30">
               Secure Magical Checkout
             </p>
           </div>

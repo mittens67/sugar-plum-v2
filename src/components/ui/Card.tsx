@@ -28,9 +28,9 @@ export function Card({
   }
 
   // Whimsical Glass vs Solid Styling
-  // We add a subtle border to the glass effect to make it pop against the background
+  // Frosted Window Rule: white/40 + backdrop-blur-md + border-white/60
   const glassStyle = glass 
-    ? "bg-white/40 backdrop-blur-md border border-white/60 shadow-lg hover:shadow-2xl hover:-translate-y-1" 
+    ? "bg-white/40 backdrop-blur-md border border-white/60 shadow-[0_10px_30px_rgba(74,30,77,0.1)] hover:shadow-[0_20px_40px_rgba(74,30,77,0.15)] hover:-translate-y-1" 
     : "bg-white shadow-md hover:shadow-xl border border-transparent";
 
   return (

@@ -41,7 +41,7 @@ export default function Footer() {
                 height={60}
                 className="drop-shadow-sm"
               />
-              <p className="text-[10px] uppercase tracking-[0.3em] text-primary mt-2 font-bold">
+              <p className="text-xs uppercase tracking-[0.3em] text-primary mt-2 font-bold">
                 Make Every Moment Magical
               </p>
             </div>

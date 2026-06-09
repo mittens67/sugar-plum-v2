@@ -16,9 +16,20 @@
 
 /* ... keep your font-poppins and swiper styles below ... */
 
+body {
+  font-family: var(--font-poppins), sans-serif;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out forwards;
+}
+
 .swiper-pagination-bullet-active {
-  /* You can now use your new variable even in custom CSS! */
-  background-color: var(--color-plum); 
+  background-color: var(--color-plum);
   opacity: 1;
   transform: scale(1.3);
 }

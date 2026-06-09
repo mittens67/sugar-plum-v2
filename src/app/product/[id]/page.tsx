@@ -131,7 +131,7 @@ export default function Product() {
           {/* Right Column: Details Pane */}
           <div className="space-y-8 md:space-y-10 px-2 md:px-0">
             <div>
-                <span className="text-primary font-bold tracking-widest uppercase text-[10px] md:text-xs mb-2 block">
+                <span className="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">
                     Artisanal Creation
                 </span>
                 <h1 className="text-3xl md:text-5xl font-serif italic text-plum leading-tight">
@@ -166,7 +166,7 @@ export default function Product() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
                 {product.product_package_sizes?.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="font-bold uppercase tracking-tighter text-[10px] text-plum/40">Size</h3>
+                    <h3 className="font-bold uppercase tracking-tighter text-xs text-plum/40">Size</h3>
                     <div className="flex flex-wrap gap-2">
                       {product.product_package_sizes.map(({ package_sizes }) => (
                         <Button
@@ -185,7 +185,7 @@ export default function Product() {
 
                 {product.product_flavour_options?.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="font-bold uppercase tracking-tighter text-[10px] text-plum/40">Flavor</h3>
+                    <h3 className="font-bold uppercase tracking-tighter text-xs text-plum/40">Flavor</h3>
                     <div className="flex flex-wrap gap-2">
                       {product.product_flavour_options.map(({ flavor_options }) => (
                         <Button

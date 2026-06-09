@@ -12,7 +12,7 @@ export default function Newsletter() {
       <div className="absolute bottom-0 right-0 w-80 h-80 bg-secondary/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
-        <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-4 block">
+        <span className="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-4 block">
           Join the Magic
         </span>
         <h2 className="text-4xl md:text-6xl font-serif italic text-plum drop-shadow-sm">

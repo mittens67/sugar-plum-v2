@@ -68,7 +68,7 @@ export default function Contact() {
           </div>
           
           <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-[2.5rem] blur opacity-75" />
+            <div className="absolute -inset-1 bg-linear-to-r from-primary/20 to-secondary/20 rounded-[2.5rem] blur opacity-75" />
             <div className="relative w-full h-[450px] rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
               <iframe
                 title="Sugar Plum Location"
@@ -77,7 +77,7 @@ export default function Contact() {
                 height="100%"
                 allowFullScreen
                 loading="lazy"
-                className="grayscale-[20%] contrast-[1.1] brightness-[1.1]"
+                className="grayscale-20 contrast-[1.1] brightness-[1.1]"
               ></iframe>
             </div>
           </div>

@@ -15,7 +15,7 @@ export default function StoryContact() {
         
         {/* Our Story */}
         <div className="p-10 rounded-[2.5rem] bg-white/20 backdrop-blur-sm border border-white/40 shadow-xl">
-          <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
+          <span className="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">
             The Journey
           </span>
           <h2 className="text-3xl font-serif italic text-plum">Our Story</h2>
@@ -36,7 +36,7 @@ export default function StoryContact() {
 
         {/* Contact */}
         <div className="p-10 rounded-[2.5rem] bg-white/20 backdrop-blur-sm border border-white/40 shadow-xl">
-          <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
+          <span className="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">
             Reach Out
           </span>
           <h2 className="text-3xl font-serif italic text-plum">Contact Us</h2>

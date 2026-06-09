@@ -59,7 +59,7 @@ export default function Menu() {
       
       {/* Whimsical Header */}
       <div className="text-center mb-12">
-        <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] block mb-2">
+        <span className="text-primary font-bold tracking-[0.3em] uppercase text-xs block mb-2">
           The Bakery
         </span>
         <SectionTitle className="text-plum font-serif italic text-4xl md:text-6xl">

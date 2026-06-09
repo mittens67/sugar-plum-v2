@@ -32,76 +32,76 @@ export default function Navbar() {
   };
 
   return (
-    // Glassmorphism Container: sticky, semi-transparent background, and backdrop blur
-    <nav className="fixed top-0 w-full z-50 bg-background/70 backdrop-blur-md border-b border-white/20 shadow-sm">
-      <div className="max-w-[1200px] mx-auto flex items-center justify-between px-6 py-4">
+    // Glassmorphism Container: Frosted Window Rule + Safe Area handling
+    <nav className="fixed top-0 w-full z-50 bg-white/40 backdrop-blur-lg border-b border-white/60 shadow-[0_10px_30px_rgba(74,30,77,0.05)] pt-[env(safe-area-inset-top)]">
+      <div className="max-w-(--breakpoint-2xl) mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-1 md:py-1.5">
         
-        {/* Logo - Increased width to fit the whimsical horizontal logo */}
-        <Link href="/" className="flex-shrink-0 transition-transform hover:scale-105">
+        {/* Logo - Ultra-compact sizing */}
+        <Link href="/" className="flex-shrink-0 transition-transform hover:scale-105 active:scale-95 py-0.5">
           <Image
             src="/logo1.png"
             alt="Sugar Plum Logo"
-            width={160}
-            height={60}
+            width={120}
+            height={50}
             priority
-            className="w-32 md:w-40 h-auto object-contain"
+            className="w-[clamp(80px,10vw,110px)] h-auto object-contain drop-shadow-sm"
           />
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-semibold text-plum uppercase tracking-widest">
-          <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-          <Link href="/menu" className="hover:text-primary transition-colors">Menu</Link>
-          <Link href="/about" className="hover:text-primary transition-colors">About Us</Link>
-          <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
+        <div className="hidden md:flex items-center gap-5 lg:gap-6 text-xs font-bold text-plum uppercase tracking-[0.2em]">
+          <Link href="/" className="hover:text-primary transition-all hover:tracking-[0.22em]">Home</Link>
+          <Link href="/menu" className="hover:text-primary transition-all hover:tracking-[0.22em]">Menu</Link>
+          <Link href="/about" className="hover:text-primary transition-all hover:tracking-[0.22em]">About</Link>
+          <Link href="/contact" className="hover:text-primary transition-all hover:tracking-[0.22em]">Contact</Link>
           
           <button
             onClick={handleCartClick}
-            className={`flex items-center gap-2 px-6 py-2.5 rounded-full font-bold transition-all duration-300 shadow-md active:scale-95
+            className={`flex items-center gap-2 px-4 lg:px-5 py-1.5 lg:py-2 rounded-full font-bold transition-all duration-300 shadow-sm active:scale-95 hover:-translate-y-0.5 text-xs
               ${
                 cartCount === 0
-                  ? "bg-primary text-background hover:bg-primary/90"
-                  : "bg-secondary text-background hover:bg-secondary/90"
+                  ? "bg-primary text-plum hover:bg-primary-light"
+                  : "bg-secondary text-white hover:opacity-90 shadow-secondary/20"
               }`}
           >
-            <ShoppingCart size={18} />
-            {cartCount === 0 ? "Order Now" : `Cart (${cartCount})`}
+            <ShoppingCart size={14} />
+            <span>{cartCount === 0 ? "Order Now" : `Cart (${cartCount})`}</span>
           </button>
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Hamburger - Larger touch target */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-plum focus:outline-none p-2 z-50"
+          className="md:hidden text-plum focus:outline-none p-3 -mr-2 z-50 transition-transform active:scale-90"
           aria-label="Toggle menu"
         >
-          {isOpen ? <X size={28} /> : <Menu size={28} />}
+          {isOpen ? <X size={32} /> : <Menu size={32} />}
         </button>
       </div>
 
       {/* Mobile Menu - Full screen overlay for better UX */}
       <div 
-        className={`fixed inset-0 bg-plum/20 backdrop-blur-sm transition-opacity duration-300 md:hidden ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 bg-plum/40 backdrop-blur-md transition-opacity duration-500 md:hidden ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsOpen(false)}
       />
       
-      <div className={`md:hidden absolute top-0 left-0 w-full bg-background/95 backdrop-blur-2xl border-b border-primary/10 shadow-2xl z-40 transition-transform duration-500 ease-out transform ${isOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-          <div className="flex flex-col items-center gap-6 pt-24 pb-12 text-plum text-lg font-bold uppercase tracking-widest">
-            <Link href="/" onClick={() => setIsOpen(false)} className="hover:text-primary transition-colors">Home</Link>
-            <Link href="/menu" onClick={() => setIsOpen(false)} className="hover:text-primary transition-colors">Menu</Link>
-            <Link href="/about" onClick={() => setIsOpen(false)} className="hover:text-primary transition-colors">About Us</Link>
-            <Link href="/contact" onClick={() => setIsOpen(false)} className="hover:text-primary transition-colors">Contact</Link>
+      <div className={`md:hidden absolute top-0 left-0 w-full bg-white/95 backdrop-blur-3xl border-b border-white/60 shadow-2xl z-40 transition-all duration-500 ease-in-out transform ${isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
+          <div className="flex flex-col items-center gap-6 pt-24 pb-12 text-plum text-lg font-bold uppercase tracking-[0.2em]">
+            <Link href="/" onClick={() => setIsOpen(false)} className="hover:text-primary transition-all p-2">Home</Link>
+            <Link href="/menu" onClick={() => setIsOpen(false)} className="hover:text-primary transition-all p-2">Menu</Link>
+            <Link href="/about" onClick={() => setIsOpen(false)} className="hover:text-primary transition-all p-2">About Us</Link>
+            <Link href="/contact" onClick={() => setIsOpen(false)} className="hover:text-primary transition-all p-2">Contact</Link>
             
             <button
               onClick={handleCartClick}
-              className={`flex items-center gap-2 px-8 py-4 rounded-full font-bold transition-all w-[80%] justify-center shadow-lg active:scale-95
+              className={`flex items-center gap-3 px-10 py-5 rounded-full font-bold transition-all w-[85%] max-w-sm justify-center shadow-xl active:scale-95 mt-4
                 ${
                   cartCount === 0
-                    ? "bg-primary text-background"
-                    : "bg-secondary text-background"
+                    ? "bg-primary text-plum"
+                    : "bg-secondary text-white"
                 }`}
             >
-              <ShoppingCart size={20} />
+              <ShoppingCart size={24} />
               {cartCount === 0 ? "Order Now" : `Cart (${cartCount})`}
             </button>
           </div>

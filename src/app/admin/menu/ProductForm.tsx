@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { useState, useRef, useEffect } from "react";
-import { ImagePlus, X, UploadCloud, Info, Check, AlertCircle } from "lucide-react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
+import { Info, Check, AlertCircle } from "lucide-react";
 import { $Enums } from "@prisma/client";
 import type { package_sizes, flavor_options } from "@prisma/client";
+import ImageUploadField from "@/components/ui/ImageUploadField";
 
 type category = $Enums.category;
 import { optimizeImage, isFileSizeValid } from "@/utils/image-optimization";
@@ -23,7 +23,6 @@ export default function ProductForm({
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image_large || null);
   const [productType, setProductType] = useState<category>(initialData?.product_type || "cake");
   const [selectedSizes, setSelectedSizes] = useState<string[]>(
     initialData?.product_package_sizes?.map((pps: any) => pps.package_id.toString()) || []
@@ -31,8 +30,6 @@ export default function ProductForm({
   const [selectedFlavors, setSelectedFlavors] = useState<string[]>(
     initialData?.product_flavour_options?.map((pfo: any) => pfo.flavor_id.toString()) || []
   );
-  
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Filter package sizes based on product type
   const availableSizes = allPackageSizes.filter(size => {
@@ -45,25 +42,6 @@ export default function ProductForm({
     const availableIds = availableSizes.map(s => s.id.toString());
     setSelectedSizes(prev => prev.filter(id => availableIds.includes(id)));
   }, [productType]);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      setError(null);
-    }
-  };
-
-  const removeImage = () => {
-    setImagePreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   const toggleSize = (id: string) => {
     setSelectedSizes(prev => 
@@ -124,7 +102,7 @@ export default function ProductForm({
         onSubmit={handleSubmit}
         className="space-y-10 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20"
     >
-      <div className="bg-white/40 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/60 shadow-2xl space-y-8">
+      <div className="bg-white/40 backdrop-blur-xl p-8 md:p-12 rounded-card-lg border border-white/60 shadow-2xl space-y-8">
         
         {error && (
             <div className="bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
@@ -133,62 +111,20 @@ export default function ProductForm({
             </div>
         )}
 
-        {/* Image Upload Section */}
-        <div className="space-y-4">
-            <label className="text-xs font-bold uppercase tracking-[0.2em] text-plum/50 flex items-center gap-2">
-                <ImagePlus className="w-3 h-3" />
-                Product Imagery
-            </label>
-            
-            <div className="relative group">
-                {imagePreview ? (
-                    <div className="relative aspect-video w-full rounded-3xl overflow-hidden border-2 border-white/60 shadow-lg">
-                        <Image 
-                            src={imagePreview} 
-                            alt="Preview" 
-                            fill 
-                            className="object-cover"
-                        />
-                        <button
-                            type="button"
-                            onClick={removeImage}
-                            className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded-full shadow-lg hover:scale-110 transition-transform"
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
-                    </div>
-                ) : (
-                    <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full aspect-video rounded-3xl border-4 border-dashed border-plum/10 bg-plum/5 flex flex-col items-center justify-center gap-4 hover:bg-plum/10 hover:border-primary/30 transition-all group"
-                    >
-                        <div className="bg-white p-4 rounded-full shadow-md group-hover:scale-110 transition-transform">
-                            <UploadCloud className="w-8 h-8 text-primary" />
-                        </div>
-                        <div className="text-center">
-                            <p className="font-bold text-plum uppercase tracking-widest text-xs">Upload Magical Image</p>
-                            <p className="text-[10px] text-plum/40 mt-1">PNG, JPG or WebP (Max 5MB)</p>
-                        </div>
-                    </button>
-                )}
-                <input 
-                    type="file" 
-                    name="image"
-                    ref={fileInputRef}
-                    className="hidden" 
-                    accept="image/*"
-                    onChange={handleImageChange}
-                />
-                {initialData?.image_large && (
-                    <>
-                        <input type="hidden" name="existing_image_large" value={initialData.image_large} />
-                        <input type="hidden" name="existing_image_medium" value={initialData.image_medium} />
-                        <input type="hidden" name="existing_image_small" value={initialData.image_small} />
-                    </>
-                )}
-            </div>
-        </div>
+        <ImageUploadField
+          name="image"
+          label="Product Imagery"
+          initialImageUrl={initialData?.image_large || null}
+          existingImageFields={{
+            large: initialData?.image_large,
+            medium: initialData?.image_medium,
+            small: initialData?.image_small,
+          }}
+          aspectRatio="video"
+          uploadLabel="Upload Magical Image"
+          acceptHint="PNG, JPG or WebP (Max 5MB)"
+          accentColor="primary"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="space-y-3">
@@ -243,7 +179,7 @@ export default function ProductForm({
         <div className="space-y-4">
             <label className="text-xs font-bold uppercase tracking-[0.2em] text-plum/50 flex items-center gap-2">
                 Available Sizes ({productType === "cake" || productType === "custom" ? "kg" : "pieces"})
-                <span className="text-red-500 font-black text-[10px]">* Mandatory</span>
+                <span className="text-red-500 font-black text-xs">* Mandatory</span>
             </label>
             <div className="flex flex-wrap gap-3">
                 {availableSizes.map((size) => (
@@ -332,7 +268,7 @@ export default function ProductForm({
           <Button 
             type="submit" 
             size="lg"
-            className="px-12 py-8 rounded-full shadow-2xl shadow-primary/20 transition-all hover:-translate-y-1 active:scale-95"
+            className="px-8 py-3 rounded-full shadow-2xl shadow-primary/20 transition-all hover:-translate-y-1 active:scale-95"
             disabled={loading}
           >
             {loading ? "Magic in progress..." : initialData ? "Update Creation" : "Enchant New Product"}

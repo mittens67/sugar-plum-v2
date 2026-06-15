@@ -55,11 +55,11 @@ export default function Menu() {
 
   return (
     // Added pt-24 to prevent the sticky navbar from overlapping content
-    <Section className="bg-background min-h-screen pt-38 pb-20 px-6">
+    <Section className="bg-background min-h-screen pt-36 sm:pt-40 pb-20 px-6">
       
       {/* Whimsical Header */}
       <div className="text-center mb-12">
-        <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] block mb-2">
+        <span className="text-primary font-bold tracking-[0.3em] uppercase text-xs block mb-2">
           The Bakery
         </span>
         <SectionTitle className="text-plum font-serif italic text-4xl md:text-6xl">
@@ -67,32 +67,40 @@ export default function Menu() {
         </SectionTitle>
       </div>
 
-      {/* Product Type Filter - Glassmorphism style with horizontal scroll on mobile */}
-      <div className="mb-16 -mx-6 px-6 overflow-x-auto no-scrollbar scroll-smooth">
-        <div className="flex justify-start md:justify-center gap-3 w-max md:w-full mx-auto pb-4">
+      {/* Product Type Filter — scrollable strip on mobile, wrapping pills on desktop */}
+      <style>{`
+        .filter-strip { scrollbar-width: thin; scrollbar-color: #C5A059 rgba(74,30,77,0.06); }
+        .filter-strip::-webkit-scrollbar { height: 3px; }
+        .filter-strip::-webkit-scrollbar-track { background: rgba(74,30,77,0.06); border-radius: 9999px; }
+        .filter-strip::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 9999px; }
+        .filter-strip::-webkit-scrollbar-thumb:hover { background: #E2CFAB; }
+      `}</style>
+      <div className="mb-12 relative">
+        <div className="absolute right-0 top-0 bottom-2 w-10 bg-linear-to-l from-background to-transparent pointer-events-none md:hidden z-10" />
+        <div className="filter-strip flex flex-nowrap md:flex-wrap md:justify-center gap-2 overflow-x-auto md:overflow-visible pb-2 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0">
+          <Button
+            variant={activeType === null ? "default" : "outline"}
+            size="sm"
+            onClick={() => setActiveType(null)}
+            className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-tighter transition-all shadow-sm
+            ${activeType === null ? 'bg-primary text-plum' : 'border-primary/30 text-plum/60 hover:border-primary hover:bg-white/40'}`}
+          >
+            All
+          </Button>
+          {productTypes.map((type) => (
             <Button
-                variant={activeType === null ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveType(null)}
-                className={`rounded-full px-6 py-5 font-bold uppercase tracking-tighter transition-all shadow-sm whitespace-nowrap
-                ${activeType === null ? 'bg-primary text-plum' : 'border-primary/30 text-plum/60 hover:border-primary'}`}
+              key={type}
+              variant={activeType === type ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveType(type === activeType ? null : type)}
+              className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-tighter transition-all shadow-sm
+              ${activeType === type
+                ? 'bg-primary text-plum'
+                : 'border-primary/30 text-plum/60 hover:border-primary hover:bg-white/40'}`}
             >
-                All
+              {type}
             </Button>
-            {productTypes.map((type) => (
-            <Button
-                key={type}
-                variant={activeType === type ? "default" : "outline"}
-                size="sm"
-                onClick={() => setActiveType(type === activeType ? null : type)}
-                className={`rounded-full px-6 py-5 font-bold uppercase tracking-tighter transition-all shadow-sm whitespace-nowrap
-                ${activeType === type 
-                    ? 'bg-primary text-plum' 
-                    : 'border-primary/30 text-plum/60 hover:border-primary hover:bg-white/40'}`}
-            >
-                {type}
-            </Button>
-            ))}
+          ))}
         </div>
       </div>
 
@@ -119,7 +127,7 @@ export default function Menu() {
             <Link
               key={product.id}
               href={`/product/${product.id}`}
-              className="group relative bg-white/40 backdrop-blur-md rounded-[2rem] p-6 border border-white/60 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col items-center"
+              className="group relative bg-white/40 backdrop-blur-md rounded-card p-6 border border-white/60 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 flex flex-col items-center"
             >
               <div className="relative w-full aspect-square overflow-hidden rounded-2xl mb-4">
                 <Image
@@ -139,7 +147,7 @@ export default function Menu() {
               </p>
 
               <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                 <span className="text-[10px] font-bold uppercase tracking-widest text-plum/40">
+                 <span className="text-xs font-bold uppercase tracking-widest text-plum/40">
                    View Creation
                  </span>
               </div>

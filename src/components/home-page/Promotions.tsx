@@ -46,7 +46,7 @@ export default function Promotions() {
   if (loading) return (
     <Section className="py-24 bg-background animate-pulse">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="h-[500px] md:h-[600px] bg-plum/5 rounded-[3rem] border border-plum/10" />
+          <div className="h-[500px] md:h-[600px] bg-plum/5 rounded-card-lg border border-plum/10" />
         </div>
     </Section>
   );
@@ -75,50 +75,50 @@ export default function Promotions() {
             bulletActiveClass: 'swiper-pagination-bullet-active !bg-plum !opacity-100 !scale-125',
           }}
           navigation={promotions.length > 1}
-          className="rounded-[3rem] shadow-2xl overflow-hidden !pb-12"
+          className="rounded-card-lg shadow-promo overflow-hidden pb-12!"
         >
           {promotions.map((promo) => (
             <SwiperSlide key={promo.id}>
               {promo.display_type === "SPLIT" ? (
-                /* Split View Layout */
-                <div className="relative z-10 bg-white/30 backdrop-blur-md border border-white/40 p-8 md:p-16 h-[500px] md:h-[600px] flex items-center overflow-hidden">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-24 items-center w-full">
+                /* Split View Layout - Frosted Window Rule */
+                <div className="relative z-10 bg-white/40 backdrop-blur-lg border border-white/60 p-6 sm:p-8 md:p-16 min-h-[420px] sm:min-h-[500px] md:h-[600px] flex items-center overflow-hidden">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-center w-full">
                     
                     {/* Image Side */}
                     <div className="flex justify-center relative group order-2 md:order-1">
                       <div className="absolute inset-0 bg-primary/20 rounded-full blur-2xl scale-75 group-hover:scale-100 transition-transform duration-700" />
                       {promo.image_url && (
-                        <div className="relative w-full max-w-[450px] aspect-[4/3]">
+                        <div className="relative w-full max-w-[320px] md:max-w-[450px] aspect-[4/3]">
                             <Image
                                 src={promo.image_url}
                                 alt={promo.title}
                                 fill
-                                className="relative z-10 drop-shadow-[0_20px_50px_rgba(74,30,77,0.3)] object-cover rounded-3xl transform transition-transform duration-500 hover:rotate-2 hover:scale-105"
+                                className="relative z-10 drop-shadow-[0_20px_50px_rgba(74,30,77,0.3)] object-cover rounded-[1.5rem] md:rounded-card transform transition-transform duration-700 hover:rotate-1 hover:scale-105"
                             />
                         </div>
                       )}
                     </div>
 
                     {/* Text Content */}
-                    <div className="text-center md:text-left order-1 md:order-2">
-                      <span className="inline-block px-4 py-1 rounded-full bg-secondary/20 text-plum font-bold text-[10px] uppercase tracking-[0.2em] mb-4">
+                    <div className="text-center md:text-left order-1 md:order-2 px-2">
+                      <span className="inline-block px-4 py-1 md:px-5 md:py-1.5 rounded-full bg-secondary/20 text-plum font-bold text-xs uppercase tracking-[0.2em] md:tracking-[0.25em] mb-4 md:mb-6">
                         Exclusive Offer
                       </span>
                       
-                      <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif italic text-plum leading-tight">
+                      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-plum leading-[1.1] tracking-tight text-wrap-balance">
                         {promo.title}
                       </h2>
                       
                       {promo.description && (
-                        <p className="mt-6 text-lg md:text-xl text-plum/80 font-medium leading-relaxed line-clamp-3">
+                        <p className="mt-4 md:mt-8 text-base md:text-xl text-plum/70 font-medium leading-relaxed line-clamp-3 italic text-wrap-pretty">
                           {promo.description}
                         </p>
                       )}
                       
-                      <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                      <div className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                         {promo.link && (
-                            <Link href={promo.link}>
-                                <Button className="bg-plum text-white hover:bg-plum/90 font-bold px-10 py-7 rounded-full text-lg shadow-lg transition-all hover:shadow-plum/20 hover:-translate-y-1">
+                            <Link href={promo.link} className="w-full sm:w-auto">
+                                <Button size="lg" className="w-full sm:min-w-[220px]">
                                     Discover Magic
                                 </Button>
                             </Link>
@@ -129,7 +129,7 @@ export default function Promotions() {
                 </div>
               ) : (
                 /* Image Only View (Full Banner) */
-                <div className="relative h-[500px] md:h-[600px] group overflow-hidden">
+                <div className="relative h-[300px] sm:h-[420px] md:h-[560px] group overflow-hidden">
                     {promo.link ? (
                         <Link href={promo.link} className="block relative w-full h-full cursor-pointer">
                             {promo.image_url && (
@@ -137,7 +137,7 @@ export default function Promotions() {
                                     src={promo.image_url} 
                                     alt={promo.title} 
                                     fill 
-                                    className="object-cover transition-transform duration-[10000ms] group-hover:scale-110"
+                                    className="object-cover transition-transform duration-[15000ms] group-hover:scale-110"
                                 />
                             )}
                         </Link>
@@ -147,7 +147,7 @@ export default function Promotions() {
                                 src={promo.image_url} 
                                 alt={promo.title} 
                                 fill 
-                                className="object-cover transition-transform duration-[10000ms] group-hover:scale-110"
+                                className="object-cover transition-transform duration-[15000ms] group-hover:scale-110"
                             />
                         )
                     )}

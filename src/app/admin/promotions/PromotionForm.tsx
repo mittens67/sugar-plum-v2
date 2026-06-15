@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { useState, useRef } from "react";
-import { ImagePlus, X, UploadCloud, Info, Calendar, Layout, Link as LinkIcon, Type, AlertCircle } from "lucide-react";
-import Image from "next/image";
+import { useState } from "react";
+import { Info, Calendar, Layout, Link as LinkIcon, Type, AlertCircle } from "lucide-react";
+import ImageUploadField from "@/components/ui/ImageUploadField";
 import { $Enums } from "@prisma/client";
 
 type promo_display_type = $Enums.promo_display_type;
@@ -35,27 +35,6 @@ export default function PromotionForm({
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image_url || null);
   const [displayType, setDisplayType] = useState<promo_display_type>(initialData?.display_type || "SPLIT");
   const [showSafetyZone, setShowSafetyZone] = useState(false);
-  
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      setError(null);
-    }
-  };
-
-  const removeImage = () => {
-    setImagePreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -113,7 +92,7 @@ export default function PromotionForm({
         onSubmit={handleSubmit}
         className="space-y-10 max-w-4xl animate-in fade-in slide-in-from-bottom-4 duration-700 pb-20"
     >
-      <div className="bg-white/40 backdrop-blur-xl p-8 md:p-12 rounded-[2.5rem] border border-white/60 shadow-2xl space-y-8">
+      <div className="bg-white/40 backdrop-blur-xl p-8 md:p-12 rounded-card-lg border border-white/60 shadow-2xl space-y-8">
         
         {error && (
             <div className="bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
@@ -122,80 +101,28 @@ export default function PromotionForm({
             </div>
         )}
 
-        {/* Image Upload Section with Safety Zone */}
-        <div className="space-y-4">
-            <div className="flex justify-between items-end">
-                <label className="text-xs font-bold uppercase tracking-[0.2em] text-plum/50 flex items-center gap-2">
-                    <ImagePlus className="w-3 h-3" />
-                    Promotion Banner (16:9 Recommended)
-                </label>
-                {imagePreview && (
-                    <button 
-                        type="button"
-                        onClick={() => setShowSafetyZone(!showSafetyZone)}
-                        className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border transition-all ${showSafetyZone ? 'bg-primary text-plum border-primary' : 'bg-white/50 text-plum/40 border-plum/10'}`}
-                    >
-                        {showSafetyZone ? 'Hide Safety Zone' : 'Show Safety Zone'}
-                    </button>
-                )}
-            </div>
-            
-            <div className="relative group">
-                {imagePreview ? (
-                    <div className="relative aspect-video w-full rounded-3xl overflow-hidden border-2 border-white/60 shadow-lg bg-slate-100">
-                        <Image 
-                            src={imagePreview} 
-                            alt="Preview" 
-                            fill 
-                            className="object-cover"
-                        />
-                        
-                        {showSafetyZone && (
-                            <div className="absolute inset-0 border-[10%] border-red-500/20 pointer-events-none">
-                                <div className="absolute inset-[15%] border-2 border-dashed border-white/50 rounded-xl flex items-center justify-center">
-                                    <span className="bg-black/40 text-white text-[10px] px-2 py-1 rounded font-bold uppercase tracking-tighter backdrop-blur-sm">
-                                        Safe Text Area
-                                    </span>
-                                </div>
-                            </div>
-                        )}
-
-                        <button
-                            type="button"
-                            onClick={removeImage}
-                            className="absolute top-4 right-4 p-2 bg-red-500 text-white rounded-full shadow-lg hover:scale-110 transition-transform z-20"
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
-                    </div>
-                ) : (
-                    <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full aspect-video rounded-3xl border-4 border-dashed border-plum/10 bg-plum/5 flex flex-col items-center justify-center gap-4 hover:bg-plum/10 hover:border-primary/30 transition-all group"
-                    >
-                        <div className="bg-white p-4 rounded-full shadow-md group-hover:scale-110 transition-transform">
-                            <UploadCloud className="w-8 h-8 text-secondary" />
-                        </div>
-                        <div className="text-center">
-                            <p className="font-bold text-plum uppercase tracking-widest text-xs">Upload Banner Image</p>
-                            <p className="text-[10px] text-plum/40 mt-1">1200x675px (16:9) WebP preferred</p>
-                        </div>
-                    </button>
-                )}
-                <input 
-                    type="file" 
-                    name="image"
-                    ref={fileInputRef}
-                    className="hidden" 
-                    accept="image/*"
-                    onChange={handleImageChange}
-                />
-                {initialData?.image_url && (
-                    <input type="hidden" name="existing_image" value={initialData.image_url} />
-                )}
-            </div>
-        </div>
+        <ImageUploadField
+          name="image"
+          label="Promotion Banner (16:9 Recommended)"
+          initialImageUrl={initialData?.image_url || null}
+          existingImageFields={{ url: initialData?.image_url }}
+          aspectRatio="video"
+          uploadLabel="Upload Banner Image"
+          acceptHint="1200x675px (16:9) WebP preferred"
+          accentColor="secondary"
+          showOverlay={showSafetyZone}
+          onPreviewChange={(url) => setImagePreview(url)}
+        >
+          {imagePreview && (
+            <button
+              type="button"
+              onClick={() => setShowSafetyZone(!showSafetyZone)}
+              className={`text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full border transition-all ${showSafetyZone ? "bg-primary text-plum border-primary" : "bg-white/50 text-plum/40 border-plum/10"}`}
+            >
+              {showSafetyZone ? "Hide Safety Zone" : "Show Safety Zone"}
+            </button>
+          )}
+        </ImageUploadField>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div className="space-y-3">
@@ -305,7 +232,7 @@ export default function PromotionForm({
           <Button 
             type="submit" 
             size="lg"
-            className="px-12 py-8 bg-secondary text-white hover:bg-secondary/90 rounded-full shadow-2xl shadow-secondary/20 transition-all hover:-translate-y-1 active:scale-95"
+            className="px-8 py-3 bg-secondary text-white hover:bg-secondary/90 rounded-full shadow-2xl shadow-secondary/20 transition-all hover:-translate-y-1 active:scale-95"
             disabled={loading}
           >
             {loading ? "Casting Spell..." : initialData ? "Update Campaign" : "Launch Promotion"}

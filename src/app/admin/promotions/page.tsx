@@ -1,11 +1,13 @@
 import prisma from "@/lib/prisma";
-import { softDeletePromotion, restorePromotion, togglePromotionStatus } from "../actions";
+import { softDeletePromotion, restorePromotion, togglePromotionStatus, permanentlyDeletePromotion } from "../actions";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Plus, Edit2, Trash2, RefreshCw, Power, PowerOff, ChevronLeft, ChevronRight, Calendar, ExternalLink } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
-import PromotionSearchBar from "./PromotionSearchBar";
-import PromotionHardDeleteButton from "./PromotionHardDeleteButton";
+import AdminSearchBar from "@/components/admin/SearchBar";
+import HardDeleteModal from "@/components/admin/HardDeleteModal";
+import Badge from "@/components/ui/Badge";
+import EmptyState from "@/components/ui/EmptyState";
 import { Prisma } from "@prisma/client";
 
 export default async function AdminPromotions({
@@ -61,7 +63,13 @@ export default async function AdminPromotions({
 
       {/* Filter & Search Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <PromotionSearchBar initialValue={searchQuery} />
+        <AdminSearchBar
+          initialValue={searchQuery}
+          apiEndpoint="/api/admin/promotions/suggestions"
+          redirectPath="/admin/promotions"
+          accentColor="secondary"
+          placeholder="Search promotions..."
+        />
         
         <div className="flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm self-start md:self-auto">
             <span className="w-2 h-2 rounded-full bg-secondary"></span>
@@ -82,14 +90,10 @@ export default async function AdminPromotions({
               <div className="relative h-48 w-full overflow-hidden bg-slate-100">
                 <img src={promo.image_url} alt={promo.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                 <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 items-end">
-                     <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-xl backdrop-blur-md border ${promo.deleted_at ? "bg-red-500 text-white border-red-400" : promo.is_active ? "bg-green-500 text-white border-green-400" : "bg-gray-500 text-white border-gray-400"}`}>
-                        {promo.deleted_at ? "Deleted" : promo.is_active ? "Active" : "Inactive"}
-                    </span>
-                    {promo.priority > 0 && (
-                        <span className="px-2 py-0.5 rounded-md bg-primary text-plum text-[8px] font-black uppercase tracking-tighter shadow-lg border border-primary-light/50">
-                            Priority: {promo.priority}
-                        </span>
-                    )}
+                  <Badge variant={promo.deleted_at ? "deleted" : promo.is_active ? "active" : "inactive"} />
+                  {promo.priority > 0 && (
+                    <Badge variant="priority" label={`Priority: ${promo.priority}`} dot={false} />
+                  )}
                 </div>
                 {promo.display_type === 'IMAGE_ONLY' && (
                     <div className="absolute inset-0 bg-secondary/10 pointer-events-none ring-4 ring-secondary/20 ring-inset" />
@@ -140,7 +144,7 @@ export default async function AdminPromotions({
                                 <RefreshCw className="w-4 h-4" />
                             </button>
                         </form>
-                        <PromotionHardDeleteButton promoId={promo.id.toString()} title={promo.title} />
+                        <HardDeleteModal itemId={promo.id.toString()} itemName={promo.title} itemType="promotion" onDelete={permanentlyDeletePromotion} />
                     </div>
                 ) : (
                     <form action={softDeletePromotion.bind(null, promo.id)}>
@@ -155,17 +159,16 @@ export default async function AdminPromotions({
         ))}
 
         {promotions.length === 0 && (
-          <div className="col-span-full py-24 text-center bg-white/30 backdrop-blur-md rounded-[2.5rem] border border-dashed border-plum/20">
-            <p className="text-plum/40 italic font-medium">
-                {searchQuery ? "No matching magic found." : "No marketing magic has been created yet."}
-            </p>
-          </div>
+          <EmptyState
+            className="col-span-full"
+            title={searchQuery ? "No matching magic found." : "No marketing magic has been created yet."}
+          />
         )}
       </div>
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-8 py-6 bg-white/30 backdrop-blur-md rounded-[2rem] border border-white/60 shadow-xl">
+        <div className="flex items-center justify-between px-8 py-6 bg-white/30 backdrop-blur-md rounded-card border border-white/60 shadow-xl">
             <div className="flex items-center gap-2">
                 <span className="text-[10px] font-black uppercase tracking-widest text-plum/40">
                     Page {page} of {totalPages}

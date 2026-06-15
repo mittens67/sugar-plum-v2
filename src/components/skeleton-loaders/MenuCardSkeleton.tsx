@@ -8,7 +8,7 @@ function MenuCardSkeleton({ index }: Prop) {
   return (
     <div
       key={index}
-      className="bg-white/40 backdrop-blur-md rounded-4xl p-6 border border-white/60 shadow-lg flex flex-col items-center w-full min-h-[380px] relative overflow-hidden"
+      className="bg-white/40 backdrop-blur-md rounded-card-lg p-6 border border-white/60 shadow-lg flex flex-col items-center w-full min-h-[380px] relative overflow-hidden"
     >
       {/* 1. Image Placeholder: Aspect-square matches the real product cards */}
       <div className="relative w-full aspect-square bg-plum/5 rounded-2xl mb-4 animate-pulse" />
@@ -23,7 +23,7 @@ function MenuCardSkeleton({ index }: Prop) {
       <div className="mt-auto h-2 w-1/3 bg-plum/5 rounded-full animate-pulse" />
 
       {/* Shimmer Effect overlay */}
-      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-linear-to-r from-transparent via-white/20 to-transparent" />
 
       <style jsx>{`
         @keyframes shimmer {

@@ -4,7 +4,23 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, X, Loader2 } from "lucide-react";
 
-export default function SearchBar({ initialValue = "" }: { initialValue?: string }) {
+interface AdminSearchBarProps {
+  initialValue?: string;
+  apiEndpoint: string;
+  redirectPath: string;
+  placeholder?: string;
+  accentColor?: "primary" | "secondary";
+  searchParamKey?: string;
+}
+
+export default function AdminSearchBar({
+  initialValue = "",
+  apiEndpoint,
+  redirectPath,
+  placeholder = "Search...",
+  accentColor = "primary",
+  searchParamKey = "q",
+}: AdminSearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(initialValue);
@@ -14,12 +30,10 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
   const [isLoading, setIsLoading] = useState(false);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
-  // Update local state when search params change (e.g., clearing from elsewhere)
   useEffect(() => {
     setQuery(initialValue);
   }, [initialValue]);
 
-  // Handle outside clicks to close suggestions
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
@@ -30,20 +44,18 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Fetch suggestions
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (query.length < 2) {
         setSuggestions([]);
         return;
       }
-
       setIsLoading(true);
       try {
-        const res = await fetch(`/api/admin/products/suggestions?q=${encodeURIComponent(query)}`);
+        const res = await fetch(`${apiEndpoint}?q=${encodeURIComponent(query)}`);
         const data = await res.json();
         setSuggestions(data.suggestions);
-        setSelectedIndex(-1); // Reset selection on new suggestions
+        setSelectedIndex(-1);
       } catch (error) {
         console.error("Suggestion fetch failed:", error);
       } finally {
@@ -53,17 +65,17 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
 
     const timer = setTimeout(fetchSuggestions, 300);
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, apiEndpoint]);
 
   const handleSearch = (searchTerm: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (searchTerm) {
-      params.set("q", searchTerm);
+      params.set(searchParamKey, searchTerm);
     } else {
-      params.delete("q");
+      params.delete(searchParamKey);
     }
-    params.set("page", "1"); // Reset to first page
-    router.push(`/admin/menu?${params.toString()}`);
+    params.set("page", "1");
+    router.push(`${redirectPath}?${params.toString()}`);
     setShowSuggestions(false);
     setSelectedIndex(-1);
   };
@@ -88,13 +100,30 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
     }
   };
 
+  const accentFocus = accentColor === "primary"
+    ? "focus:ring-primary/10 focus:border-primary"
+    : "focus:ring-secondary/10 focus:border-secondary";
+
+  const accentIcon = accentColor === "primary" ? "text-primary" : "text-secondary";
+  const accentFocusIcon = accentColor === "primary"
+    ? "group-focus-within:text-primary"
+    : "group-focus-within:text-secondary";
+
+  const accentActive = accentColor === "primary"
+    ? "bg-primary/10 text-primary"
+    : "bg-secondary/10 text-secondary";
+
+  const accentHover = accentColor === "primary"
+    ? "hover:bg-primary/5 hover:text-primary"
+    : "hover:bg-secondary/5 hover:text-secondary";
+
   return (
     <div className="relative flex-1 max-w-md group" ref={suggestionsRef}>
       <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
         {isLoading ? (
-          <Loader2 className="w-4 h-4 text-primary animate-spin" />
+          <Loader2 className={`w-4 h-4 ${accentIcon} animate-spin`} />
         ) : (
-          <Search className="w-4 h-4 text-plum/30 group-focus-within:text-primary transition-colors" />
+          <Search className={`w-4 h-4 text-plum/30 ${accentFocusIcon} transition-colors`} />
         )}
       </div>
 
@@ -107,8 +136,8 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
         }}
         onFocus={() => setShowSuggestions(true)}
         onKeyDown={handleKeyDown}
-        placeholder="Search creations by name..."
-        className="w-full pl-12 pr-12 py-3 bg-white border border-plum/10 rounded-2xl text-[11px] font-bold uppercase tracking-widest text-plum focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all shadow-sm hover:shadow-md placeholder:text-plum/20"
+        placeholder={placeholder}
+        className={`w-full pl-12 pr-12 py-3 bg-white border border-plum/10 rounded-2xl text-xs font-bold uppercase tracking-widest text-plum focus:outline-none focus:ring-4 ${accentFocus} transition-all shadow-sm hover:shadow-md placeholder:text-plum/20`}
       />
 
       {query && (
@@ -123,11 +152,10 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
         </button>
       )}
 
-      {/* Suggestions Dropdown */}
       {showSuggestions && suggestions.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-plum/10 shadow-xl z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="p-2 border-b border-plum/5">
-            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-plum/30 px-3">Suggestions</span>
+            <span className="text-xs font-black uppercase tracking-[0.2em] text-plum/30 px-3">Suggestions</span>
           </div>
           <div className="py-1">
             {suggestions.map((suggestion, idx) => (
@@ -138,8 +166,8 @@ export default function SearchBar({ initialValue = "" }: { initialValue?: string
                   handleSearch(suggestion);
                 }}
                 onMouseEnter={() => setSelectedIndex(idx)}
-                className={`w-full text-left px-5 py-3 text-[11px] font-bold transition-colors flex items-center gap-3 ${
-                  idx === selectedIndex ? "bg-primary/10 text-primary" : "text-plum hover:bg-primary/5 hover:text-primary"
+                className={`w-full text-left px-5 py-3 text-xs font-bold transition-colors flex items-center gap-3 ${
+                  idx === selectedIndex ? accentActive : `text-plum ${accentHover}`
                 }`}
               >
                 <Search className="w-3 h-3 opacity-30" />

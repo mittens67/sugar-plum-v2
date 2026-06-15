@@ -38,7 +38,7 @@ export default function Testimonials() {
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 md:mb-20">
-          <span className="text-primary font-bold tracking-[0.4em] uppercase text-[10px] md:text-xs">
+          <span className="text-primary font-bold tracking-[0.4em] uppercase text-xs">
             Kind Words
           </span>
           <h2 className="text-3xl md:text-6xl font-serif italic text-background mt-4 drop-shadow-md px-2 leading-tight">
@@ -50,7 +50,7 @@ export default function Testimonials() {
           {testimonials.map((t, i) => (
             <Card 
               key={i} 
-              className="group relative bg-white/10 backdrop-blur-xl border border-white/20 p-8 md:p-10 rounded-3xl md:rounded-4xl shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:bg-white/15"
+              className="group relative bg-white/10 backdrop-blur-xl border border-white/20 p-8 md:p-10 rounded-card md:rounded-card-lg shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:bg-white/15"
             >
               {/* Whimsical Quote Icon */}
               <Quote className="text-primary/40 w-8 h-8 md:w-10 md:h-10 mb-4 md:mb-6 group-hover:text-primary transition-colors duration-500" />

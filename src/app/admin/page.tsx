@@ -16,7 +16,7 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-12">
       <div>
-        <span className="text-primary font-bold tracking-[0.3em] uppercase text-[10px] block mb-2">
+        <span className="text-primary font-bold tracking-[0.3em] uppercase text-xs block mb-2">
             Overview
         </span>
         <h1 className="text-4xl font-serif italic text-plum">Dashboard Overview</h1>
@@ -54,7 +54,7 @@ export default async function AdminDashboard() {
         <h2 className="text-2xl font-serif italic text-plum">Quick Actions</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <Link href="/admin/menu/new">
-                <div className="group bg-white/40 backdrop-blur-md p-8 rounded-[2rem] border border-white/60 shadow-md hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col items-center text-center">
+                <div className="group bg-white/40 backdrop-blur-md p-8 rounded-card border border-white/60 shadow-md hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col items-center text-center">
                     <div className="bg-primary/20 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform">
                         <PlusCircle className="w-8 h-8 text-primary" />
                     </div>
@@ -64,7 +64,7 @@ export default async function AdminDashboard() {
             </Link>
 
             <Link href="/admin/promotions/new">
-                <div className="group bg-white/40 backdrop-blur-md p-8 rounded-[2rem] border border-white/60 shadow-md hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col items-center text-center">
+                <div className="group bg-white/40 backdrop-blur-md p-8 rounded-card border border-white/60 shadow-md hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col items-center text-center">
                     <div className="bg-secondary/20 p-4 rounded-full mb-4 group-hover:scale-110 transition-transform">
                         <Megaphone className="w-8 h-8 text-secondary" />
                     </div>

@@ -28,6 +28,19 @@ const config: Config = {
           DEFAULT: "#FFF9F0", // Creamy Vanilla
         }
       },
+      borderRadius: {
+        card:      '2rem',    // primary card — replaces rounded-[2rem] / rounded-3xl
+        'card-lg': '2.5rem', // large panel — replaces rounded-[2.5rem] / rounded-4xl
+        'card-xl': '3rem',   // hero sections — replaces rounded-[3rem]
+        modal:     '2rem',   // modal panels
+      },
+      boxShadow: {
+        card:          '0 10px 30px rgba(74,30,77,0.07)',
+        'card-hover':  '0 20px 40px rgba(74,30,77,0.13)',
+        modal:         '0 0 50px rgba(0,0,0,0.28)',
+        promo:         '0 20px 50px rgba(74,30,77,0.15)',
+        nav:           '0 10px 30px rgba(74,30,77,0.05)',
+      },
     },
   },
   plugins: [],

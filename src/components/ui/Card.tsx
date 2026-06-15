@@ -16,7 +16,7 @@ export function Card({
   // Base classes that apply to both states for layout consistency
   // Note: We removed default padding (p-6) to support sub-components like CardHeader/CardContent.
   // Feature cards in this project (Testimonials, FeaturedItems) provide padding in className.
-  const baseLayout = "rounded-[2.5rem] transition-all duration-500 overflow-hidden";
+  const baseLayout = "rounded-card-lg transition-all duration-500 overflow-hidden";
 
   if (skeleton) {
     return (
@@ -28,9 +28,9 @@ export function Card({
   }
 
   // Whimsical Glass vs Solid Styling
-  // We add a subtle border to the glass effect to make it pop against the background
+  // Frosted Window Rule: white/40 + backdrop-blur-md + border-white/60
   const glassStyle = glass 
-    ? "bg-white/40 backdrop-blur-md border border-white/60 shadow-lg hover:shadow-2xl hover:-translate-y-1" 
+    ? "bg-white/40 backdrop-blur-md border border-white/60 shadow-card hover:shadow-card-hover hover:-translate-y-1"
     : "bg-white shadow-md hover:shadow-xl border border-transparent";
 
   return (

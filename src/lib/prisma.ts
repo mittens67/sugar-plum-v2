@@ -3,14 +3,19 @@ import { PrismaPg } from '@prisma/adapter-pg'
 import pg from 'pg'
 
 const prismaClientSingleton = () => {
-  const url = process.env.DATABASE_URL
+  let url = process.env.DATABASE_URL
   
   if (!url) {
     throw new Error("DATABASE_URL is not defined in environment variables")
   }
 
+  // Strip query parameters to prevent conflicts with manual SSL config
+  // Supabase connection strings often include ?sslmode=require which 
+  // can override rejectUnauthorized: false in some pg versions.
+  const connectionString = url.split('?')[0]
+
   const pool = new pg.Pool({ 
-    connectionString: url,
+    connectionString,
     ssl: {
       rejectUnauthorized: false
     }

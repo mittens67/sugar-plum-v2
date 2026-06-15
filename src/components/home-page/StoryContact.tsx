@@ -9,16 +9,16 @@ export default function StoryContact() {
     // Replaced bg-black with a soft Plum/Vanilla transition
     <Section className="bg-background relative overflow-hidden py-24">
       {/* Subtle decorative background element */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-plum/[0.03] -skew-x-12 transform origin-top" />
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-plum/3 -skew-x-12 transform origin-top" />
 
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 px-6 max-w-6xl mx-auto">
-        
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 px-6 max-w-6xl mx-auto">
+
         {/* Our Story */}
-        <div className="p-10 rounded-[2.5rem] bg-white/20 backdrop-blur-sm border border-white/40 shadow-xl">
-          <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
+        <div className="p-6 sm:p-10 rounded-card-lg bg-white/80 backdrop-blur-md border border-white/60 shadow-xl">
+          <span className="text-secondary font-bold tracking-widest uppercase text-xs mb-2 block">
             The Journey
           </span>
-          <h2 className="text-3xl font-serif italic text-plum">Our Story</h2>
+          <h2 className="text-3xl font-bold font-serif italic text-plum">Our Story</h2>
           <p className="mt-6 text-plum/70 leading-relaxed font-medium">
             Sugar Plum is a family-owned sanctuary dedicated to the art of 
             whimsical baking. Our passion for creativity and fine ingredients 
@@ -35,11 +35,11 @@ export default function StoryContact() {
         </div>
 
         {/* Contact */}
-        <div className="p-10 rounded-[2.5rem] bg-white/20 backdrop-blur-sm border border-white/40 shadow-xl">
-          <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
+        <div className="p-6 sm:p-10 rounded-card-lg bg-white/80 backdrop-blur-md border border-white/60 shadow-xl">
+          <span className="text-secondary font-bold tracking-widest uppercase text-xs mb-2 block">
             Reach Out
           </span>
-          <h2 className="text-3xl font-serif italic text-plum">Contact Us</h2>
+          <h2 className="text-3xl font-bold font-serif italic text-plum">Contact Us</h2>
           <p className="mt-6 text-plum/70 leading-relaxed font-medium">
             Have a dream cake in mind or need to place a bespoke order? 
             Our magic-makers are here to bring your sugar-filled visions to life.

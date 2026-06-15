@@ -95,7 +95,7 @@ export default function AdminLogin() {
             )}
             <Button
               type="submit"
-              className="w-full py-8 rounded-full text-lg shadow-xl shadow-primary/10"
+              className="w-full py-3 rounded-full text-sm shadow-xl shadow-primary/10"
               disabled={loading}
             >
               {loading ? "Authenticating..." : "Enter Workshop"}

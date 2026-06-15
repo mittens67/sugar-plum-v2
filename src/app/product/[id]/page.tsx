@@ -117,13 +117,13 @@ export default function Product() {
           
           {/* Left Column: Image with Whimsical Shadow */}
           <div className="relative group px-2 md:px-0">
-            <div className="absolute -inset-2 md:-inset-4 bg-primary/10 rounded-[2.5rem] blur-2xl group-hover:bg-primary/20 transition-all" />
+            <div className="absolute -inset-2 md:-inset-4 bg-primary/10 rounded-card-lg blur-2xl group-hover:bg-primary/20 transition-all" />
             <Image
               src={product.image_large || "/placeholder.png"}
               alt={product.item_name || "Product Image"}
               width={800}
               height={500}
-              className="relative rounded-[1.5rem] md:rounded-[2rem] object-cover w-full h-auto border border-white/40 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
+              className="relative rounded-[1.5rem] md:rounded-card object-cover w-full h-auto border border-white/40 shadow-2xl transition-transform duration-500 group-hover:scale-[1.02]"
               priority
             />
           </div>
@@ -152,7 +152,7 @@ export default function Product() {
                 ${product.base_price.toFixed(2)}
             </div>
 
-            <div className="space-y-6 md:space-y-8 bg-white/30 backdrop-blur-md p-6 md:p-10 rounded-3xl md:rounded-4xl border border-white/60 shadow-xl">
+            <div className="space-y-6 md:space-y-8 bg-white/30 backdrop-blur-md p-6 md:p-10 rounded-card md:rounded-card-lg border border-white/60 shadow-xl">
               {/* Description & Info Tabs/Layout */}
               <div className="space-y-4">
                 <h3 className="font-bold uppercase tracking-tighter text-plum text-sm">The Story</h3>
@@ -221,7 +221,7 @@ export default function Product() {
                 ) : (
                   <Button
                     size="lg"
-                    className="w-full bg-primary hover:bg-primary/90 text-plum font-bold rounded-full py-6 md:py-8 text-base md:text-lg shadow-lg hover:shadow-primary/20"
+                    className="w-full bg-primary hover:bg-primary/90 text-plum font-bold rounded-full py-3 text-sm shadow-lg hover:shadow-primary/20"
                     onClick={handleAddToCart}
                   >
                     <ShoppingBasket className="mr-2 h-5 w-5" />

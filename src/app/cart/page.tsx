@@ -28,8 +28,8 @@ export default function CartPage() {
 
   if (cart.length === 0) {
     return (
-      <Section className="bg-background min-h-screen flex flex-col items-center justify-center pt-38 px-6">
-        <div className="bg-white/30 backdrop-blur-md p-12 rounded-[3rem] border border-white/50 shadow-xl text-center max-w-md w-full">
+      <Section className="bg-background min-h-screen flex flex-col items-center justify-center pt-36 sm:pt-40 px-6">
+        <div className="bg-white/30 backdrop-blur-md p-12 rounded-card-xl border border-white/50 shadow-xl text-center max-w-md w-full">
           <div className="bg-primary/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
             <ShoppingBag className="text-primary w-10 h-10" />
           </div>
@@ -65,7 +65,7 @@ export default function CartPage() {
             {cart.map((item) => (
               <div
                 key={`${item.id}-${item.flavor_id ?? "x"}-${item.package_size_id ?? "x"}`}
-                className="group relative flex flex-col md:flex-row items-center gap-6 bg-white/40 backdrop-blur-md rounded-4xl p-6 md:p-8 border border-white/60 shadow-md transition-all hover:shadow-xl hover:bg-white/50"
+                className="group relative flex flex-col md:flex-row items-center gap-6 bg-white/40 backdrop-blur-md rounded-card-lg p-6 md:p-8 border border-white/60 shadow-md transition-all hover:shadow-xl hover:bg-white/50"
               >
                 <div className="relative w-32 h-32 md:w-24 md:h-24 shrink-0 bg-background rounded-2xl overflow-hidden border border-primary/10">
                   <Image
@@ -127,7 +127,7 @@ export default function CartPage() {
           </div>
 
           {/* Sticky Order Summary */}
-          <div className="order-1 lg:order-2 lg:sticky lg:top-32 bg-plum text-background rounded-[2.5rem] p-8 md:p-10 shadow-2xl">
+          <div className="order-1 lg:order-2 lg:sticky lg:top-32 bg-plum text-background rounded-card-lg p-8 md:p-10 shadow-2xl">
             <h3 className="text-2xl font-serif italic mb-8 border-b border-background/10 pb-4">
               Order Summary
             </h3>
@@ -154,7 +154,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            <Button className="w-full mt-10 bg-primary hover:bg-primary/90 text-plum font-bold py-8 rounded-full text-lg shadow-xl shadow-black/20 transition-all hover:-translate-y-1">
+            <Button className="w-full mt-10 bg-primary hover:bg-primary/90 text-plum font-bold py-3 rounded-full text-sm shadow-xl shadow-black/20 transition-all hover:-translate-y-1">
               Proceed to Checkout
             </Button>
             

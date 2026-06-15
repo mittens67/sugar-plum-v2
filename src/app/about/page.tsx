@@ -31,7 +31,7 @@ export default function About() {
       {/* Hero Banner / Our Story */}
       <Section className="relative p-6">
         <div
-          className="relative w-full h-[70vh] md:h-[85vh] flex items-center justify-center rounded-[3rem] overflow-hidden shadow-2xl border border-white/20"
+          className="relative w-full h-[70vh] md:h-[85vh] flex items-center justify-center rounded-card-xl overflow-hidden shadow-2xl border border-white/20"
           style={{ 
             backgroundImage: "url('/about-banner.jpg')",
             backgroundSize: 'cover',
@@ -44,7 +44,8 @@ export default function About() {
               Est. 2024
             </span>
             <SectionTitle
-              className="text-center text-5xl sm:text-7xl font-serif italic text-white drop-shadow-2xl animate-heroFade"
+              color="gold"
+              className="text-center text-5xl sm:text-7xl drop-shadow-2xl animate-heroFade"
             >
               Our Story
             </SectionTitle>
@@ -68,8 +69,8 @@ export default function About() {
               : "opacity-0 translate-y-12"
           }`}
         >
-          <div className="bg-white/40 backdrop-blur-md p-10 md:p-16 rounded-[3rem] border border-white/60 shadow-xl text-center">
-            <span className="text-primary font-bold tracking-widest uppercase text-[10px] mb-2 block">
+          <div className="bg-white/40 backdrop-blur-md p-10 md:p-16 rounded-card-xl border border-white/60 shadow-xl text-center">
+            <span className="text-primary font-bold tracking-widest uppercase text-xs mb-2 block">
               The Heart of Sugar Plum
             </span>
             <SectionTitle className="text-plum font-serif italic text-4xl md:text-5xl mb-8">

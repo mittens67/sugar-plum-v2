@@ -33,7 +33,7 @@ export default function Navbar() {
 
   return (
     // Glassmorphism Container: Frosted Window Rule + Safe Area handling
-    <nav className="fixed top-0 w-full z-50 bg-white/40 backdrop-blur-lg border-b border-white/60 shadow-[0_10px_30px_rgba(74,30,77,0.05)] pt-[env(safe-area-inset-top)]">
+    <nav className="fixed top-0 w-full z-50 bg-white/40 backdrop-blur-lg border-b border-white/60 shadow-nav pt-[env(safe-area-inset-top)]">
       <div className="max-w-(--breakpoint-2xl) mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-1 md:py-1.5">
         
         {/* Logo - Ultra-compact sizing */}

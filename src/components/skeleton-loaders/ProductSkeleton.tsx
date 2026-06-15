@@ -12,8 +12,8 @@ export default function ProductSkeleton() {
           {/* Left Column: Image Skeleton */}
           <div className="relative">
             {/* The "Whimsical Shadow" placeholder */}
-            <div className="absolute -inset-4 bg-primary/5 rounded-[2.5rem] blur-2xl" />
-            <div className="relative aspect-4/3 w-full bg-plum/5 rounded-[2rem] border border-white/40 animate-pulse" />
+            <div className="absolute -inset-4 bg-primary/5 rounded-card-lg blur-2xl" />
+            <div className="relative aspect-4/3 w-full bg-plum/5 rounded-card border border-white/40 animate-pulse" />
           </div>
 
           {/* Right Column: Details Skeleton */}
@@ -31,7 +31,7 @@ export default function ProductSkeleton() {
             <div className="h-10 w-24 bg-plum/10 border-l-4 border-primary/20 pl-4 animate-pulse" />
 
             {/* Glassmorphism Pane Skeleton */}
-            <div className="space-y-8 bg-white/20 backdrop-blur-md p-8 rounded-[2rem] border border-white/40 shadow-xl">
+            <div className="space-y-8 bg-white/20 backdrop-blur-md p-8 rounded-card border border-white/40 shadow-xl">
               <div className="space-y-4">
                 <div className="h-4 w-20 bg-plum/10 rounded-full animate-pulse" />
                 <div className="space-y-2">

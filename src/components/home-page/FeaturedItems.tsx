@@ -41,7 +41,7 @@ export default function FeaturedItems() {
 
   if (loading) {
     return (
-      <Section bg="bg-[#FFFDF9]" className="py-20">
+      <Section bg="bg-background" className="py-20">
         <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-plum">Featured Creations</h2>
         </div>
@@ -57,7 +57,7 @@ export default function FeaturedItems() {
   }
 
   return (
-    <Section bg="bg-[#FFFDF9]" className="py-16 md:py-24 relative overflow-hidden">
+    <Section bg="bg-background" className="py-16 md:py-24 relative overflow-hidden">
       {/* Soft Ambient Glows for Depth */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] translate-y-1/2 -translate-x-1/4" />
@@ -90,8 +90,9 @@ export default function FeaturedItems() {
             768: { slidesPerView: 2.5, spaceBetween: 40 },
             1024: { slidesPerView: 3.5, spaceBetween: 50 },
             1440: { slidesPerView: 4.5, spaceBetween: 60 },
+            1920: { slidesPerView: 5.5, spaceBetween: 60 },
           }}
-          className="pb-20 !overflow-visible px-4 md:px-12 max-w-[1600px] mx-auto" 
+          className="pb-20 overflow-visible! px-4 md:px-12 max-w-[1600px] mx-auto" 
         >
           {items.map((item, index) => {
             const Icons = [Sparkles, Star, Heart];
@@ -103,7 +104,7 @@ export default function FeaturedItems() {
               <SwiperSlide key={item.id} className="h-auto pb-4 relative group">
                 <Link href={`/product/${item.id}`} passHref className="block h-full">
                   {/* Impeccable Magical Product Card - Restored Proportions */}
-                  <Card className="relative bg-white/30 backdrop-blur-xl border border-white/40 p-5 md:p-6 text-center flex flex-col justify-between h-full transition-all duration-700 group-hover:shadow-[0_20px_50px_rgba(144,107,154,0.15)] group-hover:-translate-y-2 group-active:scale-[0.98] rounded-[2rem] overflow-hidden">
+                  <Card className="relative bg-white/30 backdrop-blur-xl border border-white/40 p-5 md:p-6 text-center flex flex-col justify-between h-full transition-all duration-700 group-hover:shadow-[0_20px_50px_rgba(144,107,154,0.15)] group-hover:-translate-y-2 group-active:scale-[0.98] rounded-card overflow-hidden">
                     
                     {/* Iridescent Border Highlight - Only visible on hover */}
                     <div className="absolute inset-0 bg-linear-to-tr from-primary/0 via-secondary/10 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
@@ -129,7 +130,7 @@ export default function FeaturedItems() {
                       </h3>
                     </div>
                     
-                    <p className="text-[11px] md:text-sm text-plum/60 line-clamp-2 italic leading-relaxed px-1 relative z-10">
+                    <p className="text-xs md:text-sm text-plum/60 line-clamp-2 italic leading-relaxed px-1 relative z-10">
                       {item.description}
                     </p>
                     
@@ -153,46 +154,6 @@ export default function FeaturedItems() {
         </Swiper>
       </div>
 
-      <style jsx global>{`
-        .swiper-button-next, .swiper-button-prev {
-          color: #C5A059 !important;
-          background: rgba(255, 255, 255, 0.8);
-          backdrop-filter: blur(8px);
-          width: 50px !important;
-          height: 50px !important;
-          border-radius: 50%;
-          border: 1px solid rgba(255, 255, 255, 0.6);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-          transition: all 0.3s ease;
-          display: none !important;
-        }
-        @media (min-width: 1024px) {
-          .swiper-button-next, .swiper-button-prev {
-            display: flex !important;
-          }
-        }
-        .swiper-button-next:after, .swiper-button-prev:after {
-          font-size: 18px !important;
-          font-weight: bold;
-        }
-        .swiper-button-next:hover, .swiper-button-prev:hover {
-          background: #C5A059;
-          color: white !important;
-          transform: scale(1.1);
-        }
-        .swiper-pagination-bullet {
-          width: 8px;
-          height: 8px;
-          background: #4A1E4D !important;
-          opacity: 0.2;
-          transition: all 0.3s ease;
-        }
-        .swiper-pagination-bullet-active {
-          opacity: 1 !important;
-          width: 24px;
-          border-radius: 4px;
-        }
-      `}</style>
     </Section>
   );
 }

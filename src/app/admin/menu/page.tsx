@@ -1,12 +1,14 @@
 import prisma from "@/lib/prisma";
-import { deleteProduct, restoreProduct } from "../actions";
+import { deleteProduct, restoreProduct, permanentlyDeleteProduct } from "../actions";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Plus, Edit2, Trash2, RefreshCw, Image as ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import HardDeleteButton from "./HardDeleteButton";
+import HardDeleteModal from "@/components/admin/HardDeleteModal";
 import TypeFilter from "./TypeFilter";
-import SearchBar from "./SearchBar";
+import AdminSearchBar from "@/components/admin/SearchBar";
+import Badge from "@/components/ui/Badge";
+import PriceDisplay from "@/components/ui/PriceDisplay";
 import { $Enums, Prisma } from "@prisma/client";
 
 type category = $Enums.category;
@@ -85,7 +87,13 @@ export default async function AdminMenu({
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
         <div className="flex flex-wrap items-center gap-4">
             <TypeFilter currentType={typeFilter} categories={categories} />
-            <SearchBar initialValue={searchQuery} />
+            <AdminSearchBar
+              initialValue={searchQuery}
+              apiEndpoint="/api/admin/products/suggestions"
+              redirectPath="/admin/menu"
+              accentColor="primary"
+              placeholder="Search creations by name..."
+            />
         </div>
         
         <div className="flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm self-start lg:self-auto">
@@ -94,7 +102,7 @@ export default async function AdminMenu({
         </div>
       </div>
 
-      <div className="bg-white/40 backdrop-blur-md rounded-[2.5rem] border border-white/60 shadow-xl overflow-hidden">
+      <div className="bg-white/40 backdrop-blur-md rounded-card-lg border border-white/60 shadow-xl overflow-hidden">
         <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
             <thead>
@@ -166,21 +174,11 @@ export default async function AdminMenu({
                             )}
                         </div>
                     </td>
-                    <td className="px-8 py-6 font-black text-plum whitespace-nowrap">
-                        ${product.base_price?.toString()}
+                    <td className="px-8 py-6 whitespace-nowrap text-plum">
+                        <PriceDisplay amount={Number(product.base_price)} size="sm" />
                     </td>
                     <td className="px-8 py-6">
-                    {product.deleted_at ? (
-                        <span className="inline-flex items-center gap-1.5 text-red-500 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
-                            <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
-                            Deleted
-                        </span>
-                    ) : (
-                        <span className="inline-flex items-center gap-1.5 text-green-500 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                            Active
-                        </span>
-                    )}
+                      <Badge variant={product.deleted_at ? "deleted" : "active"} />
                     </td>
                     <td className="px-8 py-6 text-right">
                         <div className="flex justify-end gap-2">
@@ -194,7 +192,7 @@ export default async function AdminMenu({
                                             <RefreshCw className="w-4 h-4" />
                                         </button>
                                     </form>
-                                    <HardDeleteButton productId={product.id.toString()} itemName={product.item_name || "this item"} />
+                                    <HardDeleteModal itemId={product.id.toString()} itemName={product.item_name || "this item"} itemType="product" onDelete={permanentlyDeleteProduct} />
                                 </div>
                             ) : (
                                 <form action={deleteProduct.bind(null, product.id)} className="inline">

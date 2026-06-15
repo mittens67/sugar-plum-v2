@@ -46,7 +46,7 @@ export default function Promotions() {
   if (loading) return (
     <Section className="py-24 bg-background animate-pulse">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="h-[500px] md:h-[600px] bg-plum/5 rounded-[2.5rem] border border-plum/10" />
+          <div className="h-[500px] md:h-[600px] bg-plum/5 rounded-card-lg border border-plum/10" />
         </div>
     </Section>
   );
@@ -75,13 +75,13 @@ export default function Promotions() {
             bulletActiveClass: 'swiper-pagination-bullet-active !bg-plum !opacity-100 !scale-125',
           }}
           navigation={promotions.length > 1}
-          className="rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,30,77,0.15)] overflow-hidden !pb-12"
+          className="rounded-card-lg shadow-promo overflow-hidden pb-12!"
         >
           {promotions.map((promo) => (
             <SwiperSlide key={promo.id}>
               {promo.display_type === "SPLIT" ? (
                 /* Split View Layout - Frosted Window Rule */
-                <div className="relative z-10 bg-white/40 backdrop-blur-lg border border-white/60 p-6 sm:p-8 md:p-16 min-h-[500px] md:h-[600px] flex items-center overflow-hidden">
+                <div className="relative z-10 bg-white/40 backdrop-blur-lg border border-white/60 p-6 sm:p-8 md:p-16 min-h-[420px] sm:min-h-[500px] md:h-[600px] flex items-center overflow-hidden">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 lg:gap-24 items-center w-full">
                     
                     {/* Image Side */}
@@ -93,7 +93,7 @@ export default function Promotions() {
                                 src={promo.image_url}
                                 alt={promo.title}
                                 fill
-                                className="relative z-10 drop-shadow-[0_20px_50px_rgba(74,30,77,0.3)] object-cover rounded-[1.5rem] md:rounded-[2rem] transform transition-transform duration-700 hover:rotate-1 hover:scale-105"
+                                className="relative z-10 drop-shadow-[0_20px_50px_rgba(74,30,77,0.3)] object-cover rounded-[1.5rem] md:rounded-card transform transition-transform duration-700 hover:rotate-1 hover:scale-105"
                             />
                         </div>
                       )}
@@ -101,7 +101,7 @@ export default function Promotions() {
 
                     {/* Text Content */}
                     <div className="text-center md:text-left order-1 md:order-2 px-2">
-                      <span className="inline-block px-4 py-1 md:px-5 md:py-1.5 rounded-full bg-secondary/20 text-plum font-bold text-[11px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.25em] mb-4 md:mb-6">
+                      <span className="inline-block px-4 py-1 md:px-5 md:py-1.5 rounded-full bg-secondary/20 text-plum font-bold text-xs uppercase tracking-[0.2em] md:tracking-[0.25em] mb-4 md:mb-6">
                         Exclusive Offer
                       </span>
                       
@@ -129,7 +129,7 @@ export default function Promotions() {
                 </div>
               ) : (
                 /* Image Only View (Full Banner) */
-                <div className="relative h-[500px] md:h-[600px] group overflow-hidden">
+                <div className="relative h-[300px] sm:h-[420px] md:h-[560px] group overflow-hidden">
                     {promo.link ? (
                         <Link href={promo.link} className="block relative w-full h-full cursor-pointer">
                             {promo.image_url && (

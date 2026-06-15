@@ -3,7 +3,7 @@
 function FeaturedItemCardSkeleton() {
   return (
     /* We match the padding (p-6) and rounded corners of the real card */
-    <div className="bg-white/30 backdrop-blur-sm border border-white/60 p-6 rounded-[2.5rem] flex flex-col h-[450px] w-full shadow-sm relative overflow-hidden">
+    <div className="bg-white/30 backdrop-blur-sm border border-white/60 p-6 rounded-card-lg flex flex-col h-[450px] w-full shadow-sm relative overflow-hidden">
       
       {/* 1. Image Area: Uses aspect-square to reserve the exact space */}
       <div className="relative w-full aspect-square rounded-2xl bg-plum/5 animate-pulse mb-6" />

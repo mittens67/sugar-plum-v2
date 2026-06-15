@@ -23,7 +23,7 @@ export default function Newsletter() {
         </p>
 
         {/* Enhanced Glassmorphism Card */}
-        <Card className="mt-12 p-2 sm:p-3 bg-white/30 backdrop-blur-xl border border-white/40 shadow-2xl rounded-[2.5rem] max-w-2xl mx-auto">
+        <Card className="mt-12 p-2 sm:p-3 bg-white/30 backdrop-blur-xl border border-white/40 shadow-2xl rounded-card-lg max-w-2xl mx-auto">
           <form className="flex flex-col sm:flex-row items-center gap-3 w-full p-2">
             <input
               type="email"

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import ProductActions from "@/components/ProductActions";
 import { Database } from "@/types/supabase";
+import { Metadata } from "next";
 
 type DbProduct = Database["public"]["Tables"]["products"]["Row"];
 type DbFlavor = Database["public"]["Tables"]["flavor_options"]["Row"];
@@ -73,6 +74,53 @@ async function getProduct(id: string): Promise<Product | null> {
     base_price: Number(data.base_price),
     ratings: data.ratings ? Number(data.ratings) : 0,
   } as Product;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
+
+  if (!product) {
+    return {
+      title: "Product Not Found",
+      description: "This product could not be found.",
+    };
+  }
+
+  const productUrl = `${process.env.NEXT_PUBLIC_BASE_URL || "https://sugarplum.local"}/product/${product.id}`;
+  const imageUrl = product.image_large || "/placeholder.png";
+
+  return {
+    title: `${product.item_name} | Sugar Plum`,
+    description:
+      product.description || "Artisanal sugar plum confection.",
+    openGraph: {
+      title: product.item_name || "Sugar Plum",
+      description:
+        product.description || "Artisanal sugar plum confection.",
+      url: productUrl,
+      type: "website",
+      images: [
+        {
+          url: imageUrl,
+          width: 800,
+          height: 500,
+          alt: product.item_name || "Product",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.item_name || "Sugar Plum",
+      description:
+        product.description || "Artisanal sugar plum confection.",
+      images: [imageUrl],
+    },
+  };
 }
 
 export default async function ProductPage({

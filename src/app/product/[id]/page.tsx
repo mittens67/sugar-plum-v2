@@ -77,6 +77,8 @@ async function getProduct(id: string): Promise<Product | null> {
   } as Product;
 }
 
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   const supabase = createAnonClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || "",

@@ -6,6 +6,7 @@ import { createClient } from "@/utils/supabase/server";
 import ProductActions from "@/components/ProductActions";
 import { Database } from "@/types/supabase";
 import { Metadata } from "next";
+import { createClient as createAnonClient } from "@supabase/supabase-js";
 
 type DbProduct = Database["public"]["Tables"]["products"]["Row"];
 type DbFlavor = Database["public"]["Tables"]["flavor_options"]["Row"];
@@ -74,6 +75,26 @@ async function getProduct(id: string): Promise<Product | null> {
     base_price: Number(data.base_price),
     ratings: data.ratings ? Number(data.ratings) : 0,
   } as Product;
+}
+
+export async function generateStaticParams() {
+  const supabase = createAnonClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+  );
+
+  const { data: products, error } = await supabase
+    .from("products")
+    .select("id")
+    .is("deleted_at", null);
+
+  if (error || !products) {
+    return [];
+  }
+
+  return products.map((product) => ({
+    id: String(product.id),
+  }));
 }
 
 export async function generateMetadata({

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 import { useState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { Info, Check, AlertCircle } from "lucide-react";
 import { $Enums } from "@prisma/client";
 import type { package_sizes, flavor_options } from "@prisma/client";
@@ -10,18 +11,31 @@ import ImageUploadField from "@/components/ui/ImageUploadField";
 type category = $Enums.category;
 import { optimizeImage, isFileSizeValid } from "@/utils/image-optimization";
 
-export default function ProductForm({ 
-  initialData, 
+function SubmitButton({ initialData }: { initialData?: any }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      type="submit"
+      size="lg"
+      className="px-8 py-3 rounded-full shadow-2xl shadow-primary/20 transition-all hover:-translate-y-1 active:scale-95"
+      disabled={pending}
+    >
+      {pending ? "Magic in progress..." : initialData ? "Update Creation" : "Enchant New Product"}
+    </Button>
+  );
+}
+
+export default function ProductForm({
+  initialData,
   action,
   allPackageSizes = [],
   allFlavorOptions = []
-}: { 
-  initialData?: any, 
+}: {
+  initialData?: any,
   action: (formData: FormData) => Promise<void>,
   allPackageSizes?: package_sizes[],
   allFlavorOptions?: flavor_options[]
 }) {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [productType, setProductType] = useState<category>(initialData?.product_type || "cake");
   const [selectedSizes, setSelectedSizes] = useState<string[]>(
@@ -64,36 +78,28 @@ export default function ProductForm({
         return;
     }
 
-    setLoading(true);
-
     try {
         const formData = new FormData(e.currentTarget);
         const imageFile = formData.get("image") as File;
 
         if (imageFile && imageFile.size > 0) {
-            // 1. Optimize image (convert to webp and resize)
             const optimizedFile = await optimizeImage(imageFile, {
                 maxWidth: 1200,
                 quality: 0.8
             });
 
-            // 2. Check if it's still too large (Next.js body limit is 1MB by default)
-            if (!isFileSizeValid(optimizedFile, 0.9)) { // Use 0.9 to be safe
+            if (!isFileSizeValid(optimizedFile, 0.9)) {
                 setError("Even after optimization, the image is too large. Please use a smaller image.");
-                setLoading(false);
                 return;
             }
 
-            // 3. Replace the original file in FormData
             formData.set("image", optimizedFile);
         }
 
-        // Call the server action
         await action(formData);
     } catch (err: any) {
         console.error("Form submission error:", err);
         setError(err.message || "An unexpected error occurred. Please try again.");
-        setLoading(false);
     }
   };
 
@@ -265,14 +271,7 @@ export default function ProductForm({
         </div>
 
         <div className="flex justify-end pt-6">
-          <Button 
-            type="submit" 
-            size="lg"
-            className="px-8 py-3 rounded-full shadow-2xl shadow-primary/20 transition-all hover:-translate-y-1 active:scale-95"
-            disabled={loading}
-          >
-            {loading ? "Magic in progress..." : initialData ? "Update Creation" : "Enchant New Product"}
-          </Button>
+          <SubmitButton initialData={initialData} />
         </div>
       </div>
     </form>

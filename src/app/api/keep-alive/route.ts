@@ -1,6 +1,19 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
+// Edge Runtime Tradeoff Analysis:
+// This route queries Supabase, which requires persistent connections.
+// Edge Runtime (Cloudflare/Vercel Edge Functions) has connection limitations.
+// Verdict: Keep on Node.js for reliability.
+//
+// Good Edge Runtime candidates:
+// - Lightweight routes with no DB queries
+// - Request routing/filtering
+// - Simple string transformations
+// - Static content delivery
+//
+// To opt-in: export const runtime = "edge";
+
 export async function GET() {
   try {
     const supabase = await createClient();

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 import { Info, Calendar, Layout, Link as LinkIcon, Type, AlertCircle } from "lucide-react";
 import ImageUploadField from "@/components/ui/ImageUploadField";
 import { $Enums } from "@prisma/client";
@@ -13,24 +14,37 @@ const formatDateForInput = (dateValue: Date | string | null | undefined) => {
   if (!dateValue) return "";
   const d = new Date(dateValue);
   if (isNaN(d.getTime())) return "";
-  
+
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   const hours = String(d.getHours()).padStart(2, '0');
   const minutes = String(d.getMinutes()).padStart(2, '0');
-  
+
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 };
 
-export default function PromotionForm({ 
-  initialData, 
-  action 
-}: { 
-  initialData?: any, 
+function SubmitButton({ initialData }: { initialData?: any }) {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      type="submit"
+      size="lg"
+      className="px-8 py-3 rounded-full shadow-2xl shadow-secondary/20 transition-all hover:-translate-y-1 active:scale-95"
+      disabled={pending}
+    >
+      {pending ? "Saving promotion..." : initialData ? "Update Promotion" : "Create Promotion"}
+    </Button>
+  );
+}
+
+export default function PromotionForm({
+  initialData,
+  action
+}: {
+  initialData?: any,
   action: (formData: FormData) => Promise<void>
 }) {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image_url || null);
   const [displayType, setDisplayType] = useState<promo_display_type>(initialData?.display_type || "SPLIT");
@@ -39,13 +53,12 @@ export default function PromotionForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    
+
     const formData = new FormData(e.currentTarget);
-    
-    // Date Validation
+
     const startDateStr = formData.get("start_date") as string;
     const endDateStr = formData.get("end_date") as string;
-    
+
     if (startDateStr && endDateStr) {
         const start = new Date(startDateStr);
         const end = new Date(endDateStr);
@@ -55,27 +68,21 @@ export default function PromotionForm({
         }
     }
 
-    setLoading(true);
-
     try {
         const imageFile = formData.get("image") as File;
 
         if (imageFile && imageFile.size > 0) {
-            // 1. Optimize image (16:9 ratio optimization)
             const optimizedFile = await optimizeImage(imageFile, {
                 maxWidth: 1200,
-                maxHeight: 675, // 16:9 ratio
+                maxHeight: 675,
                 quality: 0.85
             });
 
-            // 2. Check size
             if (!isFileSizeValid(optimizedFile, 0.9)) {
                 setError("The banner image is too large even after optimization. Please use a smaller file.");
-                setLoading(false);
                 return;
             }
 
-            // 3. Update FormData
             formData.set("image", optimizedFile);
         }
 
@@ -83,7 +90,6 @@ export default function PromotionForm({
     } catch (err: any) {
         console.error("Promotion form error:", err);
         setError(err.message || "An unexpected error occurred.");
-        setLoading(false);
     }
   };
 
@@ -229,14 +235,7 @@ export default function PromotionForm({
         </div>
 
         <div className="flex justify-end pt-6">
-          <Button 
-            type="submit" 
-            size="lg"
-            className="px-8 py-3 bg-secondary text-white hover:bg-secondary/90 rounded-full shadow-2xl shadow-secondary/20 transition-all hover:-translate-y-1 active:scale-95"
-            disabled={loading}
-          >
-            {loading ? "Casting Spell..." : initialData ? "Update Campaign" : "Launch Promotion"}
-          </Button>
+          <SubmitButton initialData={initialData} />
         </div>
       </div>
     </form>

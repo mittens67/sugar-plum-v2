@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { unstable_cache } from "next/cache";
 
-export async function GET() {
-  try {
+const getCachedPromotions = unstable_cache(
+  async () => {
     const now = new Date();
 
     const promotions = await prisma.promotions.findMany({
@@ -30,13 +31,19 @@ export async function GET() {
       ]
     });
 
-    // Handle BigInt serialization
-    const serializedPromos = promotions.map(promo => ({
+    return promotions.map(promo => ({
       ...promo,
       id: promo.id.toString()
     }));
+  },
+  ["promotions"],
+  { revalidate: 3600, tags: ["promotions"] }
+);
 
-    return NextResponse.json({ data: serializedPromos });
+export async function GET() {
+  try {
+    const data = await getCachedPromotions();
+    return NextResponse.json({ data });
   } catch (error) {
     console.error("Failed to fetch promotions:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

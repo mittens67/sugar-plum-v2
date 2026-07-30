@@ -3,7 +3,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js"; // Import for admin client
 import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { $Enums } from "@prisma/client";
 import sharp from "sharp";
@@ -191,6 +191,7 @@ export async function addProduct(formData: FormData) {
     },
   });
 
+  revalidateTag("products", {});
   revalidatePath("/admin/menu");
   revalidatePath("/menu");
   redirect("/admin/menu");
@@ -258,6 +259,7 @@ export async function updateProduct(id: bigint, formData: FormData) {
     })
   ]);
 
+  revalidateTag("products", {});
   revalidatePath("/admin/menu");
   revalidatePath("/menu");
   revalidatePath(`/product/${id}`);
@@ -273,6 +275,7 @@ export async function deleteProduct(id: bigint) {
     },
   });
 
+  revalidateTag("products", {});
   revalidatePath("/admin/menu");
   revalidatePath("/menu");
 }
@@ -285,6 +288,7 @@ export async function restoreProduct(id: bigint) {
     },
   });
 
+  revalidateTag("products", {});
   revalidatePath("/admin/menu");
   revalidatePath("/menu");
 }
@@ -305,6 +309,7 @@ export async function permanentlyDeleteProduct(id: bigint) {
         prisma.products.delete({ where: { id } })
     ]);
 
+    revalidateTag("products", {});
     revalidatePath("/admin/menu");
     revalidatePath("/menu");
 }
@@ -342,6 +347,7 @@ export async function addPromotion(formData: FormData) {
     },
   });
 
+  revalidateTag("promotions", {});
   revalidatePath("/admin/promotions");
   revalidatePath("/");
   redirect("/admin/promotions");
@@ -384,6 +390,7 @@ export async function updatePromotion(id: bigint, formData: FormData) {
     },
   });
 
+  revalidateTag("promotions", {});
   revalidatePath("/admin/promotions");
   revalidatePath("/");
   redirect("/admin/promotions");
@@ -397,6 +404,7 @@ export async function softDeletePromotion(id: bigint) {
     },
   });
 
+  revalidateTag("promotions", {});
   revalidatePath("/admin/promotions");
   revalidatePath("/");
 }
@@ -409,6 +417,7 @@ export async function restorePromotion(id: bigint) {
     },
   });
 
+  revalidateTag("promotions", {});
   revalidatePath("/admin/promotions");
   revalidatePath("/");
 }
@@ -427,6 +436,7 @@ export async function permanentlyDeletePromotion(id: bigint) {
     where: { id },
   });
 
+  revalidateTag("promotions", {});
   revalidatePath("/admin/promotions");
   revalidatePath("/");
 }
@@ -436,6 +446,7 @@ export async function togglePromotionStatus(id: bigint, currentStatus: boolean) 
     where: { id },
     data: { is_active: !currentStatus },
   });
+  revalidateTag("promotions", {});
   revalidatePath("/admin/promotions");
   revalidatePath("/");
 }

@@ -1,9 +1,11 @@
-import FeaturedItems from "@/components/home-page/FeaturedItems";
+import dynamic from "next/dynamic";
 import Hero from "@/components/home-page/Hero";
 import Newsletter from "@/components/home-page/Newsletter";
-import Promotions from "@/components/home-page/Promotions";
 import StoryContact from "@/components/home-page/StoryContact";
 import Testimonials from "@/components/home-page/Testimonials";
+
+const FeaturedItems = dynamic(() => import("@/components/home-page/FeaturedItems"));
+const Promotions = dynamic(() => import("@/components/home-page/Promotions"));
 
 export default function Home() {
   return (
